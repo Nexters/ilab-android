@@ -26,7 +26,7 @@ dependencies {
         projects.core.designsystem,
         projects.core.domain,
         projects.core.network,
-        projects.core.preference,
+        projects.core.datastore,
         projects.core.ui,
         projects.core.util,
 

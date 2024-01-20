@@ -18,7 +18,7 @@ android {
 
 dependencies {
     implementations(
-        projects.core.preference,
+        projects.core.datastore,
 
         libs.timber,
     )

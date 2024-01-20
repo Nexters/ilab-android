@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.core.preference"
+    namespace = "com.nexters.ilab.android.core.datastore"
 }
 
 dependencies {

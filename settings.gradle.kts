@@ -27,7 +27,7 @@ include(
     ":core:designsystem",
     ":core:domain",
     ":core:network",
-    ":core:preference",
+    ":core:datastore",
     ":core:ui",
     ":core:util",
 

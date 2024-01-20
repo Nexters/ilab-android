@@ -14,6 +14,6 @@ android {
 dependencies {
     implementations(
         projects.core.network,
-        projects.core.preference,
+        projects.core.datastore,
     )
 }
