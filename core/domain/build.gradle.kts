@@ -1,17 +1,11 @@
 @file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
 
 plugins {
-    alias(libs.plugins.ilab.android.library)
-}
-
-android {
-    namespace = "com.nexters.ilab.android.core.domain"
+    alias(libs.plugins.ilab.jvm.kotlin)
 }
 
 dependencies {
     implementations(
-        projects.core.data,
-
         libs.javax.inject,
     )
 }

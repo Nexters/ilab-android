@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.gradle.kotlin.dsl.dependencies
 
-internal class JvmKotlinPlugin : BuildLogicConventionPlugin({
+internal class JvmKotlinConventionPlugin : BuildLogicConventionPlugin({
     applyPlugins(Plugins.JavaLibrary, Plugins.KotlinJvm)
 
     extensions.configure<JavaPluginExtension> {
