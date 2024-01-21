@@ -6,6 +6,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
     {
         applyPlugins(
             "ilab.android.library",
+            "ilab.android.library.compose",
             "ilab.android.hilt",
         )
 

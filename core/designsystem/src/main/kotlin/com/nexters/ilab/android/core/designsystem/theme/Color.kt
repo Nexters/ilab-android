@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.ui.theme
+package com.nexters.ilab.android.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

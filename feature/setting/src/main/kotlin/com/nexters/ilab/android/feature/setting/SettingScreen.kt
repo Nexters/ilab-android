@@ -1,10 +1,8 @@
-package com.nexters.ilab.android.feature.home
+package com.nexters.ilab.android.feature.setting
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,27 +11,29 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @Suppress("unused")
 @Composable
-internal fun HomeRoute(
-    padding: PaddingValues,
+internal fun SettingRoute(
+    onBackClick: () -> Unit,
+    onChangeDarkTheme: (Boolean) -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: SettingViewModel = hiltViewModel(),
 ) {
-    HomeScreen(
-        padding = padding,
+    SettingScreen(
+        onBackClick = onBackClick,
+        onChangeDarkTheme = onChangeDarkTheme,
     )
 }
 
+@Suppress("unused")
 @Composable
-internal fun HomeScreen(
-    padding: PaddingValues,
+internal fun SettingScreen(
+    onBackClick: () -> Unit,
+    onChangeDarkTheme: (Boolean) -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "HomeScreen")
+        Text(text = "SettingScreen")
     }
 }

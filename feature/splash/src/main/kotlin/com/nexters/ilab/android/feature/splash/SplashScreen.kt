@@ -1,39 +1,36 @@
-package com.nexters.ilab.android.feature.home
+package com.nexters.ilab.android.feature.splash
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Suppress("unused")
 @Composable
-internal fun HomeRoute(
-    padding: PaddingValues,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
-    viewModel: HomeViewModel = hiltViewModel(),
+internal fun SplashRoute(
+    navigateToLogin: () -> Unit,
+    navigateToMain: () -> Unit,
+    viewModel: SplashViewModel = hiltViewModel(),
 ) {
-    HomeScreen(
-        padding = padding,
-    )
+    LaunchedEffect(key1 = Unit) {
+        navigateToLogin()
+    }
+
+    SplashScreen()
 }
 
 @Composable
-internal fun HomeScreen(
-    padding: PaddingValues,
-) {
+internal fun SplashScreen() {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "HomeScreen")
+        Text(text = "SplashScreen")
     }
 }

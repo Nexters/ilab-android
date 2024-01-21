@@ -5,12 +5,13 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.feature.home"
+    namespace = "com.nexters.ilab.android.feature.setting"
 }
 
 dependencies {
     implementations(
         libs.androidx.core,
+
         libs.timber,
     )
 }

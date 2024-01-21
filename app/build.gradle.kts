@@ -33,7 +33,10 @@ dependencies {
         projects.feature.camera,
         projects.feature.home,
         projects.feature.login,
+        projects.feature.main,
         projects.feature.mypage,
+        projects.feature.setting,
+        projects.feature.splash,
 
         libs.androidx.activity.compose,
         libs.androidx.core,

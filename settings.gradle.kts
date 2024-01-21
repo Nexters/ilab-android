@@ -34,5 +34,8 @@ include(
     ":feature:camera",
     ":feature:home",
     ":feature:login",
+    ":feature:main",
     ":feature:mypage",
+    ":feature:setting",
+    ":feature:splash",
 )
