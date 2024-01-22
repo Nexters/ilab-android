@@ -29,3 +29,13 @@ jobs:
       run: ./gradlew detekt
     - name: test Ktlint
       run: ./gradlew ktlintCheck
+
+    - name: send to Slack
+      uses: 8398a7/action-slack@v3 
+      with:
+        status: ${{ job.status }} 
+        fields: job,commit,repo,author,took
+        author_name: Heeg   
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+      if: always()
