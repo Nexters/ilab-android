@@ -1,51 +1,55 @@
 name: Main branch Gradle build
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "develop" ]
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "develop" ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-ci') }}
+    build:
+        runs-on: ubuntu-latest
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-ci') }}
 
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup JDK 17
-      uses: actions/setup-java@v3
-      with:
-        distribution: zulu
-        java-version: 17
-        cache: gradle
+        steps:
+            -   uses: actions/checkout@v3
 
-    - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
+            -   name: Setup JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    distribution: zulu
+                    java-version: 17
+                    cache: gradle
 
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-home-cache-cleanup: true
+            -   name: Setup Android SDK
+                uses: android-actions/setup-android@v2
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+            -   name: Setup Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    gradle-home-cache-cleanup: true
 
-    - name: test Detekt
-      run: ./gradlew detekt
-    - name: test Ktlint
-      run: ./gradlew ktlintCheck
+            -   name: Grant execute permission for gradlew
+                run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build
+            -   name: Generate secrets.properties
+                run: |
+                    echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
 
-    - name: send to Slack
-      uses: 8398a7/action-slack@v3 
-      with:
-        status: ${{ job.status }} 
-        fields: job,commit,repo,author,took
-        author_name: Heeg   
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
-      if: always()
+            -   name: test Detekt
+                run: ./gradlew detekt
+            -   name: test Ktlint
+                run: ./gradlew ktlintCheck
+
+            -   name: Build with Gradle
+                run: ./gradlew build
+
+            -   name: send to Slack
+                uses: 8398a7/action-slack@v3
+                with:
+                    status: ${{ job.status }}
+                    fields: job,commit,repo,author,took
+                    author_name: Heeg
+                env:
+                    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+                if: always()
