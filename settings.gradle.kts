@@ -23,19 +23,20 @@ dependencyResolutionManagement {
 include(
     ":app",
 
+    ":core:common",
     ":core:data",
     ":core:designsystem",
     ":core:domain",
     ":core:network",
     ":core:datastore",
     ":core:ui",
-    ":core:util",
 
     ":feature:camera",
     ":feature:home",
+    ":feature:intro",
     ":feature:login",
     ":feature:main",
     ":feature:mypage",
+    ":feature:navigator",
     ":feature:setting",
-    ":feature:splash",
 )

@@ -19,8 +19,8 @@ fun NavGraphBuilder.homeNavGraph(
 ) {
     composable(route = HOME_ROUTE) {
         HomeRoute(
-            padding,
-            onShowErrorSnackBar,
+            padding = padding,
+            onShowErrorSnackBar = onShowErrorSnackBar,
         )
     }
 }

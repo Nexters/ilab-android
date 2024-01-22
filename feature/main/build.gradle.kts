@@ -12,10 +12,8 @@ dependencies {
     implementations(
         projects.feature.camera,
         projects.feature.home,
-        projects.feature.login,
         projects.feature.mypage,
         projects.feature.setting,
-        projects.feature.splash,
 
         libs.androidx.core,
         libs.kotlinx.collections.immutable,

@@ -19,8 +19,8 @@ fun NavGraphBuilder.cameraNavGraph(
 ) {
     composable(route = CAMERA_ROUTE) {
         CameraRoute(
-            padding,
-            onShowErrorSnackBar,
+            padding = padding,
+            onShowErrorSnackBar = onShowErrorSnackBar,
         )
     }
 }

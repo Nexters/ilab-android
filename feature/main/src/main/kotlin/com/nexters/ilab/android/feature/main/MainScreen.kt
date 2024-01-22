@@ -39,10 +39,8 @@ import androidx.navigation.compose.NavHost
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.feature.camera.navigation.cameraNavGraph
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
-import com.nexters.ilab.android.feature.login.navigation.loginNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
-import com.nexters.ilab.android.feature.splash.navigation.splashNavGraph
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -50,8 +48,9 @@ import java.net.UnknownHostException
 
 @Composable
 internal fun MainScreen(
-    navigator: MainNavigator = rememberMainNavigator(),
     onChangeDarkTheme: (Boolean) -> Unit,
+    onLogoutClick: () -> Unit,
+    navigator: MainNavController = rememberMainNavController(),
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -77,16 +76,6 @@ internal fun MainScreen(
                     navController = navigator.navController,
                     startDestination = navigator.startDestination,
                 ) {
-                    splashNavGraph(
-                        navigateToLogin = navigator::navigateToLogin,
-                        navigateToMain = navigator::navigateToMain,
-                    )
-
-                    loginNavGraph(
-                        onLoginClick = navigator::navigateToMain,
-                        onShowErrorSnackBar = onShowErrorSnackBar,
-                    )
-
                     homeNavGraph(
                         padding = padding,
                         onShowErrorSnackBar = onShowErrorSnackBar,
@@ -106,6 +95,7 @@ internal fun MainScreen(
                     settingNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onChangeDarkTheme = onChangeDarkTheme,
+                        onLogoutClick = onLogoutClick,
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
                 }

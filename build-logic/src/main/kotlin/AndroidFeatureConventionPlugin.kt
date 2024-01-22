@@ -11,16 +11,16 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         )
 
         dependencies {
+            add("implementation", project(":core:common"))
             add("implementation", project(":core:designsystem"))
             add("implementation", project(":core:domain"))
             add("implementation", project(":core:ui"))
+            add("implementation", project(":feature:navigator"))
 
-            add("implementation", libs.findLibrary("androidx.lifecycle.runtime.compose").get())
-            add("implementation", libs.findLibrary("androidx.lifecycle.viewmodel.compose").get())
             add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
 
-            add("implementation", libs.findLibrary("orbit.viewmodel").get())
-            add("implementation", libs.findLibrary("orbit.compose").get())
+            add("implementation", libs.findBundle("androidx.lifecycle").get())
+            add("implementation", libs.findBundle("orbit").get())
         }
     },
 )
