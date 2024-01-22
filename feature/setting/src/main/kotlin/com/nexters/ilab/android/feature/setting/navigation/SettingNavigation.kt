@@ -30,7 +30,7 @@ fun NavGraphBuilder.settingNavGraph(
         exitTransition = {
             slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             )
         },
     ) {
