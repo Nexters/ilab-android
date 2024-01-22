@@ -24,6 +24,7 @@ internal fun Project.configureCompose(extension: CommonExtension<*, *, *, *, *>)
             add("implementation", libs.findLibrary("androidx.compose.material3").get())
             add("implementation", libs.findLibrary("androidx.compose.ui").get())
             add("implementation", libs.findLibrary("androidx.compose.ui.tooling.preview").get())
+            add("implementation", libs.findLibrary("androidx.navigation.compose").get())
             add("debugImplementation", libs.findLibrary("androidx.compose.ui.tooling").get())
         }
     }
