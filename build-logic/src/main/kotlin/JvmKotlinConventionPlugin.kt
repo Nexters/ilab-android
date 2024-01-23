@@ -1,11 +1,12 @@
 import com.nexters.ilab.android.ApplicationConfig
 import com.nexters.ilab.android.Plugins
 import com.nexters.ilab.android.applyPlugins
+import com.nexters.ilab.android.detektPlugins
 import com.nexters.ilab.android.libs
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.gradle.kotlin.dsl.dependencies
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 
 internal class JvmKotlinConventionPlugin : BuildLogicConventionPlugin({
     applyPlugins(Plugins.JavaLibrary, Plugins.KotlinJvm)
@@ -20,6 +21,6 @@ internal class JvmKotlinConventionPlugin : BuildLogicConventionPlugin({
     }
 
     dependencies {
-        add("detektPlugins", libs.findLibrary("detekt-formatting").get())
+        detektPlugins(libs.detekt.formatting)
     }
 })

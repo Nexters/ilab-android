@@ -1,5 +1,7 @@
 import com.nexters.ilab.android.applyPlugins
+import com.nexters.ilab.android.implementation
 import com.nexters.ilab.android.libs
+import com.nexters.ilab.android.project
 import org.gradle.kotlin.dsl.dependencies
 
 internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
@@ -11,16 +13,15 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         )
 
         dependencies {
-            add("implementation", project(":core:common"))
-            add("implementation", project(":core:designsystem"))
-            add("implementation", project(":core:domain"))
-            add("implementation", project(":core:ui"))
-            add("implementation", project(":feature:navigator"))
+            implementation(project(path = ":core:common"))
+            implementation(project(path = ":core:designsystem"))
+            implementation(project(path = ":core:domain"))
+            implementation(project(path = ":core:ui"))
+            implementation(project(path = ":feature:navigator"))
 
-            add("implementation", libs.findLibrary("androidx.hilt.navigation.compose").get())
-
-            add("implementation", libs.findBundle("androidx.lifecycle").get())
-            add("implementation", libs.findBundle("orbit").get())
+            implementation(libs.androidx.hilt.navigation.compose)
+            implementation(libs.bundles.androidx.lifecycle)
+            implementation(libs.bundles.orbit)
         }
     },
 )
