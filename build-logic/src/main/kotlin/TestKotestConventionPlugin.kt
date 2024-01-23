@@ -1,6 +1,7 @@
 import com.nexters.ilab.android.androidExtensions
 import com.nexters.ilab.android.isAndroidProject
 import com.nexters.ilab.android.libs
+import com.nexters.ilab.android.testImplementation
 import org.gradle.api.Project
 import org.gradle.api.tasks.testing.AbstractTestTask
 import org.gradle.api.tasks.testing.Test
@@ -15,8 +16,8 @@ internal class TestKotestConventionPlugin : BuildLogicConventionPlugin(
     {
         useTestPlatformForTarget()
         dependencies {
-            add("testImplementation", libs.findLibrary("kotest.runner").get())
-            add("testImplementation", libs.findLibrary("kotest.assertions").get())
+            testImplementation(libs.kotest.runner)
+            testImplementation(libs.kotest.assertion)
         }
     },
 )

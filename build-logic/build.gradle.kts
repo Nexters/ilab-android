@@ -43,10 +43,16 @@ kotlin {
 }
 
 dependencies {
-    implementations(
-        libs.gradle.android,
-        libs.gradle.kotlin,
-    )
+    compileOnly(libs.gradle.android)
+    compileOnly(libs.gradle.kotlin)
+
+    compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
+
+//    implementations(
+//        libs.gradle.android,
+//        libs.gradle.kotlin,
+//        files(libs.javaClass.superclass.protectionDomain.codeSource.location),
+//    )
 }
 
 // Pair<PluginName, ClassName>
