@@ -2,6 +2,7 @@
 
 plugins {
     alias(libs.plugins.ilab.android.library)
+    alias(libs.plugins.ilab.android.library.compose)
 }
 
 android {
