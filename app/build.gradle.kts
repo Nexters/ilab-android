@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ilab.android.application)
     alias(libs.plugins.ilab.android.application.compose)
     alias(libs.plugins.ilab.android.hilt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
@@ -44,5 +45,10 @@ dependencies {
         libs.androidx.splash,
         libs.androidx.startup,
         libs.timber,
+        libs.kakao.auth,
     )
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
 }
