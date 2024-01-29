@@ -5,4 +5,27 @@
     <string name="my_page">마이페이지</string>
     <string name="error_message_network">네트워크 연결이 원활하지 않습니다.</string>
     <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다.</string>
+
+    <!--    camera-->
+    <string name="upload_top_title">사진 가이드</string>
+    <string name="upload_check_top_title">가이드 확인</string>
+    <string name="take_photo">사진 찍기</string>
+    <string name="photo_library">사진 보관함</string>
+    <string name="change_photo">사진 바꾸기</string>
+    <string name="check">확인</string>
+    <string name="good">GOOD</string>
+    <string name="good_example"> 좋은 예시</string>
+    <string name="good_example_first">- 밝고 선명한 얼굴, 카메라를 보고 있는 사진</string>
+    <string name="good_example_second">- 내가 제일 잘나왔다고 생각하는 사진</string>
+    <string name="normal">NORMAL</string>
+    <string name="bad">BAD</string>
+    <string name="bad_example"> 좋지 않은 예시</string>
+    <string name="bad_example_first">- 어둡거나 흐린 얼굴</string>
+    <string name="bad_example_second">- 얼굴을 가린 사진(안경, 마스크, 모자 등)</string>
+    <string name="check_guide_twice">다시 한번\n확인해주세요!</string>
+    <string name="check_needed_for_accurate_result">정확한 결과를 위해 확인이 필요합니다.</string>
+    <string name="choice_good_example_first">밝고 선명한 얼굴, 카메라 보고 있는 사진을 선택해주세요.</string>
+    <string name="choice_good_example_second">내가 제일 잘나왔다고 생각하는 사진을 선택해주세요.</string>
+    <string name="avoid_bad_example_first">어둡거나 흐린 사진은 피해주세요.</string>
+    <string name="avoid_bad_example_second">복잡하거나 동일한 배경은 피해주세요</string>
 </resources>

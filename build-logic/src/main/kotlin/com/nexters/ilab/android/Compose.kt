@@ -19,6 +19,7 @@ internal fun Project.configureCompose(extension: CommonExtension<*, *, *, *, *>)
         dependencies {
             implementation(libs.androidx.compose.bom)
             androidTestImplementation(libs.androidx.compose.bom)
+            implementation(libs.androidx.compose.material.iconsExtended)
             implementation(libs.androidx.compose.material3)
             implementation(libs.androidx.compose.ui)
             implementation(libs.androidx.compose.ui.tooling.preview)
