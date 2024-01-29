@@ -77,7 +77,7 @@ enum class TopAppBarNavigationType { Back, Close }
 
 @ComponentPreview
 @Composable
-private fun ILabTopAppBarBackPreview() {
+fun ILabTopAppBarBackPreview() {
     ILabTopAppBar(
         titleRes = android.R.string.untitled,
         navigationType = TopAppBarNavigationType.Back,
@@ -87,7 +87,7 @@ private fun ILabTopAppBarBackPreview() {
 
 @ComponentPreview
 @Composable
-private fun ILabTopAppBarClosePreview() {
+fun ILabTopAppBarClosePreview() {
     ILabTopAppBar(
         titleRes = android.R.string.untitled,
         navigationType = TopAppBarNavigationType.Close,
