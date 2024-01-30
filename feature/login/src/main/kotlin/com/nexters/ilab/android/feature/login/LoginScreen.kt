@@ -50,7 +50,7 @@ internal fun LoginRoute(
 
             token != null -> UserApiClient.instance.me { user, _ ->
                 user?.let {
-                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.name}, ${it.kakaoAccount?.profile?.profileImageUrl}")
+                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
                     viewModel.kakaoLogin()
                 } ?: viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_unknown))
             }
