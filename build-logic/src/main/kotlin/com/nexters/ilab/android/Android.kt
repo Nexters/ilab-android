@@ -34,7 +34,7 @@ internal fun Project.configureAndroid(extension: CommonExtension<*, *, *, *, *>)
                 isMinifyEnabled = true
                 proguardFiles(
                     getDefaultProguardFile("proguard-android.txt"),
-                    "proguard-rules.pro"
+                    "proguard-rules.pro",
                 )
             }
         }

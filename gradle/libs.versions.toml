@@ -43,7 +43,7 @@ firebase-crashlytics = "2.9.9"
 ksp = "1.9.22-1.0.16"
 orbit-core = "4.6.1"
 kotest = "5.8.0"
-kakao-auth = "2.19.0"
+kakao-core = "2.19.0"
 
 [libraries]
 
@@ -95,7 +95,7 @@ orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.r
 orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit-core" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
-kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-auth" }
+kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
 
 kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }

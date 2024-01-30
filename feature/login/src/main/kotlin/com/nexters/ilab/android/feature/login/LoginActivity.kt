@@ -21,13 +21,12 @@ class LoginActivity : ComponentActivity() {
         setContent {
             ILabTheme {
                 LoginRoute(
-                    onLoginClick = {
+                    navigateToHome = {
                         mainNavigator.navigateFrom(
                             activity = this,
                             withFinish = true,
                         )
                     },
-                    onShowErrorSnackBar = {},
                     viewModel = viewModel,
                 )
             }

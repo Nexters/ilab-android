@@ -1,8 +1,13 @@
 <resources>
+    <string name="error_message_network">네트워크 연결이 원활하지 않습니다.</string>
+    <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다.</string>
+
     <!--    main-->
     <string name="home">홈</string>
     <string name="camera">카메라</string>
     <string name="my_page">마이페이지</string>
-    <string name="error_message_network">네트워크 연결이 원활하지 않습니다.</string>
-    <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다.</string>
+
+    <!--    login-->
+    <string name="kakao_login">카카오 로그인</string>
+
 </resources>
