@@ -6,7 +6,6 @@
         <activity
             android:name=".IntroActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.Ilab">
 
             <intent-filter>
