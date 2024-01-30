@@ -25,8 +25,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
+import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
+import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
@@ -77,10 +82,14 @@ private fun UploadCheckContent() {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = stringResource(id = R.string.check_guide_twice),
+            style = Title1,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = stringResource(id = R.string.check_needed_for_accurate_result),
+            style = Contents1,
+            color = Gray500,
         )
         Spacer(modifier = Modifier.height(36.dp))
         NetworkImage(
@@ -132,7 +141,10 @@ private fun UploadCheckContent() {
                 containerColor = PurpleBlue200,
                 contentColor = PurpleBlue900,
                 text = {
-                    Text(text = stringResource(id = R.string.change_photo))
+                    Text(
+                        text = stringResource(id = R.string.change_photo),
+                        style = Subtitle1,
+                    )
                 },
             )
             ILabButton(
@@ -142,7 +154,10 @@ private fun UploadCheckContent() {
                     .height(60.dp)
                     .padding(start = 4.dp),
                 text = {
-                    Text(text = stringResource(id = R.string.check))
+                    Text(
+                        text = stringResource(id = R.string.check),
+                        style = Subtitle1,
+                    )
                 },
             )
         }
@@ -165,7 +180,11 @@ fun GuideRow(
             tint = Color.Unspecified,
         )
         Spacer(Modifier.width(12.dp))
-        Text(text = text)
+        Text(
+            text = text,
+            style = Contents2,
+            color = Color.Black,
+        )
     }
 }
 

@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -24,10 +25,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
+import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.SystemGreen
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
+import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ExampleImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -94,14 +98,17 @@ private fun UploadContent(
                 withStyle(style = SpanStyle(color = SystemGreen)) {
                     append(stringResource(id = R.string.good))
                 }
-                append(stringResource(id = R.string.good_example))
+                withStyle(style = SpanStyle(color = Color.Black)) {
+                    append(stringResource(id = R.string.good_example))
+                }
             },
+            style = Title2,
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.good_example_first),
-        )
-        Text(
-            text = stringResource(id = R.string.good_example_second),
+            text = stringResource(id = R.string.good_example_description),
+            style = Contents2,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(20.dp))
         ImageRow(images = goodExamples)
@@ -111,14 +118,18 @@ private fun UploadContent(
                 withStyle(style = SpanStyle(color = SystemRed)) {
                     append(stringResource(id = R.string.bad))
                 }
-                append(stringResource(id = R.string.bad_example))
+                withStyle(style = SpanStyle(color = Color.Black)) {
+                    append(stringResource(id = R.string.bad_example))
+                }
             },
+            style = Title2,
+            color = Color.Black,
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = stringResource(id = R.string.bad_example_first),
-        )
-        Text(
-            text = stringResource(id = R.string.bad_example_second),
+            text = stringResource(id = R.string.bad_example_description),
+            style = Contents2,
+            color = Color.Black,
         )
         Spacer(modifier = Modifier.height(20.dp))
         ImageRow(images = badExamples)
@@ -140,6 +151,7 @@ private fun UploadContent(
                 text = {
                     Text(
                         text = stringResource(id = R.string.photo_library),
+                        style = Subtitle1,
                     )
                 },
             )
@@ -152,6 +164,7 @@ private fun UploadContent(
                 text = {
                     Text(
                         text = stringResource(id = R.string.take_photo),
+                        style = Subtitle1,
                     )
                 },
             )

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -68,6 +69,8 @@ fun ILabTopAppBar(
             Text(
                 text = stringResource(id = titleRes),
                 modifier = Modifier.align(Alignment.Center),
+                style = Subtitle1,
+                color = Color.Black,
             )
         }
     }
