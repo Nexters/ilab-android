@@ -14,12 +14,12 @@
     <string name="change_photo">사진 바꾸기</string>
     <string name="check">확인</string>
     <string name="good">GOOD</string>
-    <string name="good_example"> 좋은 예시</string>
+    <string name="good_example">&#160;좋은 예시</string>
     <string name="good_example_first">- 밝고 선명한 얼굴, 카메라를 보고 있는 사진</string>
     <string name="good_example_second">- 내가 제일 잘나왔다고 생각하는 사진</string>
     <string name="normal">NORMAL</string>
     <string name="bad">BAD</string>
-    <string name="bad_example"> 좋지 않은 예시</string>
+    <string name="bad_example">&#160;좋지 않은 예시</string>
     <string name="bad_example_first">- 어둡거나 흐린 얼굴</string>
     <string name="bad_example_second">- 얼굴을 가린 사진(안경, 마스크, 모자 등)</string>
     <string name="check_guide_twice">다시 한번\n확인해주세요!</string>
@@ -27,5 +27,5 @@
     <string name="choice_good_example_first">밝고 선명한 얼굴, 카메라 보고 있는 사진을 선택해주세요.</string>
     <string name="choice_good_example_second">내가 제일 잘나왔다고 생각하는 사진을 선택해주세요.</string>
     <string name="avoid_bad_example_first">어둡거나 흐린 사진은 피해주세요.</string>
-    <string name="avoid_bad_example_second">복잡하거나 동일한 배경은 피해주세요</string>
+    <string name="avoid_bad_example_second">복잡하거나 동일한 배경은 피해주세요.</string>
 </resources>
