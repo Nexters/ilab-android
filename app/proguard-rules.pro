@@ -21,6 +21,6 @@
 #-renamesourcefileattribute SourceFile
 
 # kakao login
--keep class com.kakao.sdk.**.model.* { <fields>; }
+-keep class com.kakao.sdk.**.model.* { *; }
 -keep class * extends com.google.gson.TypeAdapter
 -keep interface com.kakao.sdk.**.*Api
