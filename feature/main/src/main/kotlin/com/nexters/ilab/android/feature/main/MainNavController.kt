@@ -9,6 +9,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.nexters.ilab.android.feature.camera.navigation.navigateToCamera
+import com.nexters.ilab.android.feature.camera.navigation.navigateToUploadCheck
 import com.nexters.ilab.android.feature.home.navigation.HOME_ROUTE
 import com.nexters.ilab.android.feature.home.navigation.navigateToHome
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyPage
@@ -42,6 +43,10 @@ internal class MainNavController(
             MainTab.CAMERA -> navController.navigateToCamera(navOptions)
             MainTab.MY_PAGE -> navController.navigateToMyPage(navOptions)
         }
+    }
+
+    fun navigateToUploadCheck() {
+        navController.navigateToUploadCheck()
     }
 
     fun navigateToSetting() {
