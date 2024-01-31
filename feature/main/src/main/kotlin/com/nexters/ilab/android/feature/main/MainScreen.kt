@@ -83,6 +83,7 @@ internal fun MainScreen(
                     )
 
                     cameraNavGraph(
+                        navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                     )
