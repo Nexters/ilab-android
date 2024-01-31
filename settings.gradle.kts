@@ -31,7 +31,6 @@ include(
     ":core:datastore",
     ":core:ui",
 
-    ":feature:camera",
     ":feature:home",
     ":feature:intro",
     ":feature:login",
@@ -39,4 +38,5 @@ include(
     ":feature:mypage",
     ":feature:navigator",
     ":feature:setting",
+    ":feature:uploadphoto",
 )

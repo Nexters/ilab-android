@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.camera
+package com.nexters.ilab.android.feature.uploadphoto
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest

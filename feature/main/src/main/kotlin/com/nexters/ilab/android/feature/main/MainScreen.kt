@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.feature.camera.navigation.cameraNavGraph
+import com.nexters.ilab.android.feature.uploadphoto.navigation.uploadPhotoNavGraph
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
@@ -82,7 +82,7 @@ internal fun MainScreen(
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
 
-                    cameraNavGraph(
+                    uploadPhotoNavGraph(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,

@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.camera
+package com.nexters.ilab.android.feature.uploadphoto
 
 sealed interface UploadPhotoSideEffect {
     data object openPhotoPicker : UploadPhotoSideEffect

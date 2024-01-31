@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.camera.navigation
+package com.nexters.ilab.android.feature.uploadphoto.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -11,30 +11,30 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.nexters.ilab.android.feature.camera.UploadCheckRoute
-import com.nexters.ilab.android.feature.camera.UploadPhotoRoute
-import com.nexters.ilab.android.feature.camera.UploadPhotoViewModel
+import com.nexters.ilab.android.feature.uploadphoto.UploadCheckRoute
+import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoRoute
+import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoViewModel
 
-const val CAMERA_ROUTE = "camera_route"
+const val UPLOAD_PHOTO_ROUTE = "upload_photo_route"
 const val UPLOAD_ROUTE = "upload_route"
 const val UPLOAD_CHECK_ROUTE = "upload_check_route"
 
-fun NavController.navigateToCamera(navOptions: NavOptions) {
-    navigate(CAMERA_ROUTE, navOptions)
+fun NavController.navigateToUploadPhoto(navOptions: NavOptions) {
+    navigate(UPLOAD_PHOTO_ROUTE, navOptions)
 }
 
 fun NavController.navigateToUploadCheck() {
     navigate(UPLOAD_CHECK_ROUTE)
 }
 
-fun NavGraphBuilder.cameraNavGraph(
+fun NavGraphBuilder.uploadPhotoNavGraph(
     navController: NavHostController,
     onBackClick: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
 ) {
     navigation(
         startDestination = UPLOAD_ROUTE,
-        route = CAMERA_ROUTE,
+        route = UPLOAD_PHOTO_ROUTE,
     ) {
         composable(route = UPLOAD_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<UploadPhotoViewModel>(navController)
