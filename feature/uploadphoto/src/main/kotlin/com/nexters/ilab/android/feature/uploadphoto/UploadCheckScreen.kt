@@ -65,8 +65,8 @@ internal fun UploadCheckRoute(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
-
-                is UploadPhotoSideEffect.openCamera -> {}
+                is UploadPhotoSideEffect.requestCameraPermission -> {}
+                is UploadPhotoSideEffect.startCamera -> {}
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> {}
             }
         }

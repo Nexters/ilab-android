@@ -1,5 +1,8 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
+import android.Manifest
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,6 +34,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.core.common.extension.findActivity
+import com.nexters.ilab.android.core.common.extension.openAppSettings
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
@@ -46,7 +52,6 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-@Suppress("unused")
 @Composable
 internal fun UploadPhotoRoute(
     onBackClick: () -> Unit,
@@ -54,10 +59,18 @@ internal fun UploadPhotoRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val activity = LocalContext.current.findActivity()
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> viewModel.setSelectImageUri(uri.toString()) }
+        onResult = { uri -> viewModel.setSelectImageUri(uri.toString()) },
+    )
+
+    val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            viewModel.onPermissionResult(isGranted = isGranted)
+        },
     )
 
     LaunchedEffect(viewModel) {
@@ -68,7 +81,17 @@ internal fun UploadPhotoRoute(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
-                is UploadPhotoSideEffect.openCamera -> {}
+
+                is UploadPhotoSideEffect.requestCameraPermission -> {
+                    cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
+                }
+
+                is UploadPhotoSideEffect.startCamera -> {
+                    // TODO 콜백을 통해 이미지를 받아와야 함
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    activity.startActivity(intent)
+                }
+
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> onNavigateToUploadCheck()
             }
         }
@@ -77,8 +100,9 @@ internal fun UploadPhotoRoute(
     UploadPhotoScreen(
         uiState = uiState,
         onBackClick = onBackClick,
-        onPhotoPickerClick = viewModel::onPhotoPickerClick,
-        onCameraClick = viewModel::onCameraClick,
+        openPhotoPicker = viewModel::openPhotoPicker,
+        requestCameraPermission = viewModel::requestCameraPermission,
+        dismissPermissionDialog = viewModel::dismissPermissionDialog,
     )
 }
 
@@ -86,18 +110,34 @@ internal fun UploadPhotoRoute(
 internal fun UploadPhotoScreen(
     uiState: UploadPhotoState,
     onBackClick: () -> Unit,
-    onPhotoPickerClick: () -> Unit,
-    onCameraClick: () -> Unit,
+    openPhotoPicker: () -> Unit,
+    requestCameraPermission: () -> Unit,
+    dismissPermissionDialog: () -> Unit,
 ) {
+    val activity = LocalContext.current.findActivity()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isPermissionDialogVisible) {
+            PermissionDialog(
+                permissionTextProvider = CameraPermissionTextProvider(),
+                isPermanentlyDeclined = !activity.shouldShowRequestPermissionRationale(Manifest.permission.CAMERA),
+                onDismiss = dismissPermissionDialog,
+                onOkClick = {
+                    dismissPermissionDialog()
+                    requestCameraPermission()
+                },
+                onGoToAppSettingsClick = { activity.openAppSettings() },
+            )
+        }
+
         UploadPhotoTopAppBar(onBackClick = onBackClick)
         UploadPhotoContent(
-            onPhotoPickerClick = onPhotoPickerClick,
-            onCameraClick = onCameraClick,
+            onPhotoPickerClick = openPhotoPicker,
+            onCameraClick = requestCameraPermission,
         )
     }
 }
@@ -240,7 +280,8 @@ fun UploadPhotoScreenPreview() {
     UploadPhotoScreen(
         uiState = UploadPhotoState(),
         onBackClick = {},
-        onPhotoPickerClick = {},
-        onCameraClick = {},
+        openPhotoPicker = {},
+        requestCameraPermission = {},
+        dismissPermissionDialog = {},
     )
 }

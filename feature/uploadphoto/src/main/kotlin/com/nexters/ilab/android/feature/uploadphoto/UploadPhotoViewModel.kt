@@ -14,21 +14,34 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
-    fun onPhotoPickerClick() = intent {
+    fun openPhotoPicker() = intent {
         postSideEffect(UploadPhotoSideEffect.openPhotoPicker)
     }
 
-    fun onCameraClick() = intent {
-        postSideEffect(UploadPhotoSideEffect.openCamera)
+    fun requestCameraPermission() = intent {
+        postSideEffect(UploadPhotoSideEffect.requestCameraPermission)
     }
 
     fun setSelectImageUri(uri: String) = intent {
         reduce {
-            state.copy(
-                selectedPhotoUri = uri,
-            )
+            state.copy(selectedPhotoUri = uri)
         }
         postSideEffect(UploadPhotoSideEffect.UploadPhotoSuccess)
     }
-}
 
+    fun dismissPermissionDialog() = intent {
+        reduce {
+            state.copy(isPermissionDialogVisible = false)
+        }
+    }
+
+    fun onPermissionResult(isGranted: Boolean) = intent {
+        if (isGranted) {
+            postSideEffect(UploadPhotoSideEffect.startCamera)
+        } else {
+            reduce {
+                state.copy(isPermissionDialogVisible = true)
+            }
+        }
+    }
+}
