@@ -1,8 +1,6 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
 import android.Manifest
-import android.content.Intent
-import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,7 +32,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.nexters.ilab.android.core.common.extension.findActivity
+import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
@@ -56,11 +54,13 @@ internal fun UploadCheckRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-    val activity = LocalContext.current.findActivity()
+    val context = LocalContext.current
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> viewModel.setSelectImageUri(uri.toString()) },
+        onResult = { uri ->
+            uri?.let { viewModel.setSelectImageUri(it.toString()) }
+        },
     )
 
     val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
@@ -69,6 +69,13 @@ internal fun UploadCheckRoute(
             viewModel.onPermissionResult(isGranted = isGranted)
         },
     )
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        bitmap?.let {
+            val photoUri = it.toUri(context)
+            viewModel.setSelectImageUri(photoUri.toString())
+        }
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
@@ -84,9 +91,7 @@ internal fun UploadCheckRoute(
                 }
 
                 is UploadPhotoSideEffect.startCamera -> {
-                    // TODO 콜백을 통해 이미지를 받아와야 함
-                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                    activity.startActivity(intent)
+                    cameraLauncher.launch(null)
                 }
 
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> {}
