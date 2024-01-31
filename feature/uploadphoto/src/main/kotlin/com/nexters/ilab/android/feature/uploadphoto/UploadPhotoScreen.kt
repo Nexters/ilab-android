@@ -59,11 +59,14 @@ internal fun UploadPhotoRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-    val activity = LocalContext.current.findActivity()
+    val context = LocalContext.current
+    val activity = context.findActivity()
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> viewModel.setSelectImageUri(uri.toString()) },
+        onResult = { uri ->
+            uri?.let { viewModel.setSelectImageUri(it.toString()) }
+        },
     )
 
     val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
