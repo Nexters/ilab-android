@@ -44,4 +44,10 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
             }
         }
     }
+
+    fun toggleUploadPhotoDialog(flag: Boolean) = intent {
+        reduce {
+            state.copy(isUploadPhotoDialogVisible = flag)
+        }
+    }
 }

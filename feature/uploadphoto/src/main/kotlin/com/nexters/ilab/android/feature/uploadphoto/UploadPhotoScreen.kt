@@ -59,8 +59,7 @@ internal fun UploadPhotoRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-    val context = LocalContext.current
-    val activity = context.findActivity()
+    val activity = LocalContext.current.findActivity()
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),

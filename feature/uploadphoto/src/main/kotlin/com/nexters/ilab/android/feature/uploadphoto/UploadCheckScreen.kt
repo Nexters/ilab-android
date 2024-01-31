@@ -1,5 +1,8 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
+import android.Manifest
+import android.content.Intent
+import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,11 +28,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.core.common.extension.findActivity
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
@@ -51,10 +56,18 @@ internal fun UploadCheckRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val activity = LocalContext.current.findActivity()
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri -> viewModel.setSelectImageUri(uri.toString()) },
+    )
+
+    val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            viewModel.onPermissionResult(isGranted = isGranted)
+        },
     )
 
     LaunchedEffect(viewModel) {
@@ -65,15 +78,28 @@ internal fun UploadCheckRoute(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
-                is UploadPhotoSideEffect.requestCameraPermission -> {}
-                is UploadPhotoSideEffect.startCamera -> {}
+
+                is UploadPhotoSideEffect.requestCameraPermission -> {
+                    cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
+                }
+
+                is UploadPhotoSideEffect.startCamera -> {
+                    // TODO 콜백을 통해 이미지를 받아와야 함
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    activity.startActivity(intent)
+                }
+
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> {}
             }
         }
     }
+
     UploadCheckScreen(
         uiState = uiState,
         onBackClick = onBackClick,
+        toggleUploadPhotoDialog = viewModel::toggleUploadPhotoDialog,
+        openPhotoPicker = viewModel::openPhotoPicker,
+        requestCameraPermission = viewModel::requestCameraPermission,
     )
 }
 
@@ -81,10 +107,24 @@ internal fun UploadCheckRoute(
 private fun UploadCheckScreen(
     uiState: UploadPhotoState,
     onBackClick: () -> Unit,
+    toggleUploadPhotoDialog: (Boolean) -> Unit,
+    openPhotoPicker: () -> Unit,
+    requestCameraPermission: () -> Unit,
 ) {
+    if (uiState.isUploadPhotoDialogVisible) {
+        UploadPhotoDialog(
+            onDismiss = { toggleUploadPhotoDialog(false) },
+            openPhotoPicker = openPhotoPicker,
+            requestCameraPermission = requestCameraPermission,
+        )
+    }
+
     Column {
         UploadCheckTopAppBar(onBackClick = onBackClick)
-        UploadCheckContent(uiState.selectedPhotoUri)
+        UploadCheckContent(
+            selectedPhotoUri = uiState.selectedPhotoUri,
+            toggleUploadPhotoDialog = toggleUploadPhotoDialog,
+        )
     }
 }
 
@@ -106,6 +146,7 @@ private fun UploadCheckTopAppBar(
 @Composable
 private fun UploadCheckContent(
     selectedPhotoUri: String,
+    toggleUploadPhotoDialog: (Boolean) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -166,7 +207,9 @@ private fun UploadCheckContent(
                 .padding(start = 4.dp, end = 4.dp, bottom = 18.dp),
         ) {
             ILabButton(
-                onClick = {},
+                onClick = {
+                    toggleUploadPhotoDialog(true)
+                },
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -229,5 +272,8 @@ fun UploadCheckScreenPreview() {
             selectedPhotoUri = "",
         ),
         onBackClick = {},
+        toggleUploadPhotoDialog = {},
+        openPhotoPicker = {},
+        requestCameraPermission = {},
     )
 }
