@@ -20,5 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# https://stackoverflow.com/questions/70037537/proguard-missing-classes-detected-while-running-r8-after-adding-package-names-in
 -dontwarn java.lang.invoke.StringConcatFactory
 
