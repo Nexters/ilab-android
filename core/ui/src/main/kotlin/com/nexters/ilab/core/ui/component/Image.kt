@@ -68,7 +68,7 @@ fun NetworkImage(
                 .crossfade(true)
                 .build(),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Crop,
             modifier = modifier,
         )
     }

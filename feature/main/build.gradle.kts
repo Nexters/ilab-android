@@ -10,10 +10,10 @@ android {
 
 dependencies {
     implementations(
-        projects.feature.camera,
         projects.feature.home,
         projects.feature.mypage,
         projects.feature.setting,
+        projects.feature.uploadphoto,
 
         libs.androidx.core,
         libs.kotlinx.collections.immutable,
