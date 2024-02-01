@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">I\'Lab</string>
+    <string name="app_name_dev">I\'Lab.dev</string>
 </resources>

@@ -19,6 +19,24 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name_dev",
+            )
+        }
+
+        getByName("release") {
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name",
+            )
+        }
+    }
 }
 
 dependencies {
