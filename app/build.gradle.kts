@@ -31,7 +31,6 @@ dependencies {
         projects.core.datastore,
         projects.core.ui,
 
-        projects.feature.camera,
         projects.feature.home,
         projects.feature.intro,
         projects.feature.login,
@@ -39,6 +38,7 @@ dependencies {
         projects.feature.navigator,
         projects.feature.mypage,
         projects.feature.setting,
+        projects.feature.uploadphoto,
 
         libs.androidx.activity.compose,
         libs.androidx.core,

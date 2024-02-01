@@ -12,10 +12,10 @@ internal enum class MainTab(
         contentDescription = "홈",
         route = "home_route",
     ),
-    CAMERA(
+    UPLOAD_PHOTO(
         iconResId = R.drawable.ic_camera,
-        contentDescription = "카메라",
-        route = "camera_route",
+        contentDescription = "사진 업로드",
+        route = "upload_photo_route",
     ),
     MY_PAGE(
         iconResId = R.drawable.ic_my_page,

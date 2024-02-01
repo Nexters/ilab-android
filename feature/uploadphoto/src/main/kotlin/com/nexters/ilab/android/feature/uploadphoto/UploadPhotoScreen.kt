@@ -1,5 +1,9 @@
-package com.nexters.ilab.android.feature.camera
+package com.nexters.ilab.android.feature.uploadphoto
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,16 +18,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.core.common.extension.findActivity
+import com.nexters.ilab.android.core.common.extension.openAppSettings
+import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
@@ -40,36 +51,105 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-@Suppress("unused")
 @Composable
-internal fun UploadRoute(
+internal fun UploadPhotoRoute(
     onBackClick: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
-    viewModel: CameraViewModel = hiltViewModel(),
+    viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
-    UploadScreen(
+    val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri ->
+            uri?.let { viewModel.setSelectImageUri(it.toString()) }
+        },
+    )
+
+    val cameraPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            viewModel.onPermissionResult(isGranted = isGranted)
+        },
+    )
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        bitmap?.let {
+            val photoUri = it.toUri(context)
+            viewModel.setSelectImageUri(photoUri.toString())
+        }
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is UploadPhotoSideEffect.openPhotoPicker -> {
+                    singlePhotoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+                    )
+                }
+
+                is UploadPhotoSideEffect.requestCameraPermission -> {
+                    cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
+                }
+
+                is UploadPhotoSideEffect.startCamera -> {
+                    cameraLauncher.launch(null)
+                }
+
+                is UploadPhotoSideEffect.UploadPhotoSuccess -> onNavigateToUploadCheck()
+            }
+        }
+    }
+
+    UploadPhotoScreen(
+        uiState = uiState,
         onBackClick = onBackClick,
-        onNavigateToUploadCheck = onNavigateToUploadCheck,
+        openPhotoPicker = viewModel::openPhotoPicker,
+        requestCameraPermission = viewModel::requestCameraPermission,
+        dismissPermissionDialog = viewModel::dismissPermissionDialog,
     )
 }
 
 @Composable
-internal fun UploadScreen(
+internal fun UploadPhotoScreen(
+    uiState: UploadPhotoState,
     onBackClick: () -> Unit,
-    onNavigateToUploadCheck: () -> Unit,
+    openPhotoPicker: () -> Unit,
+    requestCameraPermission: () -> Unit,
+    dismissPermissionDialog: () -> Unit,
 ) {
+    val activity = LocalContext.current.findActivity()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        UploadTopAppBar(onBackClick = onBackClick)
-        UploadContent(onNavigateToUploadCheck = onNavigateToUploadCheck)
+        if (uiState.isPermissionDialogVisible) {
+            PermissionDialog(
+                permissionTextProvider = CameraPermissionTextProvider(),
+                isPermanentlyDeclined = !activity.shouldShowRequestPermissionRationale(Manifest.permission.CAMERA),
+                onDismiss = dismissPermissionDialog,
+                onOkClick = {
+                    dismissPermissionDialog()
+                    requestCameraPermission()
+                },
+                onGoToAppSettingsClick = { activity.openAppSettings() },
+            )
+        }
+
+        UploadPhotoTopAppBar(onBackClick = onBackClick)
+        UploadPhotoContent(
+            onPhotoPickerClick = openPhotoPicker,
+            onCameraClick = requestCameraPermission,
+        )
     }
 }
 
 @Composable
-private fun UploadTopAppBar(
+private fun UploadPhotoTopAppBar(
     onBackClick: () -> Unit,
 ) {
     ILabTopAppBar(
@@ -84,8 +164,9 @@ private fun UploadTopAppBar(
 }
 
 @Composable
-private fun UploadContent(
-    onNavigateToUploadCheck: () -> Unit,
+private fun UploadPhotoContent(
+    onPhotoPickerClick: () -> Unit,
+    onCameraClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -141,7 +222,7 @@ private fun UploadContent(
                 .padding(start = 4.dp, end = 4.dp, bottom = 18.dp),
         ) {
             ILabButton(
-                onClick = {},
+                onClick = onPhotoPickerClick,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -156,7 +237,7 @@ private fun UploadContent(
                 },
             )
             ILabButton(
-                onClick = onNavigateToUploadCheck,
+                onClick = onCameraClick,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -201,9 +282,12 @@ fun ImageRow(images: ImmutableList<Pair<Int, String>>) {
 
 @DevicePreview
 @Composable
-fun UploadScreenPreview() {
-    UploadScreen(
+fun UploadPhotoScreenPreview() {
+    UploadPhotoScreen(
+        uiState = UploadPhotoState(),
         onBackClick = {},
-        onNavigateToUploadCheck = {},
+        openPhotoPicker = {},
+        requestCameraPermission = {},
+        dismissPermissionDialog = {},
     )
 }
