@@ -20,10 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
-# kakao login
--keep class com.kakao.sdk.**.model.* { <fields>; }
+# https://stackoverflow.com/questions/70037537/proguard-missing-classes-detected-while-running-r8-after-adding-package-names-in
+-dontwarn java.lang.invoke.StringConcatFactory
 
-# https://devtalk.kakao.com/t/method-authapi-issueaccesstoken/130860/4
-# R8 full mode strips generic signatures from return types if not kept.
--if interface * { @retrofit2.http.* public *** *(...); }
--keep,allowoptimization,allowshrinking,allowobfuscation class <3>

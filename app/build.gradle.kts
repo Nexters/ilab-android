@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ilab.android.application)
     alias(libs.plugins.ilab.android.application.compose)
     alias(libs.plugins.ilab.android.hilt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
@@ -16,6 +17,24 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name_dev",
+            )
+        }
+
+        getByName("release") {
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name",
+            )
         }
     }
 }
@@ -44,5 +63,10 @@ dependencies {
         libs.androidx.splash,
         libs.androidx.startup,
         libs.timber,
+        libs.kakao.auth,
     )
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
 }

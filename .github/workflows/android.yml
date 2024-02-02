@@ -35,6 +35,7 @@ jobs:
             -   name: Generate secrets.properties
                 run: |
                     echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
+                    echo "KAKAO_NATIVE_APP_KEY=${{ secrets.KAKAO_NATIVE_APP_KEY }}" >> secrets.properties
 
             -   name: test Detekt
                 run: ./gradlew detekt
