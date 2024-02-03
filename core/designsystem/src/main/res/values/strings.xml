@@ -6,6 +6,18 @@
     <string name="error_message_network">네트워크 연결이 원활하지 않습니다.</string>
     <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다.</string>
 
+    <!--    Home -->
+    <string name="home_style">Style</string>
+    <string name="home_profile">Profile</string>
+    <string name="home_generate_img_with_this_keyword">키워드로 프로필 생성하기</string>
+
+    <!--    Setting -->
+    <string name="setting_title">설정</string>
+    <string name="setting_privacy">개인정보처리방침</string>
+    <string name="setting_current_version">현재 버전</string>
+    <string name="setting_logout">로그아웃</string>
+    <string name="setting_delete_account">계정 삭제</string>
+
     <!--    upload photo-->
     <string name="upload_top_title">사진 가이드</string>
     <string name="upload_check_top_title">가이드 확인</string>
