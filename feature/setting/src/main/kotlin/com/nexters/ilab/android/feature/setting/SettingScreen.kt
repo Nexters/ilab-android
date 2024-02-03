@@ -74,27 +74,27 @@ internal fun SettingContent(onLogoutClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(Gray200)
+            .background(Gray200),
     )
     SettingCellText(R.string.setting_current_version, "1.0.0")
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(Gray200)
+            .background(Gray200),
     )
     SettingCellNavigation(R.string.setting_logout, onLogoutClick)
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(20.dp)
-            .background(Gray100)
+            .background(Gray100),
     )
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray100),
-        contentAlignment = Alignment.TopCenter
+        contentAlignment = Alignment.TopCenter,
     ) {
         Text(
             text = stringResource(id = R.string.setting_delete_account),
@@ -111,7 +111,7 @@ internal fun SettingCellText(stringId: Int, version: String) {
             .fillMaxWidth()
             .height(64.dp)
             .padding(start = 20.dp, end = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = stringId),
@@ -134,7 +134,7 @@ internal fun SettingCellNavigation(stringId: Int, onNavigationClick: () -> Unit 
             .fillMaxWidth()
             .height(64.dp)
             .padding(start = 20.dp, end = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = stringId),
@@ -151,7 +151,7 @@ internal fun SettingCellNavigation(stringId: Int, onNavigationClick: () -> Unit 
                 Spacer(modifier = Modifier.weight(1f))
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_next),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
