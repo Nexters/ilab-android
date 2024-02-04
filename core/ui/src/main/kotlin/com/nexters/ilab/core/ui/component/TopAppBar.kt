@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.Blue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.core.ui.ComponentPreview
 
@@ -31,6 +32,7 @@ fun ILabTopAppBar(
     contentColor: Color = Color.Black,
     containerColor: Color = Color.White,
     onNavigationClick: () -> Unit = {},
+    isTextLogo: Boolean = false,
 ) {
     CompositionLocalProvider(LocalContentColor provides contentColor) {
         val icon: @Composable (Modifier, imageVector: ImageVector) -> Unit =
@@ -66,17 +68,35 @@ fun ILabTopAppBar(
                 )
             }
 
-            Text(
-                text = stringResource(id = titleRes),
-                modifier = Modifier.align(Alignment.Center),
-                style = Subtitle1,
-                color = Color.Black,
-            )
+            if (navigationType == TopAppBarNavigationType.Setting) {
+                icon(
+                    Modifier.align(Alignment.CenterEnd),
+                    ImageVector.vectorResource(id = R.drawable.ic_setting),
+                )
+            }
+
+            if (isTextLogo) {
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.CenterStart),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_text_logo),
+                    contentDescription = navigationIconContentDescription,
+                    tint = Blue900,
+                )
+            } else {
+                Text(
+                    text = stringResource(id = titleRes),
+                    modifier = Modifier.align(Alignment.Center),
+                    style = Subtitle1,
+                    color = Color.Black,
+                )
+            }
         }
     }
 }
 
-enum class TopAppBarNavigationType { Back, Close }
+enum class TopAppBarNavigationType { Back, Close, Setting }
 
 @ComponentPreview
 @Composable
@@ -95,5 +115,16 @@ fun ILabTopAppBarClosePreview() {
         titleRes = android.R.string.untitled,
         navigationType = TopAppBarNavigationType.Close,
         navigationIconContentDescription = "Navigation close icon",
+    )
+}
+
+@ComponentPreview
+@Composable
+fun ILabTopAppBarSettingreview() {
+    ILabTopAppBar(
+        titleRes = android.R.string.untitled,
+        navigationType = TopAppBarNavigationType.Setting,
+        navigationIconContentDescription = "Navigation Setting icon",
+        isTextLogo = true,
     )
 }
