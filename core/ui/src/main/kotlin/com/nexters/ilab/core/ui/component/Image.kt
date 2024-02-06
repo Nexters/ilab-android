@@ -1,6 +1,8 @@
 package com.nexters.ilab.core.ui.component
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -27,7 +29,7 @@ fun ExampleImage(
     if (LocalInspectionMode.current) {
         Icon(
             imageVector = Icons.Outlined.Person,
-            contentDescription = "Image Icon",
+            contentDescription = "Example Image Icon",
             modifier = Modifier
                 .width(103.dp)
                 .height(139.dp),
@@ -56,7 +58,7 @@ fun NetworkImage(
     if (LocalInspectionMode.current) {
         Icon(
             imageVector = Icons.Outlined.Person,
-            contentDescription = "Image Icon",
+            contentDescription = "Network Image Icon",
             modifier = Modifier
                 .width(186.dp)
                 .aspectRatio(1f),
@@ -74,12 +76,34 @@ fun NetworkImage(
     }
 }
 
+@Composable
+fun BackgroundImage(
+    resId: Int,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+
+    if (LocalInspectionMode.current) {
+        Box(modifier = Modifier.fillMaxSize())
+    } else {
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(resId)
+                .build(),
+            contentDescription = contentDescription,
+            contentScale = ContentScale.FillBounds,
+            modifier = modifier,
+        )
+    }
+}
+
 @ComponentPreview
 @Composable
 fun ExampleImagePreview() {
     ExampleImage(
         resId = 0,
-        contentDescription = "Image Icon",
+        contentDescription = "Example Image Icon",
     )
 }
 
@@ -88,6 +112,15 @@ fun ExampleImagePreview() {
 fun NetworkImagePreview() {
     NetworkImage(
         imageUrl = "",
-        contentDescription = "Image Icon",
+        contentDescription = "Network Image Icon",
+    )
+}
+
+@ComponentPreview
+@Composable
+fun BackgroundImagePreview() {
+    BackgroundImage(
+        resId = 0,
+        contentDescription = "Background Image Icon",
     )
 }

@@ -4,6 +4,7 @@
 
     <!--    login-->
     <string name="kakao_login">카카오 로그인</string>
+    <string name="intro_description">반가워요! 아이랩에서 나만의\n프로필을 만들어보세요!</string>
 
     <!--    main-->
     <string name="home">홈</string>
