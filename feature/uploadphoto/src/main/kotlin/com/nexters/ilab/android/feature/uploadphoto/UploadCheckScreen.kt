@@ -47,10 +47,10 @@ import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun UploadCheckRoute(
     onBackClick: () -> Unit,
+    onNavigateToInputKeyword: () -> Unit,
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -59,7 +59,7 @@ internal fun UploadCheckRoute(
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            uri?.let { viewModel.setSelectImageUri(it.toString()) }
+            uri?.let { viewModel.setSelectedImageUri(it.toString()) }
         },
     )
 
@@ -73,7 +73,7 @@ internal fun UploadCheckRoute(
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         bitmap?.let {
             val photoUri = it.toUri(context)
-            viewModel.setSelectImageUri(photoUri.toString())
+            viewModel.setSelectedImageUri(photoUri.toString())
         }
     }
 
@@ -105,6 +105,7 @@ internal fun UploadCheckRoute(
         toggleUploadPhotoDialog = viewModel::toggleUploadPhotoDialog,
         openPhotoPicker = viewModel::openPhotoPicker,
         requestCameraPermission = viewModel::requestCameraPermission,
+        onNavigateToInputKeyword = onNavigateToInputKeyword,
     )
 }
 
@@ -115,6 +116,7 @@ private fun UploadCheckScreen(
     toggleUploadPhotoDialog: (Boolean) -> Unit,
     openPhotoPicker: () -> Unit,
     requestCameraPermission: () -> Unit,
+    onNavigateToInputKeyword: () -> Unit,
 ) {
     if (uiState.isUploadPhotoDialogVisible) {
         UploadPhotoDialog(
@@ -129,6 +131,7 @@ private fun UploadCheckScreen(
         UploadCheckContent(
             selectedPhotoUri = uiState.selectedPhotoUri,
             toggleUploadPhotoDialog = toggleUploadPhotoDialog,
+            onNavigateToInputKeyword = onNavigateToInputKeyword
         )
     }
 }
@@ -152,11 +155,12 @@ private fun UploadCheckTopAppBar(
 private fun UploadCheckContent(
     selectedPhotoUri: String,
     toggleUploadPhotoDialog: (Boolean) -> Unit,
+    onNavigateToInputKeyword: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 20.dp),
     ) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -209,7 +213,7 @@ private fun UploadCheckContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .padding(start = 4.dp, end = 4.dp, bottom = 18.dp),
+                .padding(bottom = 18.dp),
         ) {
             ILabButton(
                 onClick = {
@@ -229,7 +233,7 @@ private fun UploadCheckContent(
                 },
             )
             ILabButton(
-                onClick = {},
+                onClick = onNavigateToInputKeyword,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -280,5 +284,6 @@ fun UploadCheckScreenPreview() {
         toggleUploadPhotoDialog = {},
         openPhotoPicker = {},
         requestCameraPermission = {},
+        onNavigateToInputKeyword = {},
     )
 }
