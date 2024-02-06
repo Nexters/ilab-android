@@ -16,6 +16,8 @@ dependencies {
         projects.feature.uploadphoto,
 
         libs.androidx.core,
+        libs.androidx.activity.compose,
         libs.kotlinx.collections.immutable,
+        libs.system.ui.controller,
     )
 }
