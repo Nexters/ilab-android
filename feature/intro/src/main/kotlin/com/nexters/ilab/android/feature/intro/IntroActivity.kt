@@ -4,10 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.feature.navigator.LoginNavigator
 import com.nexters.ilab.android.feature.navigator.MainNavigator
 import dagger.hilt.android.AndroidEntryPoint
+import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,6 +26,18 @@ class IntroActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val systemUiController = rememberExSystemUiController()
+
+            DisposableEffect(systemUiController) {
+                systemUiController.setSystemBarsColor(
+                    color = Color.White,
+                    darkIcons = true,
+                    isNavigationBarContrastEnforced = false,
+                )
+
+                onDispose {}
+            }
+
             ILabTheme {
                 IntroRoute(
                     navigateToLogin = {

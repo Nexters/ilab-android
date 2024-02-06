@@ -42,3 +42,4 @@ val Gray900 = Color(0xFF121212)
 
 val SystemGreen = Color(0xFF4FCF6B)
 val SystemRed = Color(0xFFFF584E)
+val Kakao = Color(0xFFFBD300)
