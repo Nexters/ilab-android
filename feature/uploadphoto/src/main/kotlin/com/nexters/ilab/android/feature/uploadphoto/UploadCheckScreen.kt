@@ -131,7 +131,7 @@ private fun UploadCheckScreen(
         UploadCheckContent(
             selectedPhotoUri = uiState.selectedPhotoUri,
             toggleUploadPhotoDialog = toggleUploadPhotoDialog,
-            onNavigateToInputKeyword = onNavigateToInputKeyword
+            onNavigateToInputKeyword = onNavigateToInputKeyword,
         )
     }
 }
