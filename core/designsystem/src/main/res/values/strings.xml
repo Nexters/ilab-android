@@ -16,6 +16,12 @@
     <string name="home_profile">Profile</string>
     <string name="home_generate_img_with_this_keyword">키워드로 프로필 생성하기</string>
 
+    <!--    My Page -->
+    <string name="mypage_title">MY</string>
+    <string name="mypage_my_album">내 앨범</string>
+    <string name="mypage_there_is_no_img">생성된 이미지가 없습니다.\n지금 바로 프로필 이미지를 생성해보세요!</string>
+    <string name="mypage_name_postfix">님</string>
+
     <!--    Setting -->
     <string name="setting_title">설정</string>
     <string name="setting_privacy">개인정보처리방침</string>
