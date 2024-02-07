@@ -1,12 +1,6 @@
 package com.nexters.ilab.android.feature.mypage
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.ScrollableDefaults
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,16 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -47,16 +36,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue200
 import com.nexters.ilab.android.core.designsystem.theme.Blue600
-import com.nexters.ilab.android.core.designsystem.theme.Gray200
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
-import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
-import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
 @Suppress("unused")
@@ -89,6 +74,7 @@ internal fun MyPageScreen(
         MyPageContent()
     }
 }
+
 @Composable
 internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
     ILabTopAppBar(
@@ -111,25 +97,23 @@ internal fun MyPageContent() {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp, bottom = 45.dp),
     ) {
-        item (span = span) {
-            Column (
+        item(span = span) {
+            Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
-            ){
-                MyPageContentUser(profileImgUrl = "", albumImgCount = 12)
+            ) {
+                MyPageContentUser(albumImgCount = 12)
             }
-
         }
         items(12) { _ ->
-            MyAlbumImage({}, imgUrl = "")
+            MyAlbumImage({})
         }
     }
 }
 
-
 @Composable
-internal fun MyPageContentUser(profileImgUrl: String, albumImgCount: Int) {
+internal fun MyPageContentUser(albumImgCount: Int) {
     Spacer(modifier = Modifier.height(32.dp))
     // UI 구현 용으로 프로필 url 대신 기본 Image 사용
     Image(
@@ -162,11 +146,11 @@ internal fun MyPageContentUser(profileImgUrl: String, albumImgCount: Int) {
 }
 
 @Composable
-internal fun MyAlbumImage(onMoreBtnClick: () -> Unit, imgUrl: String) {
+internal fun MyAlbumImage(onMoreBtnClick: () -> Unit) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
-            .aspectRatio(1f)
+            .aspectRatio(1f),
     ) {
         // UI 구현 용으로 album url 대신 sample Image 사용
         Image(
