@@ -86,6 +86,7 @@ internal fun MainScreen(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
+                        onNavigateToInputKeyword = navigator::navigateToInputKeyword,
                     )
 
                     myPageNavGraph(

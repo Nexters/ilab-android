@@ -22,11 +22,23 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
         postSideEffect(UploadPhotoSideEffect.requestCameraPermission)
     }
 
-    fun setSelectImageUri(uri: String) = intent {
+    fun setSelectedImageUri(uri: String) = intent {
         reduce {
             state.copy(selectedPhotoUri = uri)
         }
         postSideEffect(UploadPhotoSideEffect.UploadPhotoSuccess)
+    }
+
+    fun setSelectedKeyword(keyword: String) = intent {
+        if (keyword == state.selectedKeyword) {
+            reduce {
+                state.copy(selectedKeyword = "")
+            }
+        } else {
+            reduce {
+                state.copy(selectedKeyword = keyword)
+            }
+        }
     }
 
     fun dismissPermissionDialog() = intent {

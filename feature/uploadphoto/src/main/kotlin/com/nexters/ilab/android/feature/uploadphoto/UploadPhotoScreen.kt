@@ -63,7 +63,7 @@ internal fun UploadPhotoRoute(
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = { uri ->
-            uri?.let { viewModel.setSelectImageUri(it.toString()) }
+            uri?.let { viewModel.setSelectedImageUri(it.toString()) }
         },
     )
 
@@ -77,7 +77,7 @@ internal fun UploadPhotoRoute(
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
         bitmap?.let {
             val photoUri = it.toUri(context)
-            viewModel.setSelectImageUri(photoUri.toString())
+            viewModel.setSelectedImageUri(photoUri.toString())
         }
     }
 
@@ -254,14 +254,14 @@ private fun UploadPhotoContent(
 }
 
 val goodExamples = persistentListOf(
-    Pair(R.drawable.ic_good_example1, "good example 1"),
-    Pair(R.drawable.ic_good_example2, "good example 2"),
-    Pair(R.drawable.ic_good_example3, "good example 3"),
+    Pair(R.drawable.img_good_example1, "good example 1"),
+    Pair(R.drawable.img_good_example2, "good example 2"),
+    Pair(R.drawable.img_good_example3, "good example 3"),
 )
 val badExamples = persistentListOf(
-    Pair(R.drawable.ic_bad_example1, "bad example 1"),
-    Pair(R.drawable.ic_bad_example2, "bad example 2"),
-    Pair(R.drawable.ic_bad_example3, "bad example 3"),
+    Pair(R.drawable.img_bad_example1, "bad example 1"),
+    Pair(R.drawable.img_bad_example2, "bad example 2"),
+    Pair(R.drawable.img_bad_example3, "bad example 3"),
 )
 
 @Composable
