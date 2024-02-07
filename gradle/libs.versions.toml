@@ -96,6 +96,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.ref = "orbit-core" }
 orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit-core" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil-compose" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
 kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
 
@@ -145,4 +146,9 @@ androidx-lifecycle = [
 orbit = [
     "orbit-viewmodel",
     "orbit-compose",
+]
+
+coil = [
+    "coil-compose",
+    "coil-gif",
 ]

@@ -25,7 +25,7 @@ import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
 fun ILabTopAppBar(
-    @StringRes titleRes: Int,
+    @StringRes titleRes: Int?,
     navigationType: TopAppBarNavigationType,
     navigationIconContentDescription: String?,
     modifier: Modifier = Modifier,
@@ -85,12 +85,14 @@ fun ILabTopAppBar(
                     tint = Blue900,
                 )
             } else {
-                Text(
-                    text = stringResource(id = titleRes),
-                    modifier = Modifier.align(Alignment.Center),
-                    style = Subtitle1,
-                    color = Color.Black,
-                )
+                if (titleRes != null) {
+                    Text(
+                        text = stringResource(id = titleRes),
+                        modifier = Modifier.align(Alignment.Center),
+                        style = Subtitle1,
+                        color = Color.Black,
+                    )
+                }
             }
         }
     }

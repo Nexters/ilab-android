@@ -51,6 +51,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 @Composable
 internal fun UploadCheckRoute(
     onBackClick: () -> Unit,
+    onNavigateToCreateImage: () -> Unit,
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -105,6 +106,7 @@ internal fun UploadCheckRoute(
         toggleUploadPhotoDialog = viewModel::toggleUploadPhotoDialog,
         openPhotoPicker = viewModel::openPhotoPicker,
         requestCameraPermission = viewModel::requestCameraPermission,
+        onNavigateToCreateImage = onNavigateToCreateImage,
     )
 }
 
@@ -115,6 +117,7 @@ private fun UploadCheckScreen(
     toggleUploadPhotoDialog: (Boolean) -> Unit,
     openPhotoPicker: () -> Unit,
     requestCameraPermission: () -> Unit,
+    onNavigateToCreateImage: () -> Unit,
 ) {
     if (uiState.isUploadPhotoDialogVisible) {
         UploadPhotoDialog(
@@ -129,6 +132,7 @@ private fun UploadCheckScreen(
         UploadCheckContent(
             selectedPhotoUri = uiState.selectedPhotoUri,
             toggleUploadPhotoDialog = toggleUploadPhotoDialog,
+            onNavigateToCreateImage = onNavigateToCreateImage,
         )
     }
 }
@@ -152,6 +156,7 @@ private fun UploadCheckTopAppBar(
 private fun UploadCheckContent(
     selectedPhotoUri: String,
     toggleUploadPhotoDialog: (Boolean) -> Unit,
+    onNavigateToCreateImage: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -229,7 +234,7 @@ private fun UploadCheckContent(
                 },
             )
             ILabButton(
-                onClick = {},
+                onClick = onNavigateToCreateImage,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -280,5 +285,6 @@ fun UploadCheckScreenPreview() {
         toggleUploadPhotoDialog = {},
         openPhotoPicker = {},
         requestCameraPermission = {},
+        onNavigateToCreateImage = {},
     )
 }
