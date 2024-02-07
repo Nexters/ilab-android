@@ -25,7 +25,7 @@ import com.nexters.ilab.core.ui.ComponentPreview
 @Composable
 internal fun PagerIndicator(pagerState: PagerState) {
     Row(
-        Modifier
+        modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -40,9 +40,7 @@ internal fun PagerIndicator(pagerState: PagerState) {
                 .clip(CircleShape)
                 .background(color)
                 .size(7.dp)
-            Box(
-                modifier = modifier,
-            )
+            Box(modifier = modifier)
         }
     }
 }
