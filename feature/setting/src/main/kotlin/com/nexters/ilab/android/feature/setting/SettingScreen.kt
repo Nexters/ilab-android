@@ -138,7 +138,8 @@ internal fun SettingCellNavigation(stringId: Int, onNavigationClick: () -> Unit 
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .padding(start = 20.dp, end = 20.dp),
+            .padding(start = 20.dp, end = 20.dp)
+            .clickable(onClick = onNavigationClick),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -147,19 +148,10 @@ internal fun SettingCellNavigation(stringId: Int, onNavigationClick: () -> Unit 
             color = Color.Black,
         )
         Spacer(modifier = Modifier.weight(1f))
-        IconButton(
-            onClick = onNavigationClick,
-            modifier = Modifier
-                .size(48.dp),
-        ) {
-            Row {
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_next),
-                    contentDescription = null,
-                )
-            }
-        }
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_next),
+            contentDescription = null,
+        )
     }
 }
 
