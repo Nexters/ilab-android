@@ -50,7 +50,7 @@ internal fun PagerIndicator(pagerState: PagerState) {
 @OptIn(ExperimentalFoundationApi::class)
 @ComponentPreview
 @Composable
-internal fun previewHomeScreen() {
+internal fun PagerIndicatorPreview() {
     val pagerState = rememberPagerState(pageCount = { 4 })
     PagerIndicator(pagerState)
 }
