@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 @Composable
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,
+    onNavigateToCreateImageComplete: () -> Unit,
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -49,17 +51,20 @@ internal fun CreateImageRoute(
     CreateImageScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
+        onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
     )
 }
 
+@Suppress("unused")
 @Composable
 private fun CreateImageScreen(
     uiState: UploadPhotoState,
     onCloseClick: () -> Unit,
+    onNavigateToCreateImageComplete: () -> Unit,
 ) {
     Column {
         CreateImageTopAppBar(onBackClick = onCloseClick)
-        CreateImageContent()
+        CreateImageContent(onNavigateToCreateImageComplete = onNavigateToCreateImageComplete)
     }
 }
 
@@ -79,7 +84,9 @@ private fun CreateImageTopAppBar(
 }
 
 @Composable
-private fun CreateImageContent() {
+private fun CreateImageContent(
+    onNavigateToCreateImageComplete: () -> Unit,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,7 +102,7 @@ private fun CreateImageContent() {
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Gray500 )) {
+                withStyle(style = SpanStyle(color = Gray500)) {
                     append(stringResource(R.string.creating_image_wait_part1_description1_prefix))
                 }
                 withStyle(style = SpanStyle(color = Blue600, fontWeight = FontWeight.Bold)) {
@@ -120,7 +127,8 @@ private fun CreateImageContent() {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .background(Gray100),
+                .background(Gray100)
+                .clickable { onNavigateToCreateImageComplete() },
         ) {
             Row(
                 modifier = Modifier
@@ -154,5 +162,6 @@ fun CreateImageScreenPreview() {
             selectedPhotoUri = "",
         ),
         onCloseClick = {},
+        onNavigateToCreateImageComplete = {},
     )
 }

@@ -15,6 +15,7 @@ import com.nexters.ilab.android.feature.home.navigation.navigateToHome
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyPage
 import com.nexters.ilab.android.feature.setting.navigation.navigateToSetting
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImage
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImageComplete
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -52,6 +53,10 @@ internal class MainNavController(
 
     fun navigateToCreateImage() {
         navController.navigateToCreateImage()
+    }
+
+    fun navigateToCreateImageComplete() {
+        navController.navigateToCreateImageComplete()
     }
 
     fun navigateToSetting() {

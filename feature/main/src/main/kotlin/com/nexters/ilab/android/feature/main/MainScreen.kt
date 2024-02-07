@@ -85,9 +85,10 @@ internal fun MainScreen(
                     uploadPhotoNavGraph(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onCloseClick = {},
+                        onCloseClick = navigator::popBackStackIfNotHome,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                         onNavigateToCreateImage = navigator::navigateToCreateImage,
+                        onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
                     )
 
                     myPageNavGraph(

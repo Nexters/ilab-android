@@ -14,6 +14,14 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
+    init {
+        intent {
+            reduce {
+                state.copy(createdImageList = DummyList)
+            }
+        }
+    }
+
     fun openPhotoPicker() = intent {
         postSideEffect(UploadPhotoSideEffect.openPhotoPicker)
     }
