@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.setting
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import com.nexters.ilab.android.core.designsystem.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,6 +40,7 @@ internal fun SettingRoute(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
@@ -46,6 +48,7 @@ internal fun SettingRoute(
         onBackClick = onBackClick,
         onChangeDarkTheme = onChangeDarkTheme,
         onLogoutClick = onLogoutClick,
+        onDeleteAccountClick = onDeleteAccountClick,
     )
 }
 
@@ -55,6 +58,7 @@ internal fun SettingScreen(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -63,12 +67,12 @@ internal fun SettingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SettingTopAppBar(onBackClick)
-        SettingContent(onLogoutClick)
+        SettingContent(onLogoutClick, onDeleteAccountClick)
     }
 }
 
 @Composable
-internal fun SettingContent(onLogoutClick: () -> Unit) {
+internal fun SettingContent(onLogoutClick: () -> Unit, onDeleteAccountClick: () -> Unit) {
     SettingCellNavigation(R.string.setting_privacy)
     Spacer(
         modifier = Modifier
@@ -100,6 +104,7 @@ internal fun SettingContent(onLogoutClick: () -> Unit) {
             text = stringResource(id = R.string.setting_delete_account),
             style = Contents1,
             color = Color.Black,
+            modifier = Modifier.clickable(onClick = onDeleteAccountClick)
         )
     }
 }
@@ -174,5 +179,5 @@ internal fun SettingTopAppBar(onBackClick: () -> Unit) {
 @DevicePreview
 @Composable
 fun UploadPhotoScreenPreview() {
-    SettingScreen({}, {}, {})
+    SettingScreen({}, {}, {}, {})
 }
