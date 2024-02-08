@@ -142,7 +142,12 @@ private fun CreateImageCompleteContent(
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        PagerIndicator(pagerState = pagerState)
+        PagerIndicator(
+            pageCount = pagerState.pageCount,
+            currentPage = pagerState.currentPage,
+            targetPage = pagerState.currentPage,
+            currentPageOffsetFraction = pagerState.currentPageOffsetFraction,
+        )
         Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier
