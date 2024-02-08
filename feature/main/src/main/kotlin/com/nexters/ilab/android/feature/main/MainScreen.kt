@@ -51,6 +51,7 @@ import java.net.UnknownHostException
 internal fun MainScreen(
     onChangeDarkTheme: (Boolean) -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     navigator: MainNavController = rememberMainNavController(),
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -99,6 +100,7 @@ internal fun MainScreen(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onChangeDarkTheme = onChangeDarkTheme,
                         onLogoutClick = onLogoutClick,
+                        onDeleteAccountClick = onDeleteAccountClick,
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
                 }
