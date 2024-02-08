@@ -122,7 +122,7 @@ fun ILabTopAppBarClosePreview() {
 
 @ComponentPreview
 @Composable
-fun ILabTopAppBarSettingreview() {
+fun ILabTopAppBarSettingPreview() {
     ILabTopAppBar(
         titleRes = android.R.string.untitled,
         navigationType = TopAppBarNavigationType.Setting,

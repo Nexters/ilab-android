@@ -49,6 +49,12 @@ class MainActivity : ComponentActivity() {
                             withFinish = true,
                         )
                     },
+                    onDeleteAccountClick = {
+                        loginNavigator.navigateFrom(
+                            activity = this,
+                            withFinish = true,
+                        )
+                    },
                     navigator = navigator,
                 )
             }
