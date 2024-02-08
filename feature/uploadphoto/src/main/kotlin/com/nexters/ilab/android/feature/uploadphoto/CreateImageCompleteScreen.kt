@@ -36,10 +36,10 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
-import com.nexters.ilab.core.ui.component.HorizontalPagerIndicator
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.NetworkImage
+import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 
@@ -52,7 +52,6 @@ internal fun CreateImageCompleteRoute(
 
     val systemUiController = rememberExSystemUiController()
 
-    // 안통하네
     DisposableEffect(systemUiController) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
@@ -143,12 +142,7 @@ private fun CreateImageCompleteContent(
             }
         }
         Spacer(modifier = Modifier.height(20.dp))
-        HorizontalPagerIndicator(
-            pageCount = pageCount,
-            currentPage = pagerState.currentPage,
-            targetPage = pagerState.targetPage,
-            currentPageOffsetFraction = pagerState.currentPageOffsetFraction,
-        )
+        PagerIndicator(pagerState = pagerState)
         Spacer(modifier = Modifier.weight(1f))
         Row(
             modifier = Modifier

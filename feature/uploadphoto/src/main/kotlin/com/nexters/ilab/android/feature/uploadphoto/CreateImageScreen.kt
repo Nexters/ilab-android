@@ -52,25 +52,37 @@ internal fun CreateImageRoute(
         uiState = uiState,
         onCloseClick = onCloseClick,
         onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
+        openCreateImageStopDialog = viewModel::openCreateImageStopDialog,
+        dismissCreateImageStopDialog = viewModel::dismissCreateImageStopDialog,
     )
 }
 
-@Suppress("unused")
 @Composable
 private fun CreateImageScreen(
     uiState: UploadPhotoState,
     onCloseClick: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
+    openCreateImageStopDialog: () -> Unit,
+    dismissCreateImageStopDialog: () -> Unit,
 ) {
-    Column {
-        CreateImageTopAppBar(onBackClick = onCloseClick)
+    Column(modifier = Modifier.fillMaxSize()) {
+        if (uiState.isCreateImageStopDialogVisible) {
+            CreateImageStopDialog(
+                onContinueClick = dismissCreateImageStopDialog,
+                onConfirmClick = {
+                    dismissCreateImageStopDialog()
+                    onCloseClick()
+                },
+            )
+        }
+        CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
         CreateImageContent(onNavigateToCreateImageComplete = onNavigateToCreateImageComplete)
     }
 }
 
 @Composable
 private fun CreateImageTopAppBar(
-    onBackClick: () -> Unit,
+    onCloseClick: () -> Unit,
 ) {
     ILabTopAppBar(
         titleRes = null,
@@ -79,7 +91,7 @@ private fun CreateImageTopAppBar(
         modifier = Modifier
             .statusBarsPadding()
             .height(56.dp),
-        onNavigationClick = onBackClick,
+        onNavigationClick = onCloseClick,
     )
 }
 
@@ -158,10 +170,10 @@ private fun CreateImageContent(
 @Composable
 fun CreateImageScreenPreview() {
     CreateImageScreen(
-        uiState = UploadPhotoState(
-            selectedPhotoUri = "",
-        ),
+        uiState = UploadPhotoState(),
         onCloseClick = {},
         onNavigateToCreateImageComplete = {},
+        openCreateImageStopDialog = {},
+        dismissCreateImageStopDialog = {},
     )
 }

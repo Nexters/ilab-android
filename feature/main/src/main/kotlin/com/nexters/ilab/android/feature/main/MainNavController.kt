@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
@@ -77,6 +78,13 @@ internal class MainNavController(
         if (!isSameCurrentDestination(HOME_ROUTE)) {
             popBackStack()
         }
+    }
+
+    fun clearBackStack() {
+        val options = NavOptions.Builder()
+            .setPopUpTo(navController.graph.findStartDestination().id, inclusive = false)
+            .build()
+        navController.navigate(startDestination, options)
     }
 
     private fun isSameCurrentDestination(route: String) =

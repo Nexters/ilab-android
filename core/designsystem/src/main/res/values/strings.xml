@@ -69,9 +69,10 @@
     <string name="creating_image_wait_part2_description2">열심히 작업 중입니다.</string>
     <string name="creating_image_exit_warning_prefix">화면 이탈시 이미지 생성이</string>
     <string name="creating_image_exit_warning_suffix">&#160;종료됩니다.</string>
-    <string name="creating_image_cancellation">정말 중단하시겠어요?</string>
-    <string name="creating_image_service_termination_warning">서비스를 중단하면 이미지 생성이 종료됩니다.\n정말로 종료하실 건가요?</string>
-    <string name="creating_image_confirm_exit">네</string>
+    <string name="creating_image_stop_confirmation">정말 중단하시겠어요?</string>
+    <string name="creating_image_stop_warning_description1">페이지를 이탈하면 이미지 생성이 종료됩니다.</string>
+    <string name="creating_image_stop_warning_description2">정말로 종료하실건가요?</string>
+    <string name="creating_image_stop_confirm">네</string>
     <string name="creating_image_continue">계속 할게요</string>
     <string name="create_image_complete">이미지 생성 완료</string>
     <string name="create_image_share">공유하기</string>

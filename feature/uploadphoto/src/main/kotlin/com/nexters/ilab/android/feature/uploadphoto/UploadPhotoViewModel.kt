@@ -55,6 +55,18 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
         }
     }
 
+    fun openCreateImageStopDialog() = intent {
+        reduce {
+            state.copy(isCreateImageStopDialogVisible = true)
+        }
+    }
+
+    fun dismissCreateImageStopDialog() = intent {
+        reduce {
+            state.copy(isCreateImageStopDialogVisible = false)
+        }
+    }
+
     fun onPermissionResult(isGranted: Boolean) = intent {
         if (isGranted) {
             postSideEffect(UploadPhotoSideEffect.startCamera)

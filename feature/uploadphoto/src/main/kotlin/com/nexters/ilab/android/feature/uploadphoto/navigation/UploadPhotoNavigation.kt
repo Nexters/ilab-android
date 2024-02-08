@@ -25,7 +25,6 @@ const val INPUT_KEYWORD_ROUTE = "input_keyword_route"
 const val CREATE_IMAGE_ROUTE = "create_image_route"
 const val CREATE_IMAGE_COMPLETE_ROUTE = "create_image_complete_route"
 
-
 fun NavController.navigateToUploadPhoto(navOptions: NavOptions) {
     navigate(UPLOAD_PHOTO_ROUTE, navOptions)
 }

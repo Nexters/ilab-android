@@ -85,7 +85,7 @@ internal fun MainScreen(
                     uploadPhotoNavGraph(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onCloseClick = navigator::popBackStackIfNotHome,
+                        onCloseClick = navigator::clearBackStack,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                         onNavigateToInputKeyword = navigator::navigateToInputKeyword,
                         onNavigateToCreateImage = navigator::navigateToCreateImage,

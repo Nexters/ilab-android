@@ -40,6 +40,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun InputKeywordRoute(
     onBackClick: () -> Unit,
+    onNavigateToCreateImage: () -> Unit,
     viewModel: UploadPhotoViewModel,
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -48,7 +49,7 @@ internal fun InputKeywordRoute(
         uiState = uiState,
         onBackClick = onBackClick,
         onKeywordSelect = viewModel::setSelectedKeyword,
-        createProfileImage = {},
+        createProfileImage = onNavigateToCreateImage,
     )
 }
 

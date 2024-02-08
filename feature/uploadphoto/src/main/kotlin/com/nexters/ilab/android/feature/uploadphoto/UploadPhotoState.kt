@@ -6,4 +6,5 @@ data class UploadPhotoState(
     val createdImageList: List<Pair<String, String>> = emptyList(),
     val isPermissionDialogVisible: Boolean = false,
     val isUploadPhotoDialogVisible: Boolean = false,
+    val isCreateImageStopDialogVisible: Boolean = false,
 )

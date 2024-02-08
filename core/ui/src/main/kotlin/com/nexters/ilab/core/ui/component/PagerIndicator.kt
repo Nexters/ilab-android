@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Gray300
@@ -23,24 +24,36 @@ import com.nexters.ilab.core.ui.ComponentPreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun PagerIndicator(pagerState: PagerState) {
+fun PagerIndicator(
+    pagerState: PagerState,
+    modifier: Modifier = Modifier,
+    selectedIndicatorColor: Color = Blue600,
+    unselectedIndicatorColor: Color = Gray300,
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentHeight()
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
     ) {
         repeat(pagerState.pageCount) { iteration ->
-            val color = if (pagerState.currentPage == iteration) Blue600 else Gray300
-            val modifier = if (pagerState.currentPage == iteration) Modifier.padding(4.dp)
-                .clip(CircleShape)
-                .width(18.dp)
-                .background(color)
-                .size(7.dp) else Modifier.padding(4.dp)
-                .clip(CircleShape)
-                .background(color)
-                .size(7.dp)
-            Box(modifier = modifier)
+            val color = if (pagerState.currentPage == iteration) selectedIndicatorColor else unselectedIndicatorColor
+            Box(
+                modifier = if (pagerState.currentPage == iteration) {
+                    Modifier
+                        .padding(4.dp)
+                        .clip(CircleShape)
+                        .width(18.dp)
+                        .background(color)
+                        .size(7.dp)
+                } else {
+                    Modifier
+                        .padding(4.dp)
+                        .clip(CircleShape)
+                        .background(color)
+                        .size(7.dp)
+                },
+            )
         }
     }
 }
