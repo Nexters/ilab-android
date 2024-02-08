@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -110,7 +111,9 @@ internal fun LoginScreen(
         BackgroundImage(
             resId = R.drawable.bg_login_screen,
             contentDescription = "Background Image for Login Screen",
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
         )
         LoginContent(
             onLoginClick = onLoginClick,

@@ -250,7 +250,7 @@ private fun UploadCheckContent(
 }
 
 @Composable
-fun GuideRow(
+private fun GuideRow(
     resId: Int,
     contentDescription: String,
     text: String,

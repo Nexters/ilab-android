@@ -59,4 +59,23 @@
     <string name="keyword_sketch">#스케치</string>
     <string name="create_ai_profile_image">AI 프로필 이미지 생성하기</string>
 
+    <!--    create image-->
+    <string name="creating_image_title">이미지 생성 중…</string>
+    <string name="creating_image_wait_part1_description1_prefix">최대</string>
+    <string name="creating_image_wait_part1_description1_time_value">&#160;30초</string>
+    <string name="creating_image_wait_part1_description1_suffix">&#160;정도 소요됩니다.</string>
+    <string name="creating_image_wait_part1_description2">잠시만 기다려주시면 작업이 완료됩니다.</string>
+    <string name="creating_image_wait_part2_description1">조금만 더 기다려주세요!</string>
+    <string name="creating_image_wait_part2_description2">열심히 작업 중입니다.</string>
+    <string name="creating_image_exit_warning_prefix">화면 이탈시 이미지 생성이</string>
+    <string name="creating_image_exit_warning_suffix">&#160;종료됩니다.</string>
+    <string name="creating_image_stop_confirmation">정말 중단하시겠어요?</string>
+    <string name="creating_image_stop_warning_description1">페이지를 이탈하면 이미지 생성이 종료됩니다.</string>
+    <string name="creating_image_stop_warning_description2">정말로 종료하실건가요?</string>
+    <string name="creating_image_stop_confirm">네</string>
+    <string name="creating_image_continue">계속 할게요</string>
+    <string name="create_image_complete">이미지 생성 완료</string>
+    <string name="create_image_share">공유하기</string>
+    <string name="create_image_save">저장하기</string>
+
 </resources>

@@ -14,6 +14,14 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
+    init {
+        intent {
+            reduce {
+                state.copy(createdImageList = DummyCreatedImageList)
+            }
+        }
+    }
+
     fun openPhotoPicker() = intent {
         postSideEffect(UploadPhotoSideEffect.openPhotoPicker)
     }
@@ -44,6 +52,18 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
     fun dismissPermissionDialog() = intent {
         reduce {
             state.copy(isPermissionDialogVisible = false)
+        }
+    }
+
+    fun openCreateImageStopDialog() = intent {
+        reduce {
+            state.copy(isCreateImageStopDialogVisible = true)
+        }
+    }
+
+    fun dismissCreateImageStopDialog() = intent {
+        reduce {
+            state.copy(isCreateImageStopDialogVisible = false)
         }
     }
 
