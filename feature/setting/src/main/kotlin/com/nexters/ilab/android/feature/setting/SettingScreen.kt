@@ -2,7 +2,6 @@ package com.nexters.ilab.android.feature.setting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import com.nexters.ilab.android.core.designsystem.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,10 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Gray100
 import com.nexters.ilab.android.core.designsystem.theme.Gray200
@@ -70,7 +70,10 @@ internal fun SettingScreen(
 }
 
 @Composable
-internal fun SettingContent(onLogoutClick: () -> Unit, onDeleteAccountClick: () -> Unit) {
+internal fun SettingContent(
+    onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
+) {
     SettingCellNavigation(R.string.setting_privacy)
     Spacer(
         modifier = Modifier
@@ -131,13 +134,16 @@ internal fun SettingCellText(stringId: Int, version: String) {
 }
 
 @Composable
-internal fun SettingCellNavigation(stringId: Int, onNavigationClick: () -> Unit = {}) {
+internal fun SettingCellNavigation(
+    stringId: Int,
+    onNavigationClick: () -> Unit = {},
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
-            .padding(start = 20.dp, end = 20.dp)
-            .clickable(onClick = onNavigationClick),
+            .clickable(onClick = onNavigationClick)
+            .padding(start = 20.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
