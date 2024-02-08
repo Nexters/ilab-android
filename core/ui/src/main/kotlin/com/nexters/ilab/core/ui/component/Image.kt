@@ -99,7 +99,7 @@ fun BackgroundImage(
                 .data(resId)
                 .build(),
             contentDescription = contentDescription,
-            contentScale = ContentScale.FillBounds,
+            contentScale = ContentScale.Fit,
             modifier = modifier,
         )
     }
