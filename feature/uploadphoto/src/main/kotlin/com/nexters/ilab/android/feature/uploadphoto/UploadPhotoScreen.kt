@@ -131,8 +131,8 @@ internal fun UploadPhotoScreen(
             PermissionDialog(
                 permissionTextProvider = CameraPermissionTextProvider(),
                 isPermanentlyDeclined = !activity.shouldShowRequestPermissionRationale(Manifest.permission.CAMERA),
-                onDismiss = dismissPermissionDialog,
-                onOkClick = {
+                onDismissClick = dismissPermissionDialog,
+                onConfirmClick = {
                     dismissPermissionDialog()
                     requestCameraPermission()
                 },
