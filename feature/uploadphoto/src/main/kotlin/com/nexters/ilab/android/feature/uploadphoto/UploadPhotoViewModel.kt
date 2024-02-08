@@ -17,7 +17,7 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
     init {
         intent {
             reduce {
-                state.copy(createdImageList = DummyList)
+                state.copy(createdImageList = DummyCreatedImageList)
             }
         }
     }
