@@ -113,7 +113,7 @@ internal fun LoginScreen(
             contentDescription = "Background Image for Login Screen",
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .wrapContentHeight(),
         )
         LoginContent(
             onLoginClick = onLoginClick,
