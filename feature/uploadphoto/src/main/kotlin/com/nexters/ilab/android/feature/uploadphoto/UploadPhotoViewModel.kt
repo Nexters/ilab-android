@@ -37,14 +37,14 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
         postSideEffect(UploadPhotoSideEffect.UploadPhotoSuccess)
     }
 
-    fun setSelectedKeyword(keyword: String) = intent {
-        if (keyword == state.selectedKeyword) {
+    fun setSelectedStyle(style: String) = intent {
+        if (style == state.selectedStyle) {
             reduce {
-                state.copy(selectedKeyword = "")
+                state.copy(selectedStyle = "")
             }
         } else {
             reduce {
-                state.copy(selectedKeyword = keyword)
+                state.copy(selectedStyle = style)
             }
         }
     }

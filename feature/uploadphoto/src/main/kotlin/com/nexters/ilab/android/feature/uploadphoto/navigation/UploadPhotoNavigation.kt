@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.nexters.ilab.android.feature.uploadphoto.CreateImageCompleteRoute
 import com.nexters.ilab.android.feature.uploadphoto.CreateImageRoute
-import com.nexters.ilab.android.feature.uploadphoto.InputKeywordRoute
+import com.nexters.ilab.android.feature.uploadphoto.InputStyleRoute
 import com.nexters.ilab.android.feature.uploadphoto.UploadCheckRoute
 import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoRoute
 import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoViewModel
@@ -21,7 +21,7 @@ import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoViewModel
 const val UPLOAD_PHOTO_ROUTE = "upload_photo_route"
 const val UPLOAD_ROUTE = "upload_route"
 const val UPLOAD_CHECK_ROUTE = "upload_check_route"
-const val INPUT_KEYWORD_ROUTE = "input_keyword_route"
+const val INPUT_STYLE_ROUTE = "input_style_route"
 const val CREATE_IMAGE_ROUTE = "create_image_route"
 const val CREATE_IMAGE_COMPLETE_ROUTE = "create_image_complete_route"
 
@@ -33,8 +33,8 @@ fun NavController.navigateToUploadCheck() {
     navigate(UPLOAD_CHECK_ROUTE)
 }
 
-fun NavController.navigateToInputKeyword() {
-    navigate(INPUT_KEYWORD_ROUTE)
+fun NavController.navigateToInputStyle() {
+    navigate(INPUT_STYLE_ROUTE)
 }
 
 fun NavController.navigateToCreateImage() {
@@ -50,7 +50,7 @@ fun NavGraphBuilder.uploadPhotoNavGraph(
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
-    onNavigateToInputKeyword: () -> Unit,
+    onNavigateToInputStyle: () -> Unit,
     onNavigateToCreateImage: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
 ) {
@@ -71,14 +71,14 @@ fun NavGraphBuilder.uploadPhotoNavGraph(
             val viewModel = entry.sharedViewModel<UploadPhotoViewModel>(navController)
             UploadCheckRoute(
                 onBackClick = onBackClick,
-                onNavigateToInputKeyword = onNavigateToInputKeyword,
+                onNavigateToInputStyle = onNavigateToInputStyle,
                 viewModel = viewModel,
             )
         }
 
-        composable(route = INPUT_KEYWORD_ROUTE) { entry ->
+        composable(route = INPUT_STYLE_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<UploadPhotoViewModel>(navController)
-            InputKeywordRoute(
+            InputStyleRoute(
                 onBackClick = onBackClick,
                 onNavigateToCreateImage = onNavigateToCreateImage,
                 viewModel = viewModel,

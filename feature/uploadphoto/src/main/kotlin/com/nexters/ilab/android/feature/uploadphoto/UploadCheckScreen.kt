@@ -50,7 +50,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 @Composable
 internal fun UploadCheckRoute(
     onBackClick: () -> Unit,
-    onNavigateToInputKeyword: () -> Unit,
+    onNavigateToInputStyle: () -> Unit,
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
@@ -105,7 +105,7 @@ internal fun UploadCheckRoute(
         toggleUploadPhotoDialog = viewModel::toggleUploadPhotoDialog,
         openPhotoPicker = viewModel::openPhotoPicker,
         requestCameraPermission = viewModel::requestCameraPermission,
-        onNavigateToInputKeyword = onNavigateToInputKeyword,
+        onNavigateToInputStyle = onNavigateToInputStyle,
     )
 }
 
@@ -116,7 +116,7 @@ private fun UploadCheckScreen(
     toggleUploadPhotoDialog: (Boolean) -> Unit,
     openPhotoPicker: () -> Unit,
     requestCameraPermission: () -> Unit,
-    onNavigateToInputKeyword: () -> Unit,
+    onNavigateToInputStyle: () -> Unit,
 ) {
     if (uiState.isUploadPhotoDialogVisible) {
         UploadPhotoDialog(
@@ -131,7 +131,7 @@ private fun UploadCheckScreen(
         UploadCheckContent(
             selectedPhotoUri = uiState.selectedPhotoUri,
             toggleUploadPhotoDialog = toggleUploadPhotoDialog,
-            onNavigateToInputKeyword = onNavigateToInputKeyword,
+            onNavigateToInputStyle = onNavigateToInputStyle,
         )
     }
 }
@@ -155,7 +155,7 @@ private fun UploadCheckTopAppBar(
 private fun UploadCheckContent(
     selectedPhotoUri: String,
     toggleUploadPhotoDialog: (Boolean) -> Unit,
-    onNavigateToInputKeyword: () -> Unit,
+    onNavigateToInputStyle: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -233,7 +233,7 @@ private fun UploadCheckContent(
                 },
             )
             ILabButton(
-                onClick = onNavigateToInputKeyword,
+                onClick = onNavigateToInputStyle,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -284,6 +284,6 @@ fun UploadCheckScreenPreview() {
         toggleUploadPhotoDialog = {},
         openPhotoPicker = {},
         requestCameraPermission = {},
-        onNavigateToInputKeyword = {},
+        onNavigateToInputStyle = {},
     )
 }
