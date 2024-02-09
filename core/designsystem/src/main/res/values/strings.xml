@@ -49,14 +49,14 @@
     <string name="camera_permission_denied">"카메라 권한을 거부하였습니다. 앱 설정으로 이동하여 권한을 부여할 수 있습니다."</string>
     <string name="select_photo">사진을 선택해 주세요.</string>
 
-    <!--    input keyword-->
-    <string name="input_keyword_top_title">키워드 입력</string>
+    <!--    input style-->
+    <string name="input_style_top_title">스타일 입력</string>
     <string name="what_style_prefer">어떤 스타일을\n선호하시나요?</string>
     <string name="creates_image_based_on_selected_style">선택한 스타일을 기반으로 이미지를 생성합니다.</string>
-    <string name="keyword_dreamy">#몽환적인</string>
-    <string name="keyword_lonely">#고독한</string>
-    <string name="keyword_natural">#자연적인</string>
-    <string name="keyword_sketch">#스케치</string>
+    <string name="style_dreamlike">#몽환적인</string>
+    <string name="style_lonely">#고독한</string>
+    <string name="style_natural">#자연적인</string>
+    <string name="style_sketch">#스케치</string>
     <string name="create_ai_profile_image">AI 프로필 이미지 생성하기</string>
 
     <!--    create image-->

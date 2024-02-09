@@ -1,6 +1,7 @@
 package com.nexters.ilab.core.ui.component
 
 import android.os.Build.VERSION.SDK_INT
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,9 +12,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -23,6 +27,7 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
+import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -106,32 +111,49 @@ fun BackgroundImage(
 }
 
 @Composable
-fun KeywordImage(
+fun StyleImage(
     resId: Int,
+    style: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
+    backgroundColor: Color = Color.Transparent,
 ) {
     val context = LocalContext.current
 
     if (LocalInspectionMode.current) {
         Icon(
             imageVector = Icons.Outlined.Person,
-            contentDescription = "Keyword Image Icon",
+            contentDescription = "Style Image",
             modifier = Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .fillMaxWidth()
                 .aspectRatio(1f),
         )
     } else {
-        AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(resId)
-                .crossfade(true)
-                .build(),
-            contentDescription = contentDescription,
-            contentScale = ContentScale.Fit,
-            modifier = modifier,
-        )
+        Box {
+            AsyncImage(
+                model = ImageRequest.Builder(context)
+                    .data(resId)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = contentDescription,
+                contentScale = ContentScale.Fit,
+                modifier = modifier,
+            )
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .background(backgroundColor),
+            )
+            Text(
+                text = style,
+                style = Title2,
+                color = Color.White,
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
     }
 }
 
@@ -203,9 +225,10 @@ fun BackgroundImagePreview() {
 
 @ComponentPreview
 @Composable
-fun KeywordImagePreview() {
-    KeywordImage(
+fun StyleImagePreview() {
+    StyleImage(
         resId = 0,
-        contentDescription = "Keyword Image Icon",
+        style = "#스타일",
+        contentDescription = "Style Image",
     )
 }

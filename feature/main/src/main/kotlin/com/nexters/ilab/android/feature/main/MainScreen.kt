@@ -88,7 +88,7 @@ internal fun MainScreen(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onCloseClick = navigator::clearBackStack,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
-                        onNavigateToInputKeyword = navigator::navigateToInputKeyword,
+                        onNavigateToInputStyle = navigator::navigateToInputStyle,
                         onNavigateToCreateImage = navigator::navigateToCreateImage,
                         onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
                     )
