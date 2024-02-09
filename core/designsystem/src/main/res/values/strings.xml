@@ -37,6 +37,8 @@
     <string name="bad">BAD</string>
     <string name="bad_example">&#160;좋지 않은 예시</string>
     <string name="bad_example_description">- 어둡거나 흐린 얼굴\n- 얼굴을 가린 사진(안경, 마스크, 모자 등)</string>
+    <string name="personal_information_collection_and_usage_agreement">개인정보 수집 및 이용 동의</string>
+    <string name="detail">자세히</string>
     <string name="check_guide_twice">다시 한번\n확인해주세요!</string>
     <string name="check_needed_for_accurate_result">정확한 결과를 위해 확인이 필요합니다.</string>
     <string name="choice_good_example_first">밝고 선명한 얼굴, 카메라 보고 있는 사진을 선택해주세요.</string>

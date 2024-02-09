@@ -4,7 +4,10 @@ import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,21 +18,34 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.common.extension.findActivity
@@ -37,12 +53,15 @@ import com.nexters.ilab.android.core.common.extension.openAppSettings
 import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.Gray100
+import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.SystemGreen
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.android.core.designsystem.theme.pretendardFamily
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ExampleImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -123,7 +142,8 @@ internal fun UploadPhotoScreen(
     val activity = LocalContext.current.findActivity()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -168,100 +188,148 @@ private fun UploadPhotoContent(
     onPhotoPickerClick: () -> Unit,
     onCameraClick: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
-    ) {
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = SystemGreen)) {
-                    append(stringResource(id = R.string.good))
-                }
-                withStyle(style = SpanStyle(color = Color.Black)) {
-                    append(stringResource(id = R.string.good_example))
-                }
-            },
-            style = Title2,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(id = R.string.good_example_description),
-            style = Contents2,
-            color = Color.Black,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ImageRow(images = goodExamples)
-        Spacer(modifier = Modifier.height(42.dp))
-        Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = SystemRed)) {
-                    append(stringResource(id = R.string.bad))
-                }
-                withStyle(style = SpanStyle(color = Color.Black)) {
-                    append(stringResource(id = R.string.bad_example))
-                }
-            },
-            style = Title2,
-            color = Color.Black,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(id = R.string.bad_example_description),
-            style = Contents2,
-            color = Color.Black,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        ImageRow(images = badExamples)
-        Spacer(modifier = Modifier.weight(1f))
-        Row(
+    var checkedState by remember { mutableStateOf(false) }
+
+    Box {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(start = 4.dp, end = 4.dp, bottom = 18.dp),
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
         ) {
-            ILabButton(
-                onClick = onPhotoPickerClick,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-                    .padding(end = 4.dp),
-                containerColor = PurpleBlue200,
-                contentColor = PurpleBlue900,
-                text = {
-                    Text(
-                        text = stringResource(id = R.string.photo_library),
-                        style = Subtitle1,
-                    )
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = SystemGreen)) {
+                        append(stringResource(id = R.string.good))
+                    }
+                    withStyle(style = SpanStyle(color = Color.Black)) {
+                        append(stringResource(id = R.string.good_example))
+                    }
                 },
+                style = Title2,
             )
-            ILabButton(
-                onClick = onCameraClick,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(60.dp)
-                    .padding(start = 4.dp),
-                text = {
-                    Text(
-                        text = stringResource(id = R.string.take_photo),
-                        style = Subtitle1,
-                    )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = R.string.good_example_description),
+                style = Contents2,
+                color = Color.Black,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ImageRow(images = goodExamples)
+            Spacer(modifier = Modifier.height(42.dp))
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = SystemRed)) {
+                        append(stringResource(id = R.string.bad))
+                    }
+                    withStyle(style = SpanStyle(color = Color.Black)) {
+                        append(stringResource(id = R.string.bad_example))
+                    }
                 },
+                style = Title2,
+                color = Color.Black,
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(id = R.string.bad_example_description),
+                style = Contents2,
+                color = Color.Black,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            ImageRow(images = badExamples)
+        }
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Gray100),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Row(
+                    modifier = Modifier
+                        .clickable { checkedState = !checkedState }
+                        .padding(4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    PrivacyPolicyCheckBox(checked = checkedState)
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(
+                        text = stringResource(id = R.string.personal_information_collection_and_usage_agreement),
+                        style = Contents2,
+                        color = Gray500,
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = stringResource(id = R.string.detail),
+                    style = TextStyle(
+                        fontFamily = pretendardFamily,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        lineHeight = 22.sp,
+                        textDecoration = TextDecoration.Underline,
+                    ),
+                    color = Gray500,
+                )
+            }
+            Spacer(modifier = Modifier.height(13.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(start = 20.dp, end = 20.dp, bottom = 18.dp),
+            ) {
+                ILabButton(
+                    onClick = onPhotoPickerClick,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                        .padding(end = 4.dp),
+                    containerColor = PurpleBlue200,
+                    contentColor = PurpleBlue900,
+                    text = {
+                        Text(
+                            text = stringResource(id = R.string.photo_library),
+                            style = Subtitle1,
+                        )
+                    },
+                )
+                ILabButton(
+                    onClick = onCameraClick,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(60.dp)
+                        .padding(start = 4.dp),
+                    text = {
+                        Text(
+                            text = stringResource(id = R.string.take_photo),
+                            style = Subtitle1,
+                        )
+                    },
+                )
+            }
         }
     }
 }
 
 val goodExamples = persistentListOf(
-    Pair(R.drawable.img_good_example1, "good example 1"),
-    Pair(R.drawable.img_good_example2, "good example 2"),
-    Pair(R.drawable.img_good_example3, "good example 3"),
+    Pair(R.drawable.img_guide_good1, "good example 1"),
+    Pair(R.drawable.img_guide_good2, "good example 2"),
+    Pair(R.drawable.img_guide_good3, "good example 3"),
 )
 val badExamples = persistentListOf(
-    Pair(R.drawable.img_bad_example1, "bad example 1"),
-    Pair(R.drawable.img_bad_example2, "bad example 2"),
-    Pair(R.drawable.img_bad_example3, "bad example 3"),
+    Pair(R.drawable.img_guide_bad1, "bad example 1"),
+    Pair(R.drawable.img_guide_bad2, "bad example 2"),
+    Pair(R.drawable.img_guide_bad3, "bad example 3"),
 )
 
 @Composable
@@ -278,6 +346,23 @@ fun ImageRow(images: ImmutableList<Pair<Int, String>>) {
             )
         }
     }
+}
+
+@Composable
+fun PrivacyPolicyCheckBox(
+    checked: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        imageVector = if (checked) {
+            ImageVector.vectorResource(id = R.drawable.ic_checkbox_true)
+        } else {
+            ImageVector.vectorResource(id = R.drawable.ic_checkbox_false)
+        },
+        contentDescription = "Privacy Policy Checkbox",
+        tint = Color.Unspecified,
+        modifier = modifier,
+    )
 }
 
 @DevicePreview
