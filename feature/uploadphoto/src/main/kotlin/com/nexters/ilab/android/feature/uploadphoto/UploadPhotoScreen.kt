@@ -238,9 +238,12 @@ private fun UploadPhotoContent(
             )
             Spacer(modifier = Modifier.height(20.dp))
             ImageRow(images = badExamples)
+            Spacer(modifier = Modifier.height(160.dp))
         }
         Column(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .background(Color.White),
         ) {
             HorizontalDivider(
                 modifier = Modifier
