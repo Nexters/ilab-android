@@ -43,6 +43,8 @@ firebase-crashlytics = "2.9.9"
 ksp = "1.9.22-1.0.16"
 orbit-core = "4.6.1"
 kotest = "5.8.0"
+kakao-core = "2.19.0"
+compose-extensions = "1.6.0-rc01"
 
 [libraries]
 
@@ -77,6 +79,7 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidx-navigation" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidx-hilt-navigation-compose" }
+system-ui-controller = { group = "tech.thdev", name = "extensions-compose-system-ui-controller", version.ref = "compose-extensions" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
@@ -93,10 +96,12 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.ref = "orbit-core" }
 orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit-core" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil-compose" }
 compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
+kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
 
-kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
-kotest-assertion = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-assertion = { group = "io.kotest", name = "kotest-assertions-core-jvm", version.ref = "kotest" }
 
 [plugins]
 
@@ -141,4 +146,9 @@ androidx-lifecycle = [
 orbit = [
     "orbit-viewmodel",
     "orbit-compose",
+]
+
+coil = [
+    "coil-compose",
+    "coil-gif",
 ]

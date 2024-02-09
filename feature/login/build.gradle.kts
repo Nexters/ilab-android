@@ -11,6 +11,9 @@ android {
 dependencies {
     implementations(
         libs.androidx.core,
+        libs.androidx.activity.compose,
         libs.timber,
+        libs.kakao.auth,
+        libs.system.ui.controller,
     )
 }

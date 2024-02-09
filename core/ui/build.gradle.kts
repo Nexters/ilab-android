@@ -13,6 +13,6 @@ dependencies {
     implementations(
         projects.core.designsystem,
 
-        libs.coil.compose,
+        libs.bundles.coil,
     )
 }

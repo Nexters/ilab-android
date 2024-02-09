@@ -5,14 +5,19 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.nexters.ilab.android.feature.camera.navigation.navigateToCamera
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadPhoto
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadCheck
 import com.nexters.ilab.android.feature.home.navigation.HOME_ROUTE
 import com.nexters.ilab.android.feature.home.navigation.navigateToHome
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyPage
 import com.nexters.ilab.android.feature.setting.navigation.navigateToSetting
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImage
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImageComplete
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputKeyword
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -39,9 +44,25 @@ internal class MainNavController(
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions)
-            MainTab.CAMERA -> navController.navigateToCamera(navOptions)
+            MainTab.UPLOAD_PHOTO -> navController.navigateToUploadPhoto(navOptions)
             MainTab.MY_PAGE -> navController.navigateToMyPage(navOptions)
         }
+    }
+
+    fun navigateToUploadCheck() {
+        navController.navigateToUploadCheck()
+    }
+
+    fun navigateToInputKeyword() {
+        navController.navigateToInputKeyword()
+    }
+
+    fun navigateToCreateImage() {
+        navController.navigateToCreateImage()
+    }
+
+    fun navigateToCreateImageComplete() {
+        navController.navigateToCreateImageComplete()
     }
 
     fun navigateToSetting() {
@@ -57,6 +78,13 @@ internal class MainNavController(
         if (!isSameCurrentDestination(HOME_ROUTE)) {
             popBackStack()
         }
+    }
+
+    fun clearBackStack() {
+        val options = NavOptions.Builder()
+            .setPopUpTo(navController.graph.findStartDestination().id, inclusive = false)
+            .build()
+        navController.navigate(startDestination, options)
     }
 
     private fun isSameCurrentDestination(route: String) =

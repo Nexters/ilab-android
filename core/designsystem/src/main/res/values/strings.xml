@@ -1,8 +1,81 @@
 <resources>
-    <!--    main-->
-    <string name="home">홈</string>
-    <string name="camera">카메라</string>
-    <string name="my_page">마이페이지</string>
     <string name="error_message_network">네트워크 연결이 원활하지 않습니다.</string>
     <string name="error_message_unknown">알 수 없는 오류가 발생하였습니다.</string>
+
+    <!--    login-->
+    <string name="kakao_login">카카오 로그인</string>
+    <string name="intro_description">반가워요! 아이랩에서 나만의\n프로필을 만들어보세요!</string>
+
+    <!--    main-->
+    <string name="home">홈</string>
+    <string name="upload_photo">사진 업로드</string>
+    <string name="my_page">마이페이지</string>
+
+    <!--    Home -->
+    <string name="home_style">Style</string>
+    <string name="home_profile">Profile</string>
+    <string name="home_generate_img_with_this_keyword">키워드로 프로필 생성하기</string>
+
+    <!--    Setting -->
+    <string name="setting_title">설정</string>
+    <string name="setting_privacy">개인정보처리방침</string>
+    <string name="setting_current_version">현재 버전</string>
+    <string name="setting_logout">로그아웃</string>
+    <string name="setting_delete_account">계정 삭제</string>
+
+    <!--    upload photo-->
+    <string name="upload_top_title">사진 가이드</string>
+    <string name="upload_check_top_title">가이드 확인</string>
+    <string name="take_photo">사진 찍기</string>
+    <string name="photo_library">사진 보관함</string>
+    <string name="change_photo">사진 바꾸기</string>
+    <string name="check">확인</string>
+    <string name="good">GOOD</string>
+    <string name="good_example">&#160;좋은 예시</string>
+    <string name="good_example_description">- 밝고 선명한 얼굴, 카메라를 보고 있는 사진\n- 내가 제일 잘나왔다고 생각하는 사진</string>
+    <string name="normal">NORMAL</string>
+    <string name="bad">BAD</string>
+    <string name="bad_example">&#160;좋지 않은 예시</string>
+    <string name="bad_example_description">- 어둡거나 흐린 얼굴\n- 얼굴을 가린 사진(안경, 마스크, 모자 등)</string>
+    <string name="check_guide_twice">다시 한번\n확인해주세요!</string>
+    <string name="check_needed_for_accurate_result">정확한 결과를 위해 확인이 필요합니다.</string>
+    <string name="choice_good_example_first">밝고 선명한 얼굴, 카메라 보고 있는 사진을 선택해주세요.</string>
+    <string name="choice_good_example_second">내가 제일 잘나왔다고 생각하는 사진을 선택해주세요.</string>
+    <string name="avoid_bad_example_first">어둡거나 흐린 사진은 피해주세요.</string>
+    <string name="avoid_bad_example_second">안경이나 마스크, 모자 등 얼굴을 가린 사진은 피해주세요.</string>
+    <string name="permission_required">권한 필요</string>
+    <string name="permission_required_description">사진을 업로드 하기 위해서는 권한이 필요합니다.</string>
+    <string name="go_to_app_setting">앱 설정으로 이동</string>
+    <string name="camera_permission_denied">"카메라 권한을 거부하였습니다. 앱 설정으로 이동하여 권한을 부여할 수 있습니다."</string>
+    <string name="select_photo">사진을 선택해 주세요.</string>
+
+    <!--    input keyword-->
+    <string name="input_keyword_top_title">키워드 입력</string>
+    <string name="what_style_prefer">어떤 스타일을\n선호하시나요?</string>
+    <string name="creates_image_based_on_selected_style">선택한 스타일을 기반으로 이미지를 생성합니다.</string>
+    <string name="keyword_dreamy">#몽환적인</string>
+    <string name="keyword_lonely">#고독한</string>
+    <string name="keyword_natural">#자연적인</string>
+    <string name="keyword_sketch">#스케치</string>
+    <string name="create_ai_profile_image">AI 프로필 이미지 생성하기</string>
+
+    <!--    create image-->
+    <string name="creating_image_title">이미지 생성 중…</string>
+    <string name="creating_image_wait_part1_description1_prefix">최대</string>
+    <string name="creating_image_wait_part1_description1_time_value">&#160;30초</string>
+    <string name="creating_image_wait_part1_description1_suffix">&#160;정도 소요됩니다.</string>
+    <string name="creating_image_wait_part1_description2">잠시만 기다려주시면 작업이 완료됩니다.</string>
+    <string name="creating_image_wait_part2_description1">조금만 더 기다려주세요!</string>
+    <string name="creating_image_wait_part2_description2">열심히 작업 중입니다.</string>
+    <string name="creating_image_exit_warning_prefix">화면 이탈시 이미지 생성이</string>
+    <string name="creating_image_exit_warning_suffix">&#160;종료됩니다.</string>
+    <string name="creating_image_stop_confirmation">정말 중단하시겠어요?</string>
+    <string name="creating_image_stop_warning_description1">페이지를 이탈하면 이미지 생성이 종료됩니다.</string>
+    <string name="creating_image_stop_warning_description2">정말로 종료하실건가요?</string>
+    <string name="creating_image_stop_confirm">네</string>
+    <string name="creating_image_continue">계속 할게요</string>
+    <string name="create_image_complete">이미지 생성 완료</string>
+    <string name="create_image_share">공유하기</string>
+    <string name="create_image_save">저장하기</string>
+
 </resources>

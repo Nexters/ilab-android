@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ilab.android.application)
     alias(libs.plugins.ilab.android.application.compose)
     alias(libs.plugins.ilab.android.hilt)
+    alias(libs.plugins.google.secrets)
 }
 
 android {
@@ -18,6 +19,24 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    buildTypes {
+        getByName("debug") {
+            isDebuggable = true
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name_dev",
+            )
+        }
+
+        getByName("release") {
+            isDebuggable = false
+            signingConfig = signingConfigs.getByName("debug")
+            manifestPlaceholders += mapOf(
+                "appName" to "@string/app_name",
+            )
+        }
+    }
 }
 
 dependencies {
@@ -30,7 +49,6 @@ dependencies {
         projects.core.datastore,
         projects.core.ui,
 
-        projects.feature.camera,
         projects.feature.home,
         projects.feature.intro,
         projects.feature.login,
@@ -38,11 +56,17 @@ dependencies {
         projects.feature.navigator,
         projects.feature.mypage,
         projects.feature.setting,
+        projects.feature.uploadphoto,
 
         libs.androidx.activity.compose,
         libs.androidx.core,
         libs.androidx.splash,
         libs.androidx.startup,
         libs.timber,
+        libs.kakao.auth,
     )
+}
+
+secrets {
+    defaultPropertiesFileName = "secrets.properties"
 }

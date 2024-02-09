@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
@@ -37,7 +38,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.feature.camera.navigation.cameraNavGraph
+import com.nexters.ilab.android.feature.uploadphoto.navigation.uploadPhotoNavGraph
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
@@ -50,6 +51,7 @@ import java.net.UnknownHostException
 internal fun MainScreen(
     onChangeDarkTheme: (Boolean) -> Unit,
     onLogoutClick: () -> Unit,
+    onDeleteAccountClick: () -> Unit,
     navigator: MainNavController = rememberMainNavController(),
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
@@ -81,9 +83,14 @@ internal fun MainScreen(
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
 
-                    cameraNavGraph(
-                        padding = padding,
-                        onShowErrorSnackBar = onShowErrorSnackBar,
+                    uploadPhotoNavGraph(
+                        navController = navigator.navController,
+                        onBackClick = navigator::popBackStackIfNotHome,
+                        onCloseClick = navigator::clearBackStack,
+                        onNavigateToUploadCheck = navigator::navigateToUploadCheck,
+                        onNavigateToInputKeyword = navigator::navigateToInputKeyword,
+                        onNavigateToCreateImage = navigator::navigateToCreateImage,
+                        onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
                     )
 
                     myPageNavGraph(
@@ -96,6 +103,7 @@ internal fun MainScreen(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onChangeDarkTheme = onChangeDarkTheme,
                         onLogoutClick = onLogoutClick,
+                        onDeleteAccountClick = onDeleteAccountClick,
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
                 }
@@ -110,6 +118,7 @@ internal fun MainScreen(
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
+        containerColor = Color.White,
     )
 }
 
