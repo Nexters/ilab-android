@@ -1,5 +1,6 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -65,6 +66,10 @@ private fun CreateImageScreen(
     openCreateImageStopDialog: () -> Unit,
     dismissCreateImageStopDialog: () -> Unit,
 ) {
+    BackHandler {
+        openCreateImageStopDialog()
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.isCreateImageStopDialogVisible) {
             CreateImageStopDialog(
