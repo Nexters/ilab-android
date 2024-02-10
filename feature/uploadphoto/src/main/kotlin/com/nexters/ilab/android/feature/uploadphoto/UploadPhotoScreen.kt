@@ -118,6 +118,8 @@ internal fun UploadPhotoRoute(
                 }
 
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> onNavigateToUploadCheck()
+
+                else -> {}
             }
         }
     }

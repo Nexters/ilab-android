@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
 import androidx.lifecycle.ViewModel
+import com.nexters.ilab.android.core.domain.repository.FileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -10,7 +11,9 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
+class UploadPhotoViewModel @Inject constructor(
+    private val fileRepository: FileRepository,
+) : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
@@ -80,6 +83,22 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
     fun toggleUploadPhotoDialog(flag: Boolean) = intent {
         reduce {
             state.copy(isUploadPhotoDialogVisible = flag)
+        }
+    }
+
+    fun saveImageFiles(imageInfoList: List<Pair<String, ByteArray>>) = intent {
+        reduce {
+            state.copy(isLoading = true)
+        }
+        imageInfoList.forEach { (fileName, byteArray) ->
+            fileRepository.saveImageFile(
+                fileName = fileName,
+                byteArray = byteArray,
+            )
+        }
+        postSideEffect(UploadPhotoSideEffect.SavePhotoSuccess)
+        reduce {
+            state.copy(isLoading = false)
         }
     }
 }

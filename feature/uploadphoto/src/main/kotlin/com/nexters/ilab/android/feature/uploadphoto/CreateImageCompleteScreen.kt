@@ -1,5 +1,9 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,14 +25,20 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.ImageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
@@ -38,10 +48,13 @@ import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import kotlinx.coroutines.launch
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
+import java.io.ByteArrayOutputStream
 
 @Composable
 internal fun CreateImageCompleteRoute(
@@ -49,6 +62,7 @@ internal fun CreateImageCompleteRoute(
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     val systemUiController = rememberExSystemUiController()
 
@@ -62,9 +76,22 @@ internal fun CreateImageCompleteRoute(
         onDispose {}
     }
 
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is UploadPhotoSideEffect.SavePhotoSuccess -> {
+                    Toast.makeText(context, "이미지 저장을 완료하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     CreateImageCompleteScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
+        saveImageFiles = viewModel::saveImageFiles,
     )
 }
 
@@ -72,6 +99,7 @@ internal fun CreateImageCompleteRoute(
 private fun CreateImageCompleteScreen(
     uiState: UploadPhotoState,
     onCloseClick: () -> Unit,
+    saveImageFiles: (List<Pair<String, ByteArray>>) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
@@ -81,9 +109,17 @@ private fun CreateImageCompleteScreen(
                 .fillMaxWidth()
                 .wrapContentHeight(),
         )
+
         Column {
             CreateImageCompleteTopAppBar(onBackClick = onCloseClick)
-            CreateImageCompleteContent(createdImageList = uiState.createdImageList)
+            CreateImageCompleteContent(
+                createdImageList = uiState.createdImageList,
+                saveImageFiles = saveImageFiles,
+            )
+        }
+
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
         }
     }
 }
@@ -108,7 +144,10 @@ private fun CreateImageCompleteTopAppBar(
 @Composable
 private fun CreateImageCompleteContent(
     createdImageList: List<Pair<String, String>>,
+    saveImageFiles: (List<Pair<String, ByteArray>>) -> Unit,
 ) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val pageCount = createdImageList.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
@@ -171,7 +210,12 @@ private fun CreateImageCompleteContent(
                 },
             )
             ILabButton(
-                onClick = {},
+                onClick = {
+                    coroutineScope.launch {
+                        val imageInfoList = createImageInfoListFromUrls(context, createdImageList)
+                        saveImageFiles(imageInfoList)
+                    }
+                },
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -187,6 +231,27 @@ private fun CreateImageCompleteContent(
     }
 }
 
+suspend fun createImageInfoListFromUrls(
+    context: Context,
+    createdImageList: List<Pair<String, String>>,
+): List<Pair<String, ByteArray>> {
+    val imageLoader = ImageLoader(context)
+
+    return createdImageList.mapIndexed { index, image ->
+        val request = ImageRequest.Builder(context)
+            .data(image.first)
+            .build()
+
+        val result = (imageLoader.execute(request) as SuccessResult).drawable
+        val bitmap = (result as BitmapDrawable).bitmap
+
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+
+        Pair("IMG_${System.currentTimeMillis()}_$index.png", stream.toByteArray())
+    }
+}
+
 @DevicePreview
 @Composable
 fun CreateImageCompleteScreenPreview() {
@@ -195,5 +260,6 @@ fun CreateImageCompleteScreenPreview() {
             selectedPhotoUri = "",
         ),
         onCloseClick = {},
+        saveImageFiles = { _ -> },
     )
 }

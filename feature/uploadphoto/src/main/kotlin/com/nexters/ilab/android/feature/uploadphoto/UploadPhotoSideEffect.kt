@@ -5,4 +5,5 @@ sealed interface UploadPhotoSideEffect {
     data object requestCameraPermission : UploadPhotoSideEffect
     data object startCamera : UploadPhotoSideEffect
     data object UploadPhotoSuccess : UploadPhotoSideEffect
+    data object SavePhotoSuccess : UploadPhotoSideEffect
 }

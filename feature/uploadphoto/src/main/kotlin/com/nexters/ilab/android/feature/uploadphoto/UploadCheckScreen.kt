@@ -94,7 +94,7 @@ internal fun UploadCheckRoute(
                     cameraLauncher.launch(null)
                 }
 
-                is UploadPhotoSideEffect.UploadPhotoSuccess -> {}
+                else -> {}
             }
         }
     }

@@ -14,5 +14,6 @@ dependencies {
         libs.androidx.core,
         libs.timber,
         libs.system.ui.controller,
+        libs.bundles.coil,
     )
 }
