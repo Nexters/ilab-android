@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -101,6 +102,8 @@ private fun CreateImageCompleteScreen(
     onCloseClick: () -> Unit,
     saveCreatedImage: (List<Pair<String, ByteArray>>) -> Unit,
 ) {
+    BackHandler {}
+
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
             resId = R.drawable.bg_create_image_complete_screen,
