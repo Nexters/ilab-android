@@ -152,9 +152,7 @@ private fun CreateImageCompleteContent(
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.weight(1f))
@@ -192,7 +190,7 @@ private fun CreateImageCompleteContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .padding(start = 4.dp, end = 4.dp, bottom = 18.dp),
+                .padding(start = 20.dp, end = 20.dp, bottom = 18.dp),
         ) {
             ILabButton(
                 onClick = {},
