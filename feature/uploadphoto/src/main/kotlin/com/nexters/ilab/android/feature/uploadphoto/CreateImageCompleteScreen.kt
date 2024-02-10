@@ -79,8 +79,8 @@ internal fun CreateImageCompleteRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is UploadPhotoSideEffect.SavePhotoSuccess -> {
-                    Toast.makeText(context, "이미지 저장을 완료하였습니다.", Toast.LENGTH_SHORT).show()
+                is UploadPhotoSideEffect.SaveCreatedImageSuccess -> {
+                    Toast.makeText(context, context.getString(R.string.create_image_complete), Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {}
@@ -91,7 +91,7 @@ internal fun CreateImageCompleteRoute(
     CreateImageCompleteScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
-        saveImageFiles = viewModel::saveImageFiles,
+        saveCreatedImage = viewModel::saveCreatedImage,
     )
 }
 
@@ -99,7 +99,7 @@ internal fun CreateImageCompleteRoute(
 private fun CreateImageCompleteScreen(
     uiState: UploadPhotoState,
     onCloseClick: () -> Unit,
-    saveImageFiles: (List<Pair<String, ByteArray>>) -> Unit,
+    saveCreatedImage: (List<Pair<String, ByteArray>>) -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
@@ -114,7 +114,7 @@ private fun CreateImageCompleteScreen(
             CreateImageCompleteTopAppBar(onBackClick = onCloseClick)
             CreateImageCompleteContent(
                 createdImageList = uiState.createdImageList,
-                saveImageFiles = saveImageFiles,
+                saveCreatedImage = saveCreatedImage,
             )
         }
 
@@ -144,7 +144,7 @@ private fun CreateImageCompleteTopAppBar(
 @Composable
 private fun CreateImageCompleteContent(
     createdImageList: List<Pair<String, String>>,
-    saveImageFiles: (List<Pair<String, ByteArray>>) -> Unit,
+    saveCreatedImage: (List<Pair<String, ByteArray>>) -> Unit,
 ) {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -211,7 +211,7 @@ private fun CreateImageCompleteContent(
                 onClick = {
                     coroutineScope.launch {
                         val imageInfoList = createImageInfoListFromUrls(context, createdImageList)
-                        saveImageFiles(imageInfoList)
+                        saveCreatedImage(imageInfoList)
                     }
                 },
                 modifier = Modifier
@@ -229,7 +229,7 @@ private fun CreateImageCompleteContent(
     }
 }
 
-suspend fun createImageInfoListFromUrls(
+private suspend fun createImageInfoListFromUrls(
     context: Context,
     createdImageList: List<Pair<String, String>>,
 ): List<Pair<String, ByteArray>> {
@@ -258,6 +258,6 @@ fun CreateImageCompleteScreenPreview() {
             selectedPhotoUri = "",
         ),
         onCloseClick = {},
-        saveImageFiles = { _ -> },
+        saveCreatedImage = { _ -> },
     )
 }

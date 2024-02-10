@@ -26,11 +26,11 @@ class UploadPhotoViewModel @Inject constructor(
     }
 
     fun openPhotoPicker() = intent {
-        postSideEffect(UploadPhotoSideEffect.openPhotoPicker)
+        postSideEffect(UploadPhotoSideEffect.OpenPhotoPicker)
     }
 
     fun requestCameraPermission() = intent {
-        postSideEffect(UploadPhotoSideEffect.requestCameraPermission)
+        postSideEffect(UploadPhotoSideEffect.RequestCameraPermission)
     }
 
     fun setSelectedImageUri(uri: String) = intent {
@@ -72,7 +72,7 @@ class UploadPhotoViewModel @Inject constructor(
 
     fun onPermissionResult(isGranted: Boolean) = intent {
         if (isGranted) {
-            postSideEffect(UploadPhotoSideEffect.startCamera)
+            postSideEffect(UploadPhotoSideEffect.StartCamera)
         } else {
             reduce {
                 state.copy(isPermissionDialogVisible = true)
@@ -86,7 +86,7 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
-    fun saveImageFiles(imageInfoList: List<Pair<String, ByteArray>>) = intent {
+    fun saveCreatedImage(imageInfoList: List<Pair<String, ByteArray>>) = intent {
         reduce {
             state.copy(isLoading = true)
         }
@@ -96,7 +96,7 @@ class UploadPhotoViewModel @Inject constructor(
                 byteArray = byteArray,
             )
         }
-        postSideEffect(UploadPhotoSideEffect.SavePhotoSuccess)
+        postSideEffect(UploadPhotoSideEffect.SaveCreatedImageSuccess)
         reduce {
             state.copy(isLoading = false)
         }

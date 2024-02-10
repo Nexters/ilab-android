@@ -80,17 +80,17 @@ internal fun UploadCheckRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is UploadPhotoSideEffect.openPhotoPicker -> {
+                is UploadPhotoSideEffect.OpenPhotoPicker -> {
                     singlePhotoPickerLauncher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
 
-                is UploadPhotoSideEffect.requestCameraPermission -> {
+                is UploadPhotoSideEffect.RequestCameraPermission -> {
                     cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
                 }
 
-                is UploadPhotoSideEffect.startCamera -> {
+                is UploadPhotoSideEffect.StartCamera -> {
                     cameraLauncher.launch(null)
                 }
 
