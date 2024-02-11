@@ -35,7 +35,6 @@ javax-inject = "1"
 retrofit = "2.9.0"
 okhttp = "5.0.0-alpha.12"
 coil-compose = "2.5.0"
-compose-shimmer = "1.0.5"
 lottie-compose = "5.2.0"
 timber = "5.0.1"
 firebase-bom = "32.7.0"
@@ -97,7 +96,6 @@ orbit-viewmodel = { group = "org.orbit-mvi", name = "orbit-viewmodel", version.r
 orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref = "orbit-core" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil-compose" }
-compose-shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "compose-shimmer" }
 kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
 
 kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }

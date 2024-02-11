@@ -19,6 +19,7 @@ import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateI
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImageComplete
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputKeyword
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyAlbumImage
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputStyle
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -54,8 +55,8 @@ internal class MainNavController(
         navController.navigateToUploadCheck()
     }
 
-    fun navigateToInputKeyword() {
-        navController.navigateToInputKeyword()
+    fun navigateToInputStyle() {
+        navController.navigateToInputStyle()
     }
 
     fun navigateToCreateImage() {
