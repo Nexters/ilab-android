@@ -6,7 +6,6 @@ data class MyAlbum (
     val myAlbumKeyword: String = ""
 )
 data class MyPageState(
-    val isNoAlbumImage: Boolean = false,
     val selectedMyAlbum: Int = 0,
     val myAlbumImageList: List<MyAlbum> = emptyList(),
 )

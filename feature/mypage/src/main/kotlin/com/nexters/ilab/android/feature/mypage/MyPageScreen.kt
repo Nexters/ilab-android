@@ -1,6 +1,5 @@
 package com.nexters.ilab.android.feature.mypage
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,15 +32,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Blue600
+import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
@@ -135,13 +136,19 @@ internal fun MyPageContent(
                 MyPageContentUser(myAlbumCount)
             }
         }
-        items(myAlbumCount) { iter ->
-            MyAlbumImage(
-                myAlbum = myAlbumImageList[iter],
-                onMoreBtnClick = onMoreBtnClick,
-                onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
-                index = iter,
-            )
+        if (myAlbumCount == 0) {
+            item(span = span) {
+                MyPageContentEmpty()
+            }
+        } else {
+            items(myAlbumCount) { iter ->
+                MyAlbumImage(
+                    myAlbum = myAlbumImageList[iter],
+                    onMoreBtnClick = onMoreBtnClick,
+                    onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+                    index = iter,
+                )
+            }
         }
     }
 }
@@ -178,6 +185,31 @@ internal fun MyPageContentUser(albumImgCount: Int) {
         )
     }
 }
+@Composable
+internal fun MyPageContentEmpty() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .aspectRatio(1f),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_no_img),
+            contentDescription = "no image",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(100.dp)
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = stringResource(id = R.string.mypage_there_is_no_img),
+            textAlign = TextAlign.Center,
+            style = Contents1,
+            color = Gray500,
+        )
+    }
+}
 
 @Composable
 internal fun MyAlbumImage(
@@ -197,7 +229,7 @@ internal fun MyAlbumImage(
             modifier = Modifier
                 .fillMaxSize()
                 .aspectRatio(1f)
-                .clickable{
+                .clickable {
                     onNavigateToMyAlbumImage(index)
                 },
         )
@@ -234,4 +266,10 @@ fun MyPageScreenPreview() {
         onMoreBtnClick = {},
         onNavigateToMyAlbumImage = {},
     )
+}
+
+@DevicePreview
+@Composable
+fun MyPageScreenTestPreview() {
+    MyPageContentEmpty()
 }
