@@ -16,5 +16,7 @@ dependencies {
         projects.core.network,
         projects.core.datastore,
         projects.core.domain,
+
+        libs.bundles.coil,
     )
 }

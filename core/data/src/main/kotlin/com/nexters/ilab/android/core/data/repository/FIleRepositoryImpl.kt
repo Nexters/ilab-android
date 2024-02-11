@@ -7,7 +7,15 @@ import javax.inject.Inject
 class FileRepositoryImpl @Inject constructor(
     private val fileDataSource: FileDataSource,
 ) : FileRepository {
-    override fun saveImageFile(fileName: String, byteArray: ByteArray): String {
-        return fileDataSource.saveImageFile(fileName, byteArray)
+    override suspend fun getImageUriList(createdImageUrls: List<String>): List<String> {
+        return fileDataSource.getImageUriList(createdImageUrls)
+    }
+
+    override suspend fun saveImageFile(createdImageUrls: List<String>) {
+        return fileDataSource.saveImageFile(createdImageUrls)
+    }
+
+    override fun deleteCacheDir() {
+        fileDataSource.deleteCacheDir()
     }
 }

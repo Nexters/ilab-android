@@ -1,5 +1,7 @@
 package com.nexters.ilab.android.core.domain.repository
 
 interface FileRepository {
-    fun saveImageFile(fileName: String, byteArray: ByteArray): String
+    suspend fun getImageUriList(createdImageUrls: List<String>): List<String>
+    suspend fun saveImageFile(createdImageUrls: List<String>)
+    fun deleteCacheDir()
 }

@@ -1,10 +1,11 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,9 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.ImageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
@@ -53,9 +50,8 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
-import kotlinx.coroutines.launch
+import kotlinx.collections.immutable.ImmutableList
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
-import java.io.ByteArrayOutputStream
 
 @Composable
 internal fun CreateImageCompleteRoute(
@@ -77,11 +73,24 @@ internal fun CreateImageCompleteRoute(
         onDispose {}
     }
 
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+        viewModel.deleteCacheDir()
+    }
+
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
+                is UploadPhotoSideEffect.ShareCreatedImage -> {
+                    val shareIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND_MULTIPLE
+                        type = "image/png"
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(sideEffect.imageUriList.map { Uri.parse(it) }))
+                    }
+                    launcher.launch(Intent.createChooser(shareIntent, null))
+                }
+
                 is UploadPhotoSideEffect.SaveCreatedImageSuccess -> {
-                    Toast.makeText(context, context.getString(R.string.create_image_complete), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.create_image_save_complete), Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {}
@@ -92,6 +101,7 @@ internal fun CreateImageCompleteRoute(
     CreateImageCompleteScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
+        shareCreatedImage = viewModel::shareCreatedImage,
         saveCreatedImage = viewModel::saveCreatedImage,
     )
 }
@@ -100,7 +110,8 @@ internal fun CreateImageCompleteRoute(
 private fun CreateImageCompleteScreen(
     uiState: UploadPhotoState,
     onCloseClick: () -> Unit,
-    saveCreatedImage: (List<Pair<String, ByteArray>>) -> Unit,
+    shareCreatedImage: () -> Unit,
+    saveCreatedImage: () -> Unit,
 ) {
     BackHandler {}
 
@@ -117,6 +128,7 @@ private fun CreateImageCompleteScreen(
             CreateImageCompleteTopAppBar(onBackClick = onCloseClick)
             CreateImageCompleteContent(
                 createdImageList = uiState.createdImageList,
+                shareCreatedImage = shareCreatedImage,
                 saveCreatedImage = saveCreatedImage,
             )
         }
@@ -146,11 +158,10 @@ private fun CreateImageCompleteTopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CreateImageCompleteContent(
-    createdImageList: List<Pair<String, String>>,
-    saveCreatedImage: (List<Pair<String, ByteArray>>) -> Unit,
+    createdImageList: ImmutableList<String>,
+    shareCreatedImage: () -> Unit,
+    saveCreatedImage: () -> Unit,
 ) {
-    val context = LocalContext.current
-    val coroutineScope = rememberCoroutineScope()
     val pageCount = createdImageList.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
@@ -175,8 +186,8 @@ private fun CreateImageCompleteContent(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             ) {
                 NetworkImage(
-                    imageUrl = createdImageList[page].first,
-                    contentDescription = createdImageList[page].second,
+                    imageUrl = createdImageList[page],
+                    contentDescription = "Created Image Example ${page + 1}",
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -196,7 +207,7 @@ private fun CreateImageCompleteContent(
                 .padding(start = 20.dp, end = 20.dp, bottom = 18.dp),
         ) {
             ILabButton(
-                onClick = {},
+                onClick = shareCreatedImage,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -211,12 +222,7 @@ private fun CreateImageCompleteContent(
                 },
             )
             ILabButton(
-                onClick = {
-                    coroutineScope.launch {
-                        val imageInfoList = createImageInfoListFromUrls(context, createdImageList)
-                        saveCreatedImage(imageInfoList)
-                    }
-                },
+                onClick = saveCreatedImage,
                 modifier = Modifier
                     .weight(1f)
                     .height(60.dp)
@@ -232,27 +238,6 @@ private fun CreateImageCompleteContent(
     }
 }
 
-private suspend fun createImageInfoListFromUrls(
-    context: Context,
-    createdImageList: List<Pair<String, String>>,
-): List<Pair<String, ByteArray>> {
-    val imageLoader = ImageLoader(context)
-
-    return createdImageList.mapIndexed { index, image ->
-        val request = ImageRequest.Builder(context)
-            .data(image.first)
-            .build()
-
-        val result = (imageLoader.execute(request) as SuccessResult).drawable
-        val bitmap = (result as BitmapDrawable).bitmap
-
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-
-        Pair("IMG_${System.currentTimeMillis()}_$index.png", stream.toByteArray())
-    }
-}
-
 @DevicePreview
 @Composable
 fun CreateImageCompleteScreenPreview() {
@@ -261,6 +246,7 @@ fun CreateImageCompleteScreenPreview() {
             selectedPhotoUri = "",
         ),
         onCloseClick = {},
-        saveCreatedImage = { _ -> },
+        shareCreatedImage = {},
+        saveCreatedImage = {},
     )
 }
