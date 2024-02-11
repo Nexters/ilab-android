@@ -122,7 +122,7 @@ internal fun MyPageContent(
     val myAlbumCount = myAlbumImageList.size
 
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp),
+        columns = GridCells.Adaptive(minSize = 162.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp, bottom = 45.dp),
