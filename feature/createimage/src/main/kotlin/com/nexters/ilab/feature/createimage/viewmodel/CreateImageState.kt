@@ -1,4 +1,4 @@
-package com.nexters.ilab.feature.createimage
+package com.nexters.ilab.feature.createimage.viewmodel
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

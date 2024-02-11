@@ -62,6 +62,9 @@ import com.nexters.ilab.android.core.designsystem.theme.SystemGreen
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.designsystem.theme.pretendardFamily
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ExampleImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -118,8 +121,6 @@ internal fun UploadPhotoRoute(
                 }
 
                 is UploadPhotoSideEffect.UploadPhotoSuccess -> onNavigateToUploadCheck()
-
-                else -> {}
             }
         }
     }

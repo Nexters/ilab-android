@@ -40,6 +40,8 @@ import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
 @Composable
 internal fun CreateImageRoute(

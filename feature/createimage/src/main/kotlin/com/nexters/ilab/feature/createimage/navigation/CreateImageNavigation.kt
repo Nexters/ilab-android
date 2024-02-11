@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.nexters.ilab.feature.createimage.CreateImageCompleteRoute
 import com.nexters.ilab.feature.createimage.CreateImageRoute
-import com.nexters.ilab.feature.createimage.CreateImageViewModel
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
 const val CREATE_IMAGE_ROUTE = "create_image_route"
 const val CREATE_ROUTE = "create_route"

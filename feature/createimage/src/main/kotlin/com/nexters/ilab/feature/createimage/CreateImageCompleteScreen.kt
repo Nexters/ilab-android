@@ -50,6 +50,9 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 

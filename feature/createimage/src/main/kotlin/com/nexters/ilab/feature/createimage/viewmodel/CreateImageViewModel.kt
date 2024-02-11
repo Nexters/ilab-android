@@ -1,4 +1,4 @@
-package com.nexters.ilab.feature.createimage
+package com.nexters.ilab.feature.createimage.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

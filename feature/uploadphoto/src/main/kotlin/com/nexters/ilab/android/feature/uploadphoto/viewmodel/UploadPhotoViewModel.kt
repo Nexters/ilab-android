@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.android.feature.uploadphoto.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -41,6 +41,9 @@ import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar

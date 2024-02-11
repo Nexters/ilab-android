@@ -14,7 +14,7 @@ import androidx.navigation.compose.navigation
 import com.nexters.ilab.android.feature.uploadphoto.InputStyleRoute
 import com.nexters.ilab.android.feature.uploadphoto.UploadCheckRoute
 import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoRoute
-import com.nexters.ilab.android.feature.uploadphoto.UploadPhotoViewModel
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 
 const val UPLOAD_PHOTO_ROUTE = "upload_photo_route"
 const val UPLOAD_ROUTE = "upload_route"
