@@ -47,7 +47,7 @@ fun NavGraphBuilder.myPageNavGraph(
                 onSettingClick = onSettingClick,
                 onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
                 onShowErrorSnackBar = onShowErrorSnackBar,
-                viewModel = viewModel
+                viewModel = viewModel,
             )
         }
 

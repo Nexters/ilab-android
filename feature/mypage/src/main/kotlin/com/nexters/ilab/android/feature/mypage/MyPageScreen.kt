@@ -95,7 +95,7 @@ internal fun MyPageScreen(
             myAlbumImageList = uiState.myAlbumImageList,
             onMoreBtnClick = onMoreBtnClick,
             onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
-            )
+        )
     }
 }
 
@@ -117,7 +117,7 @@ internal fun MyPageContent(
     myAlbumImageList: List<MyAlbum>,
     onMoreBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
-    ) {
+) {
     val span: (LazyGridItemSpanScope) -> GridItemSpan = { GridItemSpan(2) }
     val myAlbumCount = myAlbumImageList.size
 
@@ -185,6 +185,7 @@ internal fun MyPageContentUser(albumImgCount: Int) {
         )
     }
 }
+
 @Composable
 internal fun MyPageContentEmpty() {
     Column(
@@ -198,8 +199,7 @@ internal fun MyPageContentEmpty() {
             painter = painterResource(R.drawable.ic_no_img),
             contentDescription = "no image",
             contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .size(100.dp)
+            modifier = Modifier.size(100.dp),
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
@@ -217,7 +217,7 @@ internal fun MyAlbumImage(
     onMoreBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
     index: Int,
-    ) {
+) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))

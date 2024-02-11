@@ -13,7 +13,7 @@ class MyPageViewModel @Inject constructor() : ViewModel(), ContainerHost<MyPageS
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
 
     // for test
-    val DummyMyAlbumList: List<MyAlbum>  = listOf(
+    val DummyMyAlbumList: List<MyAlbum> = listOf(
         MyAlbum(setDummyImageList(1), "몽환적인"),
         MyAlbum(setDummyImageList(2), "자연적인"),
         MyAlbum(setDummyImageList(3), "스케치"),
@@ -44,7 +44,7 @@ class MyPageViewModel @Inject constructor() : ViewModel(), ContainerHost<MyPageS
 }
 
 internal fun setDummyImageList(index: Int): List<Pair<String, String>> {
-    return when(index) {
+    return when (index) {
         1 -> listOf(
             "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
             "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
