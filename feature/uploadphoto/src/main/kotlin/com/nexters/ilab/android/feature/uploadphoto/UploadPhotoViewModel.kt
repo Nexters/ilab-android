@@ -1,32 +1,18 @@
 package com.nexters.ilab.android.feature.uploadphoto
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.nexters.ilab.android.core.domain.repository.FileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class UploadPhotoViewModel @Inject constructor(
-    private val fileRepository: FileRepository,
-) : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
+class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
-
-    init {
-        intent {
-            reduce {
-                state.copy(createdImageList = DummyCreatedImageUrls)
-            }
-        }
-    }
 
     fun openPhotoPicker() = intent {
         postSideEffect(UploadPhotoSideEffect.OpenPhotoPicker)
@@ -61,18 +47,6 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
-    fun openCreateImageStopDialog() = intent {
-        reduce {
-            state.copy(isCreateImageStopDialogVisible = true)
-        }
-    }
-
-    fun dismissCreateImageStopDialog() = intent {
-        reduce {
-            state.copy(isCreateImageStopDialogVisible = false)
-        }
-    }
-
     fun onPermissionResult(isGranted: Boolean) = intent {
         if (isGranted) {
             postSideEffect(UploadPhotoSideEffect.StartCamera)
@@ -87,36 +61,5 @@ class UploadPhotoViewModel @Inject constructor(
         reduce {
             state.copy(isUploadPhotoDialogVisible = flag)
         }
-    }
-
-    fun shareCreatedImage() = intent {
-        viewModelScope.launch {
-            reduce {
-                state.copy(isLoading = true)
-            }
-            val imageUriList = fileRepository.getImageUriList(state.createdImageList)
-            reduce {
-                state.copy(isLoading = false)
-            }
-            postSideEffect(UploadPhotoSideEffect.ShareCreatedImage(imageUriList))
-        }
-    }
-
-    fun saveCreatedImage() = intent {
-        viewModelScope.launch {
-            reduce {
-                state.copy(isLoading = true)
-            }
-            fileRepository.saveImageFile(state.createdImageList)
-            reduce {
-                state.copy(isLoading = false)
-            }
-            postSideEffect(UploadPhotoSideEffect.SaveCreatedImageSuccess)
-        }
-    }
-
-    fun deleteCacheDir() = intent {
-        Timber.d("deleteCacheDir() called")
-        fileRepository.deleteCacheDir()
     }
 }

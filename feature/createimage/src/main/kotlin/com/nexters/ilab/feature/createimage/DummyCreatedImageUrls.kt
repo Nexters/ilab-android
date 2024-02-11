@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.feature.createimage
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

@@ -42,6 +42,7 @@ import com.nexters.ilab.android.feature.uploadphoto.navigation.uploadPhotoNavGra
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
+import com.nexters.ilab.feature.createimage.navigation.createImageNavGraph
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -86,10 +87,14 @@ internal fun MainScreen(
                     uploadPhotoNavGraph(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
-                        onCloseClick = navigator::clearBackStack,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                         onNavigateToInputStyle = navigator::navigateToInputStyle,
                         onNavigateToCreateImage = navigator::navigateToCreateImage,
+                    )
+
+                    createImageNavGraph(
+                        navController = navigator.navController,
+                        onCloseClick = navigator::clearBackStack,
                         onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
                     )
 

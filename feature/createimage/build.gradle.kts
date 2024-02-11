@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.feature.uploadphoto"
+    namespace = "com.nexters.ilab.android.feature.createimage"
 }
 
 dependencies {

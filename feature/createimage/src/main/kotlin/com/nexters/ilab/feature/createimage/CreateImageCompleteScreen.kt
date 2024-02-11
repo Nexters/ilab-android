@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.feature.createimage
 
 import android.content.Intent
 import android.net.Uri
@@ -56,7 +56,7 @@ import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiContro
 @Composable
 internal fun CreateImageCompleteRoute(
     onCloseClick: () -> Unit,
-    viewModel: UploadPhotoViewModel = hiltViewModel(),
+    viewModel: CreateImageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -80,7 +80,7 @@ internal fun CreateImageCompleteRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is UploadPhotoSideEffect.ShareCreatedImage -> {
+                is CreateImageSideEffect.ShareCreatedImage -> {
                     val shareIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND_MULTIPLE
                         type = "image/png"
@@ -89,11 +89,9 @@ internal fun CreateImageCompleteRoute(
                     launcher.launch(Intent.createChooser(shareIntent, null))
                 }
 
-                is UploadPhotoSideEffect.SaveCreatedImageSuccess -> {
+                is CreateImageSideEffect.SaveCreatedImageSuccess -> {
                     Toast.makeText(context, context.getString(R.string.create_image_save_complete), Toast.LENGTH_SHORT).show()
                 }
-
-                else -> {}
             }
         }
     }
@@ -108,7 +106,7 @@ internal fun CreateImageCompleteRoute(
 
 @Composable
 private fun CreateImageCompleteScreen(
-    uiState: UploadPhotoState,
+    uiState: CreateImageState,
     onCloseClick: () -> Unit,
     shareCreatedImage: () -> Unit,
     saveCreatedImage: () -> Unit,
@@ -242,9 +240,7 @@ private fun CreateImageCompleteContent(
 @Composable
 fun CreateImageCompleteScreenPreview() {
     CreateImageCompleteScreen(
-        uiState = UploadPhotoState(
-            selectedPhotoUri = "",
-        ),
+        uiState = CreateImageState(),
         onCloseClick = {},
         shareCreatedImage = {},
         saveCreatedImage = {},

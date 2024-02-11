@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.feature.createimage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

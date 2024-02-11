@@ -32,6 +32,7 @@ include(
     ":core:datastore",
     ":core:ui",
 
+    ":feature:createimage",
     ":feature:home",
     ":feature:intro",
     ":feature:login",

@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.feature.createimage
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -45,7 +45,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
-    viewModel: UploadPhotoViewModel = hiltViewModel(),
+    viewModel: CreateImageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
@@ -60,7 +60,7 @@ internal fun CreateImageRoute(
 
 @Composable
 private fun CreateImageScreen(
-    uiState: UploadPhotoState,
+    uiState: CreateImageState,
     onCloseClick: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
     openCreateImageStopDialog: () -> Unit,
@@ -175,7 +175,7 @@ private fun CreateImageContent(
 @Composable
 fun CreateImageScreenPreview() {
     CreateImageScreen(
-        uiState = UploadPhotoState(),
+        uiState = CreateImageState(),
         onCloseClick = {},
         onNavigateToCreateImageComplete = {},
         openCreateImageStopDialog = {},
