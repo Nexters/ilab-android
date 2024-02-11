@@ -1,6 +1,8 @@
 package com.nexters.ilab.android.feature.mypage
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,17 +26,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
@@ -42,6 +47,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
 @Suppress("unused")
@@ -49,29 +55,46 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 internal fun MyPageRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
+    onNavigateToMyAlbumImage: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
+    val navigateToMyAlbum: (Int) -> Unit = {
+        viewModel.setSelectedMyAlbum(it)
+        onNavigateToMyAlbumImage()
+    }
+
     MyPageScreen(
+        uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
+        onMoreBtnClick = {},
+        onNavigateToMyAlbumImage = navigateToMyAlbum,
     )
 }
 
 @Composable
 internal fun MyPageScreen(
+    uiState: MyPageState,
     padding: PaddingValues,
     onSettingClick: () -> Unit,
+    onMoreBtnClick: () -> Unit,
+    onNavigateToMyAlbumImage: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         MyPageTopAppBar(onSettingClick)
-        MyPageContent()
+        MyPageContent(
+            myAlbumImageList = uiState.myAlbumImageList,
+            onMoreBtnClick = onMoreBtnClick,
+            onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+            )
     }
 }
 
@@ -89,8 +112,14 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
 }
 
 @Composable
-internal fun MyPageContent() {
+internal fun MyPageContent(
+    myAlbumImageList: List<MyAlbum>,
+    onMoreBtnClick: () -> Unit,
+    onNavigateToMyAlbumImage: (Int) -> Unit,
+    ) {
     val span: (LazyGridItemSpanScope) -> GridItemSpan = { GridItemSpan(2) }
+    val myAlbumCount = myAlbumImageList.size
+
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 128.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -103,11 +132,16 @@ internal fun MyPageContent() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                MyPageContentUser(albumImgCount = 12)
+                MyPageContentUser(myAlbumCount)
             }
         }
-        items(12) { _ ->
-            MyAlbumImage({})
+        items(myAlbumCount) { iter ->
+            MyAlbumImage(
+                myAlbum = myAlbumImageList[iter],
+                onMoreBtnClick = onMoreBtnClick,
+                onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+                index = iter,
+            )
         }
     }
 }
@@ -146,20 +180,26 @@ internal fun MyPageContentUser(albumImgCount: Int) {
 }
 
 @Composable
-internal fun MyAlbumImage(onMoreBtnClick: () -> Unit) {
+internal fun MyAlbumImage(
+    myAlbum: MyAlbum,
+    onMoreBtnClick: () -> Unit,
+    onNavigateToMyAlbumImage: (Int) -> Unit,
+    index: Int,
+    ) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .aspectRatio(1f),
     ) {
-        // UI 구현 용으로 album url 대신 sample Image 사용
-        Image(
-            painter = painterResource(R.drawable.ic_myalbum_sample),
-            contentDescription = "MyAlbum image",
-            contentScale = ContentScale.Fit,
+        NetworkImage(
+            imageUrl = myAlbum.myAlbumImage[0].first,
+            contentDescription = myAlbum.myAlbumImage[0].second,
             modifier = Modifier
                 .fillMaxSize()
-                .aspectRatio(1f),
+                .aspectRatio(1f)
+                .clickable{
+                    onNavigateToMyAlbumImage(index)
+                },
         )
         IconButton(
             onClick = onMoreBtnClick,
@@ -174,7 +214,7 @@ internal fun MyAlbumImage(onMoreBtnClick: () -> Unit) {
             )
         }
         Text(
-            text = "#스케치",
+            text = "#" + myAlbum.myAlbumKeyword,
             style = Subtitle1,
             color = Color.White,
             modifier = Modifier
@@ -187,5 +227,11 @@ internal fun MyAlbumImage(onMoreBtnClick: () -> Unit) {
 @DevicePreview
 @Composable
 fun MyPageScreenPreview() {
-    MyPageScreen(PaddingValues(0.dp), {})
+    MyPageScreen(
+        uiState = MyPageState(),
+        padding = PaddingValues(0.dp),
+        onSettingClick = {},
+        onMoreBtnClick = {},
+        onNavigateToMyAlbumImage = {},
+    )
 }

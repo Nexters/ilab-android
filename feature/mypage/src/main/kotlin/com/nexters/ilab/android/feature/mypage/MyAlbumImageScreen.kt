@@ -86,7 +86,7 @@ private fun MyAlbumImageScreen(
         Column {
             MyAlbumImageTopAppBar(onBackClick = onCloseClick)
             MyAlbumImageContent(
-                myAlbumImageList = uiState.myAlbumImageList,
+                myAlbumImage = uiState.myAlbumImageList[uiState.selectedMyAlbum],
                 onShareBtnClick = onShareBtnClick,
                 onSaveBtnClick = onSaveBtnClick,
             )
@@ -113,11 +113,11 @@ private fun MyAlbumImageTopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MyAlbumImageContent(
-    myAlbumImageList: List<Triple<String, String, String>>,
+    myAlbumImage: MyAlbum,
     onShareBtnClick: () -> Unit,
     onSaveBtnClick: () -> Unit,
 ) {
-    val pageCount = myAlbumImageList.size
+    val pageCount = myAlbumImage.myAlbumImage.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Column(
@@ -128,7 +128,7 @@ private fun MyAlbumImageContent(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "#" + myAlbumImageList[0].third,
+            text = "#" + myAlbumImage.myAlbumKeyword,
             style = Title1,
             color = Color.Black,
         )
@@ -143,8 +143,8 @@ private fun MyAlbumImageContent(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             ) {
                 NetworkImage(
-                    imageUrl = myAlbumImageList[page].first,
-                    contentDescription = myAlbumImageList[page].second,
+                    imageUrl = myAlbumImage.myAlbumImage[page].first,
+                    contentDescription = myAlbumImage.myAlbumImage[page].second,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
@@ -199,9 +199,7 @@ private fun MyAlbumImageContent(
 @Composable
 fun MyAlbumImageScreenPreview() {
     MyAlbumImageScreen(
-        uiState = MyPageState(
-            selectedPhotoUri = "",
-        ),
+        uiState = MyPageState(),
         onCloseClick = {},
         onShareBtnClick = {},
         onSaveBtnClick = {},
