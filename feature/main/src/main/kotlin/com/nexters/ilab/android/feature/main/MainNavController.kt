@@ -13,11 +13,13 @@ import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadP
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadCheck
 import com.nexters.ilab.android.feature.home.navigation.HOME_ROUTE
 import com.nexters.ilab.android.feature.home.navigation.navigateToHome
+import com.nexters.ilab.android.feature.mypage.navigation.MY_PAGE_ROUTE
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyPage
 import com.nexters.ilab.android.feature.setting.navigation.navigateToSetting
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImage
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToCreateImageComplete
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputKeyword
+import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyAlbumImage
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -63,6 +65,10 @@ internal class MainNavController(
 
     fun navigateToCreateImageComplete() {
         navController.navigateToCreateImageComplete()
+    }
+
+    fun navigateToMyAlbumImage() {
+        navController.navigateToMyAlbumImage()
     }
 
     fun navigateToSetting() {
