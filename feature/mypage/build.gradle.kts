@@ -12,5 +12,6 @@ dependencies {
     implementations(
         libs.androidx.core,
         libs.timber,
+        libs.system.ui.controller,
     )
 }
