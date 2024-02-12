@@ -1,7 +1,10 @@
 package com.nexters.ilab.android.feature.uploadphoto.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nexters.ilab.android.core.domain.repository.PrivacyPolicyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -10,9 +13,29 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
+class UploadPhotoViewModel @Inject constructor(
+    private val privacyPolicyRepository: PrivacyPolicyRepository,
+) : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
+
+    init {
+        observePrivacyPolicyAgreement()
+    }
+
+    private fun observePrivacyPolicyAgreement() = intent {
+        viewModelScope.launch {
+            privacyPolicyRepository.getPrivacyPolicyAgreement().collect { isAgreed ->
+                reduce { state.copy(isPrivacyPolicyAgreed = isAgreed) }
+            }
+        }
+    }
+
+    fun togglePrivacyPolicyAgreement(flag: Boolean) {
+        viewModelScope.launch {
+            privacyPolicyRepository.setPrivacyPolicyAgreement(flag)
+        }
+    }
 
     fun openPhotoPicker() = intent {
         postSideEffect(UploadPhotoSideEffect.OpenPhotoPicker)

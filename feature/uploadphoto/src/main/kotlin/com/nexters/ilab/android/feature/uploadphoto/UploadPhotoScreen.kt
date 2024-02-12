@@ -27,9 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -128,6 +125,7 @@ internal fun UploadPhotoRoute(
     UploadPhotoScreen(
         uiState = uiState,
         onBackClick = onBackClick,
+        togglePrivacyPolicyAgreement = viewModel::togglePrivacyPolicyAgreement,
         openPhotoPicker = viewModel::openPhotoPicker,
         requestCameraPermission = viewModel::requestCameraPermission,
         dismissPermissionDialog = viewModel::dismissPermissionDialog,
@@ -138,6 +136,7 @@ internal fun UploadPhotoRoute(
 internal fun UploadPhotoScreen(
     uiState: UploadPhotoState,
     onBackClick: () -> Unit,
+    togglePrivacyPolicyAgreement: (Boolean) -> Unit,
     openPhotoPicker: () -> Unit,
     requestCameraPermission: () -> Unit,
     dismissPermissionDialog: () -> Unit,
@@ -165,6 +164,8 @@ internal fun UploadPhotoScreen(
 
         UploadPhotoTopAppBar(onBackClick = onBackClick)
         UploadPhotoContent(
+            isPrivacyPolicyAgreed = uiState.isPrivacyPolicyAgreed,
+            togglePrivacyPolicyAgreement = togglePrivacyPolicyAgreement,
             onPhotoPickerClick = openPhotoPicker,
             onCameraClick = requestCameraPermission,
         )
@@ -188,11 +189,11 @@ private fun UploadPhotoTopAppBar(
 
 @Composable
 private fun UploadPhotoContent(
+    isPrivacyPolicyAgreed: Boolean,
+    togglePrivacyPolicyAgreement: (Boolean) -> Unit,
     onPhotoPickerClick: () -> Unit,
     onCameraClick: () -> Unit,
 ) {
-    var checkedState by remember { mutableStateOf(false) }
-
     Box {
         Column(
             modifier = Modifier
@@ -262,11 +263,11 @@ private fun UploadPhotoContent(
             ) {
                 Row(
                     modifier = Modifier
-                        .clickable { checkedState = !checkedState }
+                        .clickable { togglePrivacyPolicyAgreement(!isPrivacyPolicyAgreed) }
                         .padding(4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    PrivacyPolicyCheckBox(checked = checkedState)
+                    PrivacyPolicyCheckBox(checked = isPrivacyPolicyAgreed)
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = stringResource(id = R.string.personal_information_collection_and_usage_agreement),
@@ -300,6 +301,7 @@ private fun UploadPhotoContent(
                         .weight(1f)
                         .height(60.dp)
                         .padding(end = 4.dp),
+                    enabled = isPrivacyPolicyAgreed,
                     containerColor = PurpleBlue200,
                     contentColor = PurpleBlue900,
                     text = {
@@ -315,6 +317,7 @@ private fun UploadPhotoContent(
                         .weight(1f)
                         .height(60.dp)
                         .padding(start = 4.dp),
+                    enabled = isPrivacyPolicyAgreed,
                     text = {
                         Text(
                             text = stringResource(id = R.string.take_photo),
@@ -377,6 +380,7 @@ fun UploadPhotoScreenPreview() {
     UploadPhotoScreen(
         uiState = UploadPhotoState(),
         onBackClick = {},
+        togglePrivacyPolicyAgreement = { _ -> },
         openPhotoPicker = {},
         requestCameraPermission = {},
         dismissPermissionDialog = {},
