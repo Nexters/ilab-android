@@ -1,5 +1,6 @@
 package com.nexters.ilab.feature.createimage
 
+import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
@@ -50,11 +51,12 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
-import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
+import timber.log.Timber
 
 @Composable
 internal fun CreateImageCompleteRoute(
@@ -77,17 +79,28 @@ internal fun CreateImageCompleteRoute(
     }
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+        Timber.d("CreateImageCompleteRoute - Share Image Success")
         viewModel.deleteCacheDir()
+        Timber.d("CreateImageCompleteRoute - deleteCacheDir() Called.")
     }
 
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
                 is CreateImageSideEffect.ShareCreatedImage -> {
+                    val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
                     val shareIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND_MULTIPLE
-                        type = "image/png"
-                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(sideEffect.imageUriList.map { Uri.parse(it) }))
+                        type = "image/*"
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                        val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
+                            for (i in 1 until uriList.size) {
+                                addItem(ClipData.Item(uriList[i]))
+                            }
+                        }
+                        setClipData(clipData)
                     }
                     launcher.launch(Intent.createChooser(shareIntent, null))
                 }
