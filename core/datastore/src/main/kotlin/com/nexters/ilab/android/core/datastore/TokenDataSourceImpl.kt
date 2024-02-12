@@ -5,14 +5,15 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.nexters.ilab.android.core.datastore.di.TokenDataStore
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import java.io.IOException
 import javax.inject.Inject
 
-class TokenDataStoreImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
-) : TokenDataStore {
+class TokenDataSourceImpl @Inject constructor(
+    @TokenDataStore val dataStore: DataStore<Preferences>,
+) : TokenDataSource {
     private companion object {
         private val KEY_ACCESS_TOKEN = stringPreferencesKey("access_token")
         private val KEY_REFRESH_TOKEN = stringPreferencesKey("refresh_token")

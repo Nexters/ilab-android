@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.nexters.ilab.android.core.datastore.TokenDataStoreImpl
+import com.nexters.ilab.android.core.datastore.PrivacyPolicyDataSourceImpl
+import com.nexters.ilab.android.core.datastore.TokenDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +24,13 @@ internal object DataStoreModule {
     @Provides
     internal fun providePreferencesDataStore(@ApplicationContext context: Context) = context.tokenDataStore
 
+    @TokenDataStore
     @Singleton
     @Provides
-    internal fun provideTokenDataStore(dataStore: DataStore<Preferences>) = TokenDataStoreImpl(dataStore)
+    internal fun provideTokenDataStore(dataStore: DataStore<Preferences>) = TokenDataSourceImpl(dataStore)
+
+    @PrivacyPolicyDataStore
+    @Singleton
+    @Provides
+    internal fun providePrivacyPolicyDataStore(dataStore: DataStore<Preferences>) = PrivacyPolicyDataSourceImpl(dataStore)
 }
