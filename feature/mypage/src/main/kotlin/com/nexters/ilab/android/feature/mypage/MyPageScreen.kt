@@ -87,7 +87,7 @@ internal fun MyPageScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(padding),
+            .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         MyPageTopAppBar(onSettingClick)
