@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementations(
+        projects.feature.createimage,
         projects.feature.home,
         projects.feature.mypage,
         projects.feature.setting,

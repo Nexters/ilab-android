@@ -62,6 +62,9 @@ import com.nexters.ilab.android.core.designsystem.theme.SystemGreen
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.designsystem.theme.pretendardFamily
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ExampleImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -103,17 +106,17 @@ internal fun UploadPhotoRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is UploadPhotoSideEffect.openPhotoPicker -> {
+                is UploadPhotoSideEffect.OpenPhotoPicker -> {
                     singlePhotoPickerLauncher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
 
-                is UploadPhotoSideEffect.requestCameraPermission -> {
+                is UploadPhotoSideEffect.RequestCameraPermission -> {
                     cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
                 }
 
-                is UploadPhotoSideEffect.startCamera -> {
+                is UploadPhotoSideEffect.StartCamera -> {
                     cameraLauncher.launch(null)
                 }
 

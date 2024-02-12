@@ -41,6 +41,9 @@ import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
@@ -80,21 +83,21 @@ internal fun UploadCheckRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is UploadPhotoSideEffect.openPhotoPicker -> {
+                is UploadPhotoSideEffect.OpenPhotoPicker -> {
                     singlePhotoPickerLauncher.launch(
                         PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
                     )
                 }
 
-                is UploadPhotoSideEffect.requestCameraPermission -> {
+                is UploadPhotoSideEffect.RequestCameraPermission -> {
                     cameraPermissionResultLauncher.launch(Manifest.permission.CAMERA)
                 }
 
-                is UploadPhotoSideEffect.startCamera -> {
+                is UploadPhotoSideEffect.StartCamera -> {
                     cameraLauncher.launch(null)
                 }
 
-                is UploadPhotoSideEffect.UploadPhotoSuccess -> {}
+                else -> {}
             }
         }
     }
