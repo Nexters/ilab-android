@@ -49,6 +49,7 @@ dependencies {
         projects.core.datastore,
         projects.core.ui,
 
+        projects.feature.createimage,
         projects.feature.home,
         projects.feature.intro,
         projects.feature.login,

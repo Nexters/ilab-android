@@ -85,5 +85,6 @@
     <string name="create_image_complete">이미지 생성 완료</string>
     <string name="create_image_share">공유하기</string>
     <string name="create_image_save">저장하기</string>
+    <string name="create_image_save_complete">이미지 저장을 완료하였습니다.</string>
 
 </resources>

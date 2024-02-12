@@ -1,5 +1,6 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.feature.createimage
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,12 +40,14 @@ import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
 @Composable
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
-    viewModel: UploadPhotoViewModel = hiltViewModel(),
+    viewModel: CreateImageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
@@ -59,12 +62,16 @@ internal fun CreateImageRoute(
 
 @Composable
 private fun CreateImageScreen(
-    uiState: UploadPhotoState,
+    uiState: CreateImageState,
     onCloseClick: () -> Unit,
     onNavigateToCreateImageComplete: () -> Unit,
     openCreateImageStopDialog: () -> Unit,
     dismissCreateImageStopDialog: () -> Unit,
 ) {
+    BackHandler {
+        openCreateImageStopDialog()
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.isCreateImageStopDialogVisible) {
             CreateImageStopDialog(
@@ -170,7 +177,7 @@ private fun CreateImageContent(
 @Composable
 fun CreateImageScreenPreview() {
     CreateImageScreen(
-        uiState = UploadPhotoState(),
+        uiState = CreateImageState(),
         onCloseClick = {},
         onNavigateToCreateImageComplete = {},
         openCreateImageStopDialog = {},

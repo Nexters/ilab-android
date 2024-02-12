@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.uploadphoto
+package com.nexters.ilab.android.feature.uploadphoto.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,20 +14,12 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
-    init {
-        intent {
-            reduce {
-                state.copy(createdImageList = DummyCreatedImageList)
-            }
-        }
-    }
-
     fun openPhotoPicker() = intent {
-        postSideEffect(UploadPhotoSideEffect.openPhotoPicker)
+        postSideEffect(UploadPhotoSideEffect.OpenPhotoPicker)
     }
 
     fun requestCameraPermission() = intent {
-        postSideEffect(UploadPhotoSideEffect.requestCameraPermission)
+        postSideEffect(UploadPhotoSideEffect.RequestCameraPermission)
     }
 
     fun setSelectedImageUri(uri: String) = intent {
@@ -55,21 +47,9 @@ class UploadPhotoViewModel @Inject constructor() : ViewModel(), ContainerHost<Up
         }
     }
 
-    fun openCreateImageStopDialog() = intent {
-        reduce {
-            state.copy(isCreateImageStopDialogVisible = true)
-        }
-    }
-
-    fun dismissCreateImageStopDialog() = intent {
-        reduce {
-            state.copy(isCreateImageStopDialogVisible = false)
-        }
-    }
-
     fun onPermissionResult(isGranted: Boolean) = intent {
         if (isGranted) {
-            postSideEffect(UploadPhotoSideEffect.startCamera)
+            postSideEffect(UploadPhotoSideEffect.StartCamera)
         } else {
             reduce {
                 state.copy(isPermissionDialogVisible = true)

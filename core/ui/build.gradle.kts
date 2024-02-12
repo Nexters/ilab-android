@@ -12,7 +12,9 @@ android {
 dependencies {
     implementations(
         projects.core.designsystem,
+        projects.core.common,
 
         libs.bundles.coil,
+        libs.lottie.compose,
     )
 }
