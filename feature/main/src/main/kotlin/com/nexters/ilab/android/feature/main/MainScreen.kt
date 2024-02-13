@@ -99,8 +99,11 @@ internal fun MainScreen(
                     )
 
                     myPageNavGraph(
+                        navController = navigator.navController,
                         padding = padding,
+                        onCloseClick = navigator::popBackStackIfNotHome,
                         onSettingClick = { navigator.navigateToSetting() },
+                        onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
 

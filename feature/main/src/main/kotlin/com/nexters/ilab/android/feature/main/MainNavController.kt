@@ -18,6 +18,7 @@ import com.nexters.ilab.android.feature.setting.navigation.navigateToSetting
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputStyle
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImage
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImageComplete
+import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyAlbumImage
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -63,6 +64,10 @@ internal class MainNavController(
 
     fun navigateToCreateImageComplete() {
         navController.navigateToCreateImageComplete()
+    }
+
+    fun navigateToMyAlbumImage() {
+        navController.navigateToMyAlbumImage()
     }
 
     fun navigateToSetting() {
