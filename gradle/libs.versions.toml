@@ -1,6 +1,6 @@
 [versions]
 
-android-gradle-plugin = "8.2.1"
+android-gradle-plugin = "8.2.2"
 kotlin-core = "1.9.22"
 gradle-dependency-handler-extensions = "1.1.0"
 
