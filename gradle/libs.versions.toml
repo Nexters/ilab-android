@@ -5,7 +5,7 @@ kotlin-core = "1.9.22"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
-google-service = "4.4.0"
+google-service = "4.4.1"
 
 kotlin-detekt = "1.23.4"
 kotlin-ktlint-gradle = "11.6.1"
