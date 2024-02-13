@@ -73,14 +73,6 @@ internal fun HomeScreen(
     padding: PaddingValues,
     onSettingClick: () -> Unit
 ) {
-    Image(
-        painter = painterResource(R.drawable.ic_home_background),
-        contentDescription = "home background",
-        contentScale = ContentScale.Fit,
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-    )
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -88,11 +80,21 @@ internal fun HomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HomeTopAppBar(onSettingClick)
-        HomeContent(
-            styleImageList = uiState.styleImageList,
-            profileImageList = uiState.profileImageList,
-            onGenerateImgBtnClick = {},
-        )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Image(
+                painter = painterResource(R.drawable.ic_home_background),
+                contentDescription = "home background",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+            )
+            HomeContent(
+                styleImageList = uiState.styleImageList,
+                profileImageList = uiState.profileImageList,
+                onGenerateImgBtnClick = {},
+            )
+        }
     }
 }
 
