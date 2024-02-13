@@ -20,6 +20,6 @@ dependencies {
         libs.androidx.activity.compose,
         libs.kotlinx.collections.immutable,
         libs.system.ui.controller,
-        libs.bundles.coil
+        libs.bundles.coil,
     )
 }
