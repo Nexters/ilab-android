@@ -180,7 +180,7 @@ private fun RowScope.MainBottomBarItem(
         if (tab == MainTab.UPLOAD_PHOTO) {
             if (LocalInspectionMode.current) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_upload_photo),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_upload),
                     contentDescription = "Upload Photo Icon",
                     tint = Color.Unspecified,
                 )
