@@ -71,7 +71,7 @@ internal fun HomeRoute(
 internal fun HomeScreen(
     uiState: HomeState,
     padding: PaddingValues,
-    onSettingClick: () -> Unit
+    onSettingClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -126,7 +126,7 @@ internal fun HomeContent(
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
         verticalItemSpacing = 12.dp,
     ) {
-        item (span = StaggeredGridItemSpan.FullLine) {
+        item(span = StaggeredGridItemSpan.FullLine) {
             HomeKeywordView(
                 styleImageList = styleImageList,
                 onGenerateImgBtnClick = onGenerateImgBtnClick,
@@ -210,7 +210,6 @@ internal fun HomeKeywordView(
             style = Title2,
             color = Color.Black,
         )
-
     }
 }
 
@@ -229,7 +228,7 @@ internal fun KeywordSampleImageItem(
         NetworkImage(
             imageUrl = profileImage.profileImage,
             contentDescription = "Profile Image",
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
         Text(
             text = "#" + profileImage.profileKeyword,
