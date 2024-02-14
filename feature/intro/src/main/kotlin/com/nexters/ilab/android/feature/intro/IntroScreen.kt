@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import kotlinx.coroutines.delay
 
@@ -68,4 +69,10 @@ fun IntroContent(modifier: Modifier = Modifier) {
             tint = Color.Unspecified,
         )
     }
+}
+
+@DevicePreview
+@Composable
+fun IntroScreenPreview() {
+    IntroScreen()
 }
