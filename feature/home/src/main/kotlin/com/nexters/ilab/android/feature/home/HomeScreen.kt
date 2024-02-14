@@ -1,7 +1,6 @@
 package com.nexters.ilab.android.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,8 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,6 +41,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.NetworkImage
@@ -81,10 +79,9 @@ internal fun HomeScreen(
     ) {
         HomeTopAppBar(onSettingClick)
         Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(R.drawable.ic_home_background),
-                contentDescription = "home background",
-                contentScale = ContentScale.Fit,
+            BackgroundImage(
+                resId = R.drawable.bg_home_screen,
+                contentDescription = "Background Image for Home Screen",
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight(),

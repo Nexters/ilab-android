@@ -1,6 +1,7 @@
 package com.nexters.ilab.core.ui.component
 
 import android.os.Build.VERSION.SDK_INT
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
@@ -36,8 +38,6 @@ fun ExampleImage(
     contentDescription: String,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     if (LocalInspectionMode.current) {
         Icon(
             imageVector = Icons.Outlined.Person,
@@ -47,11 +47,8 @@ fun ExampleImage(
                 .height(139.dp),
         )
     } else {
-        AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(resId)
-                .crossfade(true)
-                .build(),
+        Image(
+            painter = painterResource(id = resId),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
             modifier = modifier,
@@ -94,15 +91,11 @@ fun BackgroundImage(
     contentDescription: String,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     if (LocalInspectionMode.current) {
         Box(modifier = Modifier.fillMaxSize())
     } else {
-        AsyncImage(
-            model = ImageRequest.Builder(context)
-                .data(resId)
-                .build(),
+        Image(
+            painter = painterResource(id = resId),
             contentDescription = contentDescription,
             contentScale = ContentScale.Fit,
             modifier = modifier,
@@ -218,6 +211,15 @@ fun NetworkImagePreview() {
 @Composable
 fun BackgroundImagePreview() {
     BackgroundImage(
+        resId = 0,
+        contentDescription = "Loading Image Icon",
+    )
+}
+
+@ComponentPreview
+@Composable
+fun LoadingImagePreview() {
+    LoadingImage(
         resId = 0,
         contentDescription = "Background Image Icon",
     )
