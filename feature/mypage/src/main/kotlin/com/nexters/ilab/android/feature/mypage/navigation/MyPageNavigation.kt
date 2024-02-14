@@ -1,28 +1,73 @@
 package com.nexters.ilab.android.feature.mypage.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import com.nexters.ilab.android.feature.mypage.MyAlbumImageRoute
 import com.nexters.ilab.android.feature.mypage.MyPageRoute
+import com.nexters.ilab.android.feature.mypage.MyPageViewModel
 
 const val MY_PAGE_ROUTE = "my_page_route"
+const val MY_PROFILE_ROUTE = "my_profile_route"
+const val MY_ALBUM_ROUTE = "my_album_route"
 
 fun NavController.navigateToMyPage(navOptions: NavOptions) {
     navigate(MY_PAGE_ROUTE, navOptions)
 }
 
+fun NavController.navigateToMyAlbumImage() {
+    navigate(MY_ALBUM_ROUTE)
+}
+
 fun NavGraphBuilder.myPageNavGraph(
+    navController: NavHostController,
     padding: PaddingValues,
+    onCloseClick: () -> Unit,
     onSettingClick: () -> Unit,
+    onNavigateToMyAlbumImage: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
-    composable(route = MY_PAGE_ROUTE) {
-        MyPageRoute(
-            padding = padding,
-            onSettingClick = onSettingClick,
-            onShowErrorSnackBar = onShowErrorSnackBar,
-        )
+    navigation(
+        startDestination = MY_PROFILE_ROUTE,
+        route = MY_PAGE_ROUTE,
+    ) {
+        composable(route = MY_PROFILE_ROUTE) { entry ->
+            val viewModel = entry.sharedViewModel<MyPageViewModel>(navController)
+            MyPageRoute(
+                padding = padding,
+                onSettingClick = onSettingClick,
+                onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+                onShowErrorSnackBar = onShowErrorSnackBar,
+                viewModel = viewModel,
+            )
+        }
+
+        composable(route = MY_ALBUM_ROUTE) { entry ->
+            val viewModel = entry.sharedViewModel<MyPageViewModel>(navController)
+            MyAlbumImageRoute(
+                onCloseClick = onCloseClick,
+                viewModel = viewModel,
+            )
+        }
     }
+}
+
+@Composable
+inline fun <reified T : ViewModel> NavBackStackEntry.sharedViewModel(
+    navController: NavHostController,
+): T {
+    val navGraphRoute = destination.parent?.route ?: return hiltViewModel()
+    val parentEntry = remember(this) {
+        navController.getBackStackEntry(navGraphRoute)
+    }
+    return hiltViewModel(parentEntry)
 }

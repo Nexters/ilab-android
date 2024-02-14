@@ -13,7 +13,7 @@ internal enum class MainTab(
         route = "home_route",
     ),
     UPLOAD_PHOTO(
-        iconResId = R.drawable.ic_camera,
+        iconResId = R.drawable.ic_upload,
         contentDescription = "사진 업로드",
         route = "upload_photo_route",
     ),
