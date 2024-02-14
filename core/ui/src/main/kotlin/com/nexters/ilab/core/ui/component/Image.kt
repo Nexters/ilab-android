@@ -93,6 +93,7 @@ fun BackgroundImage(
     resId: Int,
     contentDescription: String,
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
 ) {
     val context = LocalContext.current
 
@@ -104,7 +105,7 @@ fun BackgroundImage(
                 .data(resId)
                 .build(),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Fit,
+            contentScale = contentScale,
             modifier = modifier,
         )
     }

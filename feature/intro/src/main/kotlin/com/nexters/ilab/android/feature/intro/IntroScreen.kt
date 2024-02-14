@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,9 +41,8 @@ internal fun IntroScreen() {
         BackgroundImage(
             resId = R.drawable.bg_splash_screen,
             contentDescription = "Background Image for Splash Screen",
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.FillBounds,
         )
         IntroContent(
             modifier = Modifier.align(Alignment.Center),
