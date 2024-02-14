@@ -74,7 +74,7 @@ internal fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = padding.calculateBottomPadding() + 20.dp),
+            .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         HomeTopAppBar(onSettingClick)
@@ -119,7 +119,7 @@ internal fun HomeContent(
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(count = 2),
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(start = 20.dp, end = 20.dp),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, bottom = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
         verticalItemSpacing = 12.dp,
     ) {
