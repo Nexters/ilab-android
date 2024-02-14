@@ -7,7 +7,7 @@
             android:name=".LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Ilab">
+            android:theme="@style/Theme.ILab">
 
         </activity>
 

@@ -7,7 +7,7 @@
             android:name=".IntroActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.Ilab">
+            android:theme="@style/Theme.ILab">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
