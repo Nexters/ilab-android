@@ -131,7 +131,7 @@ private fun CreateImageCompleteScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_create_image_complete_screen,
+            resId = R.drawable.bg_my_page_screen,
             contentDescription = "Background Image for Create Image Complete Screen",
             modifier = Modifier
                 .fillMaxWidth()

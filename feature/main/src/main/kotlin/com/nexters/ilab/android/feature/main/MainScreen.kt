@@ -79,6 +79,7 @@ internal fun MainScreen(
                 ) {
                     homeNavGraph(
                         padding = padding,
+                        onSettingClick = { navigator.navigateToSetting() },
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
 

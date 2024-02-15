@@ -77,8 +77,8 @@ private fun MyAlbumImageScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_create_image_complete_screen,
-            contentDescription = "Background Image",
+            resId = R.drawable.bg_my_page_screen,
+            contentDescription = "Background Image for My Album Screen",
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
