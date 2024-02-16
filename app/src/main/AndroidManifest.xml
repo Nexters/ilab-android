@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Ilab"
+        android:theme="@style/Theme.ILab"
         tools:targetApi="31">
 
         <provider

@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
+import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.feature.navigator.LoginNavigator
 import com.nexters.ilab.android.feature.navigator.MainNavigator
@@ -24,13 +26,16 @@ class IntroActivity : ComponentActivity() {
     lateinit var mainNavigator: MainNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+
         setContent {
             val systemUiController = rememberExSystemUiController()
 
             DisposableEffect(systemUiController) {
                 systemUiController.setSystemBarsColor(
-                    color = Color.White,
+                    color = Color.Transparent,
                     darkIcons = true,
                     isNavigationBarContrastEnforced = false,
                 )

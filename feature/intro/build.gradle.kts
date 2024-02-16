@@ -11,6 +11,8 @@ android {
 dependencies {
     implementations(
         libs.androidx.core,
+        libs.androidx.activity.compose,
+        libs.androidx.splash,
         libs.timber,
         libs.system.ui.controller,
     )
