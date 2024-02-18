@@ -5,12 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.feature.setting"
+    namespace = "com.nexters.ilab.android.feature.privacypolicy"
 }
 
 dependencies {
     implementations(
         libs.androidx.core,
         libs.timber,
+        libs.system.ui.controller,
+        libs.accompanist.webview,
     )
 }

@@ -44,11 +44,7 @@ orbit-core = "4.6.1"
 kotest = "5.8.0"
 kakao-core = "2.19.0"
 compose-extensions = "1.6.1"
-junit = "4.13.2"
-androidx-test-ext-junit = "1.1.5"
-espresso-core = "3.5.1"
-appcompat = "1.6.1"
-material = "1.11.0"
+accompanist-webview = "0.31.3-beta"
 
 [libraries]
 
@@ -103,14 +99,10 @@ orbit-compose = { group = "org.orbit-mvi", name = "orbit-compose", version.ref =
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil-compose" }
 kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
+accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist-webview" }
 
 kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertion = { group = "io.kotest", name = "kotest-assertions-core-jvm", version.ref = "kotest" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 

@@ -20,6 +20,7 @@ import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputSt
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImage
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImageComplete
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyAlbumImage
+import com.nexters.ilab.android.feature.privacypolicy.navigation.navigateToPrivacyPolicy
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -73,6 +74,10 @@ internal class MainNavController(
 
     fun navigateToSetting() {
         navController.navigateToSetting()
+    }
+
+    fun navigateToPrivacyPolicy() {
+        navController.navigateToPrivacyPolicy()
     }
 
     private fun popBackStack() {
