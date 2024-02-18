@@ -74,11 +74,3 @@ internal fun PrivacyPolicyTopAppBar(
             .height(56.dp),
     )
 }
-
-//@DevicePreview
-//@Composable
-//fun PrivacyPolicyScreenPreview() {
-//    PrivacyPolicyScreen(
-//        onCloseClick = {},
-//    )
-//}
