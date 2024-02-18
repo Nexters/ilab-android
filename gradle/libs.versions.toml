@@ -44,7 +44,7 @@ orbit-core = "4.6.1"
 kotest = "5.8.0"
 kakao-core = "2.19.0"
 compose-extensions = "1.6.1"
-accompanist-webview = "0.31.3-beta"
+accompanist-webview = "0.34.0"
 
 [libraries]
 
