@@ -37,6 +37,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Gray400
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
+import com.nexters.ilab.android.feature.privacypolicy.navigation.privacyPolicyNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
 import com.nexters.ilab.android.feature.uploadphoto.navigation.uploadPhotoNavGraph
 import com.nexters.ilab.core.ui.ComponentPreview
@@ -86,6 +87,7 @@ internal fun MainScreen(
                     uploadPhotoNavGraph(
                         navController = navigator.navController,
                         onBackClick = navigator::popBackStackIfNotHome,
+                        onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
                         onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                         onNavigateToInputStyle = navigator::navigateToInputStyle,
                         onNavigateToCreateImage = navigator::navigateToCreateImage,
@@ -109,9 +111,14 @@ internal fun MainScreen(
                     settingNavGraph(
                         onBackClick = navigator::popBackStackIfNotHome,
                         onChangeDarkTheme = onChangeDarkTheme,
+                        onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
                         onLogoutClick = onLogoutClick,
                         onDeleteAccountClick = onDeleteAccountClick,
                         onShowErrorSnackBar = onShowErrorSnackBar,
+                    )
+
+                    privacyPolicyNavGraph(
+                        onCloseClick = navigator::popBackStackIfNotHome,
                     )
                 }
             }

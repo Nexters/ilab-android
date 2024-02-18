@@ -37,6 +37,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 internal fun SettingRoute(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
@@ -45,6 +46,7 @@ internal fun SettingRoute(
     SettingScreen(
         onBackClick = onBackClick,
         onChangeDarkTheme = onChangeDarkTheme,
+        onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
         onLogoutClick = onLogoutClick,
         onDeleteAccountClick = onDeleteAccountClick,
     )
@@ -55,6 +57,7 @@ internal fun SettingRoute(
 internal fun SettingScreen(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
 ) {
@@ -66,30 +69,44 @@ internal fun SettingScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SettingTopAppBar(onBackClick)
-        SettingContent(onLogoutClick, onDeleteAccountClick)
+        SettingContent(
+            onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
+            onLogoutClick = onLogoutClick,
+            onDeleteAccountClick = onDeleteAccountClick,
+        )
     }
 }
 
 @Composable
 internal fun SettingContent(
+    onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
 ) {
-    SettingCellNavigation(R.string.setting_privacy)
+    SettingCellNavigation(
+        stringId = R.string.setting_privacy,
+        onNavigationClick = onNavigateToPrivacyPolicy,
+    )
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
             .background(Gray200),
     )
-    SettingCellText(R.string.setting_current_version, "1.0.0")
+    SettingCellText(
+        stringId = R.string.setting_current_version,
+        version = "1.0.0",
+    )
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
             .height(1.dp)
             .background(Gray200),
     )
-    SettingCellNavigation(R.string.setting_logout, onLogoutClick)
+    SettingCellNavigation(
+        stringId = R.string.setting_logout,
+        onNavigationClick = onLogoutClick,
+    )
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
@@ -175,6 +192,12 @@ internal fun SettingTopAppBar(onBackClick: () -> Unit) {
 
 @DevicePreview
 @Composable
-fun UploadPhotoScreenPreview() {
-    SettingScreen({}, {}, {}, {})
+fun SettingScreenPreview() {
+    SettingScreen(
+        onBackClick = {},
+        onChangeDarkTheme = {},
+        onNavigateToPrivacyPolicy = {},
+        onLogoutClick = {},
+        onDeleteAccountClick = {},
+    )
 }

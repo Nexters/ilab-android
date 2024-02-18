@@ -15,6 +15,7 @@ dependencies {
         projects.feature.mypage,
         projects.feature.setting,
         projects.feature.uploadphoto,
+        projects.feature.privacypolicy,
 
         libs.androidx.core,
         libs.androidx.activity.compose,

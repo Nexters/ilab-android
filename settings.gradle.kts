@@ -41,4 +41,5 @@ include(
     ":feature:navigator",
     ":feature:setting",
     ":feature:uploadphoto",
+    ":feature:privacypolicy",
 )

@@ -73,6 +73,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun UploadPhotoRoute(
     onBackClick: () -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
     viewModel: UploadPhotoViewModel = hiltViewModel(),
 ) {
@@ -126,6 +127,7 @@ internal fun UploadPhotoRoute(
         uiState = uiState,
         onBackClick = onBackClick,
         togglePrivacyPolicyAgreement = viewModel::togglePrivacyPolicyAgreement,
+        onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
         openPhotoPicker = viewModel::openPhotoPicker,
         requestCameraPermission = viewModel::requestCameraPermission,
         dismissPermissionDialog = viewModel::dismissPermissionDialog,
@@ -137,6 +139,7 @@ internal fun UploadPhotoScreen(
     uiState: UploadPhotoState,
     onBackClick: () -> Unit,
     togglePrivacyPolicyAgreement: (Boolean) -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     openPhotoPicker: () -> Unit,
     requestCameraPermission: () -> Unit,
     dismissPermissionDialog: () -> Unit,
@@ -166,6 +169,7 @@ internal fun UploadPhotoScreen(
         UploadPhotoContent(
             isPrivacyPolicyAgreed = uiState.isPrivacyPolicyAgreed,
             togglePrivacyPolicyAgreement = togglePrivacyPolicyAgreement,
+            onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
             onPhotoPickerClick = openPhotoPicker,
             onCameraClick = requestCameraPermission,
         )
@@ -191,6 +195,7 @@ private fun UploadPhotoTopAppBar(
 private fun UploadPhotoContent(
     isPrivacyPolicyAgreed: Boolean,
     togglePrivacyPolicyAgreement: (Boolean) -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onPhotoPickerClick: () -> Unit,
     onCameraClick: () -> Unit,
 ) {
@@ -278,6 +283,9 @@ private fun UploadPhotoContent(
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(id = R.string.detail),
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { onNavigateToPrivacyPolicy() },
                     style = TextStyle(
                         fontFamily = pretendardFamily,
                         fontWeight = FontWeight.Normal,
@@ -381,6 +389,7 @@ fun UploadPhotoScreenPreview() {
         uiState = UploadPhotoState(),
         onBackClick = {},
         togglePrivacyPolicyAgreement = { _ -> },
+        onNavigateToPrivacyPolicy = {},
         openPhotoPicker = {},
         requestCameraPermission = {},
         dismissPermissionDialog = {},

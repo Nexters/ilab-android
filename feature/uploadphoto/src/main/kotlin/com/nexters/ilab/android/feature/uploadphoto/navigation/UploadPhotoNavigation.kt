@@ -36,6 +36,7 @@ fun NavController.navigateToInputStyle() {
 fun NavGraphBuilder.uploadPhotoNavGraph(
     navController: NavHostController,
     onBackClick: () -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
     onNavigateToInputStyle: () -> Unit,
     onNavigateToCreateImage: () -> Unit,
@@ -46,8 +47,10 @@ fun NavGraphBuilder.uploadPhotoNavGraph(
     ) {
         composable(route = UPLOAD_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<UploadPhotoViewModel>(navController)
+
             UploadPhotoRoute(
                 onBackClick = onBackClick,
+                onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
                 onNavigateToUploadCheck = onNavigateToUploadCheck,
                 viewModel = viewModel,
             )

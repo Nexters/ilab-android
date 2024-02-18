@@ -16,6 +16,7 @@ fun NavController.navigateToSetting() {
 fun NavGraphBuilder.settingNavGraph(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
+    onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
@@ -38,6 +39,7 @@ fun NavGraphBuilder.settingNavGraph(
         SettingRoute(
             onBackClick = onBackClick,
             onChangeDarkTheme = onChangeDarkTheme,
+            onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
             onLogoutClick = onLogoutClick,
             onDeleteAccountClick = onDeleteAccountClick,
             onShowErrorSnackBar = onShowErrorSnackBar,

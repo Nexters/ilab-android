@@ -87,4 +87,7 @@
     <string name="create_image_save">저장하기</string>
     <string name="create_image_save_complete">이미지 저장을 완료하였습니다.</string>
 
+    <!--    privacy policy-->
+    <string name="privacy_policy_title">개인정보처리방침</string>
+
 </resources>
