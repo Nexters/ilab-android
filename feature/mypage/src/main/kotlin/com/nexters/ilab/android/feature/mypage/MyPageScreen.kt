@@ -107,6 +107,7 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
         navigationIconContentDescription = "navigation Icon",
         modifier = Modifier
             .statusBarsPadding()
+            .padding(end = 10.dp)
             .height(56.dp),
         onNavigationClick = onSettingClick,
     )
