@@ -90,7 +90,6 @@ fun ILabTopAppBar(
                         text = stringResource(id = titleRes),
                         modifier = Modifier.align(Alignment.Center),
                         style = Subtitle1,
-                        color = Color.Black,
                     )
                 }
             }
