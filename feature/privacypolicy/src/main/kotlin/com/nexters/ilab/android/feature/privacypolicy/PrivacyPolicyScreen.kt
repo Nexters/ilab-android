@@ -49,11 +49,9 @@ internal fun PrivacyPolicyContent(webViewState: WebViewState) {
     WebView(
         state = webViewState,
         onCreated = { webView ->
-            webView.apply {
-                settings.run {
-                    javaScriptEnabled = true
-                    domStorageEnabled = true
-                }
+            webView.settings.apply {
+                javaScriptEnabled = true
+                domStorageEnabled = true
             }
         },
     )
