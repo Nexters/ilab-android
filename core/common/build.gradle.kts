@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.ilab.android.library)
     alias(libs.plugins.ilab.android.library.compose)
+    alias(libs.plugins.ilab.android.hilt)
 }
 
 android {
@@ -13,5 +14,9 @@ dependencies {
     implementations(
         libs.kotlinx.datetime,
         libs.androidx.core,
+        libs.androidx.hilt.navigation.compose,
+
+        libs.bundles.androidx.lifecycle,
+
     )
 }

@@ -1,6 +1,12 @@
 package com.nexters.ilab.android.feature.privacypolicy
 
+import android.annotation.SuppressLint
+import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -9,9 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.web.WebView
-import com.google.accompanist.web.WebViewState
+import androidx.compose.ui.viewinterop.AndroidView
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
@@ -19,20 +23,17 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 @Composable
 internal fun PrivacyPolicyRoute(
     onCloseClick: () -> Unit,
-    viewModel: PrivacyPolicyViewModel = hiltViewModel(),
 ) {
-    val webViewState = viewModel.webViewState
-
     PrivacyPolicyScreen(
         onCloseClick = onCloseClick,
-        webViewState = webViewState,
+        privacyPolicyWebViewUrl = BuildConfig.PRIVACY_POLICY_WEB_VIEW_URL,
     )
 }
 
 @Composable
 internal fun PrivacyPolicyScreen(
     onCloseClick: () -> Unit,
-    webViewState: WebViewState,
+    privacyPolicyWebViewUrl: String,
 ) {
     Column(
         modifier = Modifier
@@ -40,23 +41,37 @@ internal fun PrivacyPolicyScreen(
             .background(Color.White),
     ) {
         PrivacyPolicyTopAppBar(onCloseClick = onCloseClick)
-        PrivacyPolicyContent(webViewState = webViewState)
+        PrivacyPolicyContent(privacyPolicyWebViewUrl = privacyPolicyWebViewUrl)
     }
 }
 
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
-internal fun PrivacyPolicyContent(webViewState: WebViewState) {
-    WebView(
-        state = webViewState,
-        onCreated = { webView ->
-            webView.apply {
-                settings.run {
-                    javaScriptEnabled = true
-                    domStorageEnabled = true
+internal fun PrivacyPolicyContent(
+    privacyPolicyWebViewUrl: String,
+) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        AndroidView(
+            factory = { context ->
+                WebView(context).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                    )
+                    webViewClient = WebViewClient()
+                    webChromeClient = WebChromeClient()
+                    settings.apply {
+                        javaScriptEnabled = true
+                        domStorageEnabled = true
+                        loadWithOverviewMode = true
+                        useWideViewPort = true
+                    }
+                    loadUrl(privacyPolicyWebViewUrl)
                 }
-            }
-        },
-    )
+            },
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
 }
 
 @Composable

@@ -6,6 +6,18 @@ plugins {
 
 android {
     namespace = "com.nexters.ilab.android.feature.privacypolicy"
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField(
+            "String",
+            "PRIVACY_POLICY_WEB_VIEW_URL",
+            properties["PRIVACY_POLICY_WEB_VIEW_URL"] as String,
+        )
+    }
 }
 
 dependencies {
