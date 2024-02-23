@@ -74,6 +74,7 @@ fun ILabDialog(
                 color = Gray500,
                 style = Contents2,
             )
+            Spacer(modifier = Modifier.height(4.dp))
             if (secondDescriptionResId != null) {
                 Text(
                     text = stringResource(id = secondDescriptionResId),

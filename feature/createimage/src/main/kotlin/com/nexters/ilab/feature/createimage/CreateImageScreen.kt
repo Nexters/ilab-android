@@ -76,11 +76,12 @@ private fun CreateImageScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.isCreateImageStopDialogVisible) {
             CreateImageStopDialog(
-                onCancelClick = dismissCreateImageStopDialog,
-                onConfirmClick = {
+                onCancelClick = {
                     dismissCreateImageStopDialog()
                     onCloseClick()
+
                 },
+                onConfirmClick = dismissCreateImageStopDialog,
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
@@ -180,13 +181,13 @@ private fun CreateImageStopDialog(
     onConfirmClick: () -> Unit,
 ) {
     ILabDialog(
-        titleResId = R.string.network_error_title,
-        iconResId = R.drawable.ic_network_error,
-        iconDescription = "Network Error Icon",
-        firstDescriptionResId = R.string.network_error_description1,
-        secondDescriptionResId = R.string.network_error_description2,
-        confirmTextResId = R.string.network_error_confirm,
-        cancelTextResId = null,
+        titleResId = R.string.creating_image_stop_confirmation,
+        iconResId = null,
+        iconDescription = null,
+        firstDescriptionResId = R.string.creating_image_stop_warning_description1,
+        secondDescriptionResId = R.string.creating_image_stop_warning_description2,
+        cancelTextResId = R.string.creating_image_stop_confirm,
+        confirmTextResId = R.string.creating_image_continue,
         onCancelClick = onCancelClick,
         onConfirmClick = onConfirmClick,
     )
