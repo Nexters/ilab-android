@@ -79,7 +79,6 @@ private fun CreateImageScreen(
                 onCancelClick = {
                     dismissCreateImageStopDialog()
                     onCloseClick()
-
                 },
                 onConfirmClick = dismissCreateImageStopDialog,
             )
