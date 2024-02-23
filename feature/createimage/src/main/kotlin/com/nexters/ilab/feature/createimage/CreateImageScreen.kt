@@ -37,6 +37,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
+import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
@@ -75,7 +76,7 @@ private fun CreateImageScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.isCreateImageStopDialogVisible) {
             CreateImageStopDialog(
-                onContinueClick = dismissCreateImageStopDialog,
+                onCancelClick = dismissCreateImageStopDialog,
                 onConfirmClick = {
                     dismissCreateImageStopDialog()
                     onCloseClick()
@@ -171,6 +172,24 @@ private fun CreateImageContent(
         }
         Spacer(modifier = Modifier.weight(1f))
     }
+}
+
+@Composable
+private fun CreateImageStopDialog(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.network_error_title,
+        iconResId = R.drawable.ic_network_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.network_error_description1,
+        secondDescriptionResId = R.string.network_error_description2,
+        confirmTextResId = R.string.network_error_confirm,
+        cancelTextResId = null,
+        onCancelClick = onCancelClick,
+        onConfirmClick = onConfirmClick,
+    )
 }
 
 @DevicePreview

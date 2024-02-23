@@ -32,7 +32,7 @@ import com.nexters.ilab.core.ui.ComponentPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ILabDialog(
+fun ILabDialog(
     titleResId: Int,
     iconResId: Int?,
     iconDescription: String?,
@@ -68,6 +68,7 @@ internal fun ILabDialog(
                     tint = Color.Unspecified,
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(id = firstDescriptionResId),
                 color = Gray500,
