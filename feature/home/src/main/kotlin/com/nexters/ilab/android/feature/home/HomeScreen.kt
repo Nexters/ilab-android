@@ -126,14 +126,14 @@ internal fun HomeContent(
 
         itemsIndexed(profileImageList) { index, item ->
             val imageRatio = if (index % 6 == 1 || index % 6 == 3) imgSize.dp else (imgSize / 2 - 6).dp
-            val startDp =  if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3)  20.dp else 0.dp
-            val endDp =  if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3)  0.dp else 20.dp
+            val startDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 20.dp else 0.dp
+            val endDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 0.dp else 20.dp
 
             KeywordSampleImageItem(
                 profileImage = item,
                 imageRatio = imageRatio,
                 startDp = startDp,
-                endDp = endDp
+                endDp = endDp,
             )
         }
 
@@ -219,7 +219,7 @@ internal fun HomeKeywordView(
                 text = stringResource(id = R.string.home_profile),
                 style = Title2,
                 color = Color.Black,
-                modifier = Modifier.padding(start = 20.dp)
+                modifier = Modifier.padding(start = 20.dp),
             )
         }
     }
@@ -230,7 +230,7 @@ internal fun KeywordSampleImageItem(
     profileImage: ProfileImage,
     imageRatio: Dp,
     startDp: Dp,
-    endDp: Dp
+    endDp: Dp,
 ) {
     Box(
         modifier = Modifier
