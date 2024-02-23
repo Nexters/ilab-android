@@ -28,6 +28,9 @@
     <string name="setting_current_version">현재 버전</string>
     <string name="setting_logout">로그아웃</string>
     <string name="setting_delete_account">계정 삭제</string>
+    <string name="setting_delete_account_description">정말로 계정을 삭제하실건가요?</string>
+    <string name="setting_delete_account_cancel">안할게요</string>
+    <string name="setting_delete_account_confirm">삭제할게요</string>
 
     <!--    upload photo-->
     <string name="upload_top_title">사진 가이드</string>
@@ -89,5 +92,11 @@
 
     <!--    privacy policy-->
     <string name="privacy_policy_title">개인정보처리방침</string>
+
+    <!--    network error-->
+    <string name="network_error_title">일시적인 오류</string>
+    <string name="network_error_description1">이용에 불편을 드려 죄송합니다.</string>
+    <string name="network_error_description2">잠시후 다시 이용해주세요.</string>
+    <string name="network_error_confirm">다시 시도하기</string>
 
 </resources>
