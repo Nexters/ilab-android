@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,12 +24,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Gray100
 import com.nexters.ilab.android.core.designsystem.theme.Gray200
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
+import com.nexters.ilab.android.feature.setting.viewmodel.SettingState
+import com.nexters.ilab.android.feature.setting.viewmodel.SettingViewModel
 import com.nexters.ilab.core.ui.DevicePreview
+import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
@@ -43,23 +48,31 @@ internal fun SettingRoute(
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
     SettingScreen(
+        uiState = uiState,
         onBackClick = onBackClick,
         onChangeDarkTheme = onChangeDarkTheme,
         onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
         onLogoutClick = onLogoutClick,
         onDeleteAccountClick = onDeleteAccountClick,
+        openDeleteAccountDialog = viewModel::openDeleteAccountDialog,
+        dismissDeleteAccountDialog = viewModel::dismissDeleteAccountDialog,
     )
 }
 
 @Suppress("unused")
 @Composable
 internal fun SettingScreen(
+    uiState: SettingState,
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
     onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
+    openDeleteAccountDialog: () -> Unit,
+    dismissDeleteAccountDialog: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -68,11 +81,20 @@ internal fun SettingScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isDeleteAccountDialogVisible) {
+            DeleteAccountDialog(
+                onCancelClick = dismissDeleteAccountDialog,
+                onConfirmClick = {
+                    dismissDeleteAccountDialog()
+                    onDeleteAccountClick()
+                },
+            )
+        }
         SettingTopAppBar(onBackClick)
         SettingContent(
             onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
             onLogoutClick = onLogoutClick,
-            onDeleteAccountClick = onDeleteAccountClick,
+            openDeleteAccountDialog = openDeleteAccountDialog,
         )
     }
 }
@@ -81,7 +103,7 @@ internal fun SettingScreen(
 internal fun SettingContent(
     onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    openDeleteAccountDialog: () -> Unit,
 ) {
     SettingCellNavigation(
         stringId = R.string.setting_privacy,
@@ -123,7 +145,8 @@ internal fun SettingContent(
             text = stringResource(id = R.string.setting_delete_account),
             style = Contents1,
             color = Color.Black,
-            modifier = Modifier.clickable(onClick = onDeleteAccountClick),
+            modifier = Modifier
+                .clickable(onClick = openDeleteAccountDialog),
         )
     }
 }
@@ -190,14 +213,35 @@ internal fun SettingTopAppBar(onBackClick: () -> Unit) {
     )
 }
 
+@Composable
+internal fun DeleteAccountDialog(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.setting_delete_account,
+        iconResId = R.drawable.ic_warning,
+        iconDescription = "Warning Icon",
+        firstDescriptionResId = R.string.setting_delete_account_description,
+        secondDescriptionResId = null,
+        cancelTextResId = R.string.setting_delete_account_cancel,
+        confirmTextResId = R.string.setting_delete_account_confirm,
+        onCancelClick = onCancelClick,
+        onConfirmClick = onConfirmClick,
+    )
+}
+
 @DevicePreview
 @Composable
 fun SettingScreenPreview() {
     SettingScreen(
+        uiState = SettingState(),
         onBackClick = {},
         onChangeDarkTheme = {},
         onNavigateToPrivacyPolicy = {},
         onLogoutClick = {},
         onDeleteAccountClick = {},
+        openDeleteAccountDialog = {},
+        dismissDeleteAccountDialog = {},
     )
 }

@@ -37,6 +37,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
+import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
@@ -75,11 +76,11 @@ private fun CreateImageScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         if (uiState.isCreateImageStopDialogVisible) {
             CreateImageStopDialog(
-                onContinueClick = dismissCreateImageStopDialog,
-                onConfirmClick = {
+                onCancelClick = {
                     dismissCreateImageStopDialog()
                     onCloseClick()
                 },
+                onConfirmClick = dismissCreateImageStopDialog,
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
@@ -171,6 +172,24 @@ private fun CreateImageContent(
         }
         Spacer(modifier = Modifier.weight(1f))
     }
+}
+
+@Composable
+private fun CreateImageStopDialog(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.creating_image_stop_confirmation,
+        iconResId = null,
+        iconDescription = null,
+        firstDescriptionResId = R.string.creating_image_stop_warning_description1,
+        secondDescriptionResId = R.string.creating_image_stop_warning_description2,
+        cancelTextResId = R.string.creating_image_stop_confirm,
+        confirmTextResId = R.string.creating_image_continue,
+        onCancelClick = onCancelClick,
+        onConfirmClick = onConfirmClick,
+    )
 }
 
 @DevicePreview
