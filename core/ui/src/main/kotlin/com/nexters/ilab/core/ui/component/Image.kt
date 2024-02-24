@@ -33,8 +33,8 @@ import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -66,6 +66,7 @@ fun NetworkImage(
     imageUrl: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     val context = LocalContext.current
 
@@ -84,7 +85,7 @@ fun NetworkImage(
                 .crossfade(true)
                 .build(),
             contentDescription = contentDescription,
-            contentScale = ContentScale.Crop,
+            contentScale = contentScale,
             modifier = modifier,
         )
     }
@@ -111,15 +112,13 @@ fun BackgroundImage(
 
 @Composable
 fun StyleImage(
-    resId: Int,
-    style: String,
+    imageUrl: String,
+    styleName: String,
     contentDescription: String,
     isSelectedIndex: Boolean,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.Transparent,
 ) {
-    val context = LocalContext.current
-
     if (LocalInspectionMode.current) {
         Icon(
             imageVector = Icons.Outlined.Person,
@@ -134,13 +133,10 @@ fun StyleImage(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box {
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(resId)
-                        .crossfade(true)
-                        .build(),
+                NetworkImage(
+                    imageUrl = imageUrl,
                     contentDescription = contentDescription,
-                    contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Crop,
                     modifier = modifier,
                 )
                 Box(
@@ -162,7 +158,7 @@ fun StyleImage(
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = style,
+                text = styleName,
                 style = Contents2,
                 color = Color.Black,
             )
@@ -249,8 +245,8 @@ fun LoadingImagePreview() {
 @Composable
 fun UnSelectedStyleImagePreview() {
     StyleImage(
-        resId = 0,
-        style = "#스타일",
+        imageUrl = "",
+        styleName = "#스타일",
         contentDescription = "Style Image",
         isSelectedIndex = false,
     )
@@ -260,8 +256,8 @@ fun UnSelectedStyleImagePreview() {
 @Composable
 fun SelectedStyleImagePreview() {
     StyleImage(
-        resId = 0,
-        style = "#스타일",
+        imageUrl = "",
+        styleName = "#스타일",
         contentDescription = "Style Image",
         isSelectedIndex = true,
     )

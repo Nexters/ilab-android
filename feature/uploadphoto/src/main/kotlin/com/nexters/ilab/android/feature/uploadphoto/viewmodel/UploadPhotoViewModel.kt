@@ -3,6 +3,7 @@ package com.nexters.ilab.android.feature.uploadphoto.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.domain.repository.PrivacyPolicyRepository
+import com.nexters.ilab.android.core.domain.repository.StyleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -10,23 +11,57 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class UploadPhotoViewModel @Inject constructor(
     private val privacyPolicyRepository: PrivacyPolicyRepository,
+    private val styleRepository: StyleRepository,
 ) : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
 
     init {
         observePrivacyPolicyAgreement()
+        getStyleList()
     }
 
     private fun observePrivacyPolicyAgreement() = intent {
         viewModelScope.launch {
             privacyPolicyRepository.getPrivacyPolicyAgreement().collect { isAgreed ->
                 reduce { state.copy(isPrivacyPolicyAgreed = isAgreed) }
+            }
+        }
+    }
+
+    fun getStyleList() = intent {
+        viewModelScope.launch {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            styleRepository.getStyleList()
+                .onSuccess { styleList ->
+                    Timber.d("$styleList")
+                    reduce {
+                        state.copy(styleList = styleList)
+                    }
+                }
+                .onFailure { exception ->
+                    when (exception) {
+                        is HttpException -> {
+                            if (exception.code() == 500) {
+                                openNetworkErrorDialog()
+                            }
+                        }
+                        else -> {
+                            Timber.e(exception)
+                        }
+                    }
+                }
+            reduce {
+                state.copy(isLoading = false)
             }
         }
     }
@@ -83,6 +118,18 @@ class UploadPhotoViewModel @Inject constructor(
     fun toggleUploadPhotoDialog(flag: Boolean) = intent {
         reduce {
             state.copy(isUploadPhotoDialogVisible = flag)
+        }
+    }
+
+    fun openNetworkErrorDialog() = intent {
+        reduce {
+            state.copy(isNetworkErrorDialogVisible = true)
+        }
+    }
+
+    fun dismissNetworkErrorDialog() = intent {
+        reduce {
+            state.copy(isNetworkErrorDialogVisible = false)
         }
     }
 }
