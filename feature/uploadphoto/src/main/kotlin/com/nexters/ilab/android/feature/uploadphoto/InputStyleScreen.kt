@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -33,6 +35,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
+import com.nexters.ilab.android.feature.uploadphoto.model.StyleModel
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -97,35 +100,27 @@ internal fun InputStyleContent(
     createProfileImage: () -> Unit,
     onStyleSelect: (String) -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp),
-    ) {
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = stringResource(id = R.string.what_style_prefer),
-            style = Title1,
-            color = Color.Black,
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = stringResource(id = R.string.creates_image_based_on_selected_style),
-            style = Contents1,
-            color = Gray500,
-        )
-        Spacer(modifier = Modifier.height(60.dp))
-        CheckableStyleImage(
-            images = styleImages,
-            onStyleSelect = onStyleSelect,
-        )
-        Spacer(modifier = Modifier.weight(1f))
+    Box {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+        ) {
+            CheckableStyleImage(
+                images = styleImages,
+                onStyleSelect = onStyleSelect,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 112.dp),
+            )
+        }
         ILabButton(
             onClick = createProfileImage,
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.BottomCenter)
                 .navigationBarsPadding()
-                .padding(bottom = 18.dp)
+                .padding(start = 20.dp, end = 20.dp, bottom = 18.dp)
                 .height(60.dp),
             enabled = isStyleSelected,
             containerColor = Blue600,
@@ -141,28 +136,58 @@ internal fun InputStyleContent(
 }
 
 val styleImages = persistentListOf(
-    Pair(R.drawable.img_style_dreamlike, "#몽환적인"),
-    Pair(R.drawable.img_style_lonely, "#고독한"),
-    Pair(R.drawable.img_style_natural, "#자연적인"),
-    Pair(R.drawable.img_style_sketch, "#스케치"),
+    StyleModel(1, R.drawable.img_style_dreamlike, "#몽환적인"),
+    StyleModel(2, R.drawable.img_style_lonely, "#고독한"),
+    StyleModel(3, R.drawable.img_style_natural, "#자연적인"),
+    StyleModel(4, R.drawable.img_style_sketch, "#스케치"),
+    StyleModel(5, R.drawable.img_style_dreamlike, "#몽환적인"),
+    StyleModel(6, R.drawable.img_style_lonely, "#고독한"),
+    StyleModel(7, R.drawable.img_style_natural, "#자연적인"),
+    StyleModel(8, R.drawable.img_style_sketch, "#스케치"),
+    StyleModel(9, R.drawable.img_style_dreamlike, "#몽환적인"),
+    StyleModel(10, R.drawable.img_style_lonely, "#고독한"),
+    StyleModel(11, R.drawable.img_style_natural, "#자연적인"),
+    StyleModel(12, R.drawable.img_style_sketch, "#스케치"),
 )
 
 @Composable
 fun CheckableStyleImage(
-    images: ImmutableList<Pair<Int, String>>,
+    images: ImmutableList<StyleModel>,
     onStyleSelect: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var selectedItemIndex by remember { mutableStateOf<Int?>(null) }
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(count = 2),
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        columns = GridCells.Fixed(count = 3),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(34.dp),
+        horizontalArrangement = Arrangement.spacedBy(26.dp),
     ) {
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            },
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(32.dp))
+                Text(
+                    text = stringResource(id = R.string.what_style_prefer),
+                    style = Title1,
+                    color = Color.Black,
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = stringResource(id = R.string.creates_image_based_on_selected_style),
+                    style = Contents1,
+                    color = Gray500,
+                )
+                Spacer(modifier = Modifier.height(26.dp))
+            }
+        }
         items(
             count = images.size,
-            key = { index -> images[index].second },
+            key = { index -> images[index].styleId },
         ) { index ->
             val backgroundColor = if (selectedItemIndex == index) {
                 Blue600.copy(alpha = 0.6f)
@@ -171,17 +196,18 @@ fun CheckableStyleImage(
             }
             Box {
                 StyleImage(
-                    resId = images[index].first,
-                    style = images[index].second,
+                    resId = images[index].styleResId,
+                    style = images[index].styleText,
                     backgroundColor = backgroundColor,
                     contentDescription = "Style Image",
+                    isSelectedIndex = selectedItemIndex == index,
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
                         .fillMaxWidth()
                         .aspectRatio(1f)
                         .noRippleClickable {
                             selectedItemIndex = if (selectedItemIndex == index) null else index
-                            onStyleSelect(images[index].second)
+                            onStyleSelect(images[index].styleText)
                         },
                 )
             }

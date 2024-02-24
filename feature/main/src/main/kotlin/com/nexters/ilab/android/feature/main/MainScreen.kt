@@ -71,56 +71,56 @@ internal fun MainScreen(
 
     Scaffold(
         content = { padding ->
-            Box(
+            NavHost(
+                navController = navigator.navController,
+                startDestination = navigator.startDestination,
                 modifier = Modifier.fillMaxSize(),
             ) {
-                NavHost(
+                homeNavGraph(
+                    padding = padding,
+                    onSettingClick = navigator::navigateToSetting,
+                    onGenerateImgBtnClick = {
+                        navigator.navigate(MainTab.UPLOAD_PHOTO)
+                    },
+                    onShowErrorSnackBar = onShowErrorSnackBar,
+                )
+
+                uploadPhotoNavGraph(
                     navController = navigator.navController,
-                    startDestination = navigator.startDestination,
-                ) {
-                    homeNavGraph(
-                        padding = padding,
-                        onSettingClick = { navigator.navigateToSetting() },
-                        onShowErrorSnackBar = onShowErrorSnackBar,
-                    )
+                    onBackClick = navigator::popBackStackIfNotHome,
+                    onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
+                    onNavigateToUploadCheck = navigator::navigateToUploadCheck,
+                    onNavigateToInputStyle = navigator::navigateToInputStyle,
+                    onNavigateToCreateImage = navigator::navigateToCreateImage,
+                )
 
-                    uploadPhotoNavGraph(
-                        navController = navigator.navController,
-                        onBackClick = navigator::popBackStackIfNotHome,
-                        onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
-                        onNavigateToUploadCheck = navigator::navigateToUploadCheck,
-                        onNavigateToInputStyle = navigator::navigateToInputStyle,
-                        onNavigateToCreateImage = navigator::navigateToCreateImage,
-                    )
+                createImageNavGraph(
+                    navController = navigator.navController,
+                    onCloseClick = navigator::clearBackStack,
+                    onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
+                )
 
-                    createImageNavGraph(
-                        navController = navigator.navController,
-                        onCloseClick = navigator::clearBackStack,
-                        onNavigateToCreateImageComplete = navigator::navigateToCreateImageComplete,
-                    )
+                myPageNavGraph(
+                    navController = navigator.navController,
+                    padding = padding,
+                    onCloseClick = navigator::popBackStackIfNotHome,
+                    onSettingClick = { navigator.navigateToSetting() },
+                    onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
+                    onShowErrorSnackBar = onShowErrorSnackBar,
+                )
 
-                    myPageNavGraph(
-                        navController = navigator.navController,
-                        padding = padding,
-                        onCloseClick = navigator::popBackStackIfNotHome,
-                        onSettingClick = { navigator.navigateToSetting() },
-                        onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
-                        onShowErrorSnackBar = onShowErrorSnackBar,
-                    )
+                settingNavGraph(
+                    onBackClick = navigator::popBackStackIfNotHome,
+                    onChangeDarkTheme = onChangeDarkTheme,
+                    onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
+                    onLogoutClick = onLogoutClick,
+                    onDeleteAccountClick = onDeleteAccountClick,
+                    onShowErrorSnackBar = onShowErrorSnackBar,
+                )
 
-                    settingNavGraph(
-                        onBackClick = navigator::popBackStackIfNotHome,
-                        onChangeDarkTheme = onChangeDarkTheme,
-                        onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
-                        onLogoutClick = onLogoutClick,
-                        onDeleteAccountClick = onDeleteAccountClick,
-                        onShowErrorSnackBar = onShowErrorSnackBar,
-                    )
-
-                    privacyPolicyNavGraph(
-                        onCloseClick = navigator::popBackStackIfNotHome,
-                    )
-                }
+                privacyPolicyNavGraph(
+                    onCloseClick = navigator::popBackStackIfNotHome,
+                )
             }
         },
         bottomBar = {
