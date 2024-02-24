@@ -126,7 +126,7 @@ internal fun MyPageContent(
         columns = GridCells.Adaptive(minSize = 162.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp, bottom = 45.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp),
     ) {
         item(span = span) {
             Column(
@@ -150,6 +150,9 @@ internal fun MyPageContent(
                     index = iter,
                 )
             }
+        }
+        item(span = span) {
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
