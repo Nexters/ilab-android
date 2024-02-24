@@ -35,16 +35,19 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
-import com.nexters.ilab.android.feature.uploadphoto.model.StyleModel
+import com.nexters.ilab.android.core.domain.entity.StyleEntity
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
+import com.nexters.ilab.core.ui.ComponentPreview
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
+import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.StyleImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun InputStyleRoute(
@@ -59,6 +62,8 @@ internal fun InputStyleRoute(
         onBackClick = onBackClick,
         onStyleSelect = viewModel::setSelectedStyle,
         createProfileImage = onNavigateToCreateImage,
+        getStyleList = viewModel::getStyleList,
+        dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
     )
 }
 
@@ -68,15 +73,43 @@ internal fun InputStyleScreen(
     onBackClick: () -> Unit,
     onStyleSelect: (String) -> Unit,
     createProfileImage: () -> Unit,
+    getStyleList: () -> Unit,
+    dismissNetworkErrorDialog: () -> Unit,
 ) {
     Column {
+        if (uiState.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    dismissNetworkErrorDialog()
+                    getStyleList()
+                },
+            )
+        }
         InputStyleTopAppBar(onBackClick = onBackClick)
         InputStyleContent(
+            styleList = uiState.styleList.toImmutableList(),
             isStyleSelected = uiState.selectedStyle.isNotEmpty(),
             onStyleSelect = onStyleSelect,
             createProfileImage = createProfileImage,
         )
     }
+}
+
+@Composable
+internal fun NetworkErrorDialog(
+    onRetryClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.network_error_title,
+        iconResId = R.drawable.ic_network_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.network_error_description1,
+        secondDescriptionResId = R.string.network_error_description2,
+        confirmTextResId = R.string.network_error_confirm,
+        cancelTextResId = null,
+        onCancelClick = {},
+        onConfirmClick = onRetryClick,
+    )
 }
 
 @Composable
@@ -96,6 +129,7 @@ internal fun InputStyleTopAppBar(
 
 @Composable
 internal fun InputStyleContent(
+    styleList: ImmutableList<StyleEntity>,
     isStyleSelected: Boolean,
     createProfileImage: () -> Unit,
     onStyleSelect: (String) -> Unit,
@@ -106,8 +140,8 @@ internal fun InputStyleContent(
                 .fillMaxSize()
                 .padding(horizontal = 20.dp),
         ) {
-            CheckableStyleImage(
-                images = styleImages,
+            CheckableStyleImageList(
+                images = styleList,
                 onStyleSelect = onStyleSelect,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -135,24 +169,9 @@ internal fun InputStyleContent(
     }
 }
 
-val styleImages = persistentListOf(
-    StyleModel(1, R.drawable.img_style_dreamlike, "#몽환적인"),
-    StyleModel(2, R.drawable.img_style_lonely, "#고독한"),
-    StyleModel(3, R.drawable.img_style_natural, "#자연적인"),
-    StyleModel(4, R.drawable.img_style_sketch, "#스케치"),
-    StyleModel(5, R.drawable.img_style_dreamlike, "#몽환적인"),
-    StyleModel(6, R.drawable.img_style_lonely, "#고독한"),
-    StyleModel(7, R.drawable.img_style_natural, "#자연적인"),
-    StyleModel(8, R.drawable.img_style_sketch, "#스케치"),
-    StyleModel(9, R.drawable.img_style_dreamlike, "#몽환적인"),
-    StyleModel(10, R.drawable.img_style_lonely, "#고독한"),
-    StyleModel(11, R.drawable.img_style_natural, "#자연적인"),
-    StyleModel(12, R.drawable.img_style_sketch, "#스케치"),
-)
-
 @Composable
-fun CheckableStyleImage(
-    images: ImmutableList<StyleModel>,
+fun CheckableStyleImageList(
+    images: ImmutableList<StyleEntity>,
     onStyleSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -187,30 +206,28 @@ fun CheckableStyleImage(
         }
         items(
             count = images.size,
-            key = { index -> images[index].styleId },
+            key = { index -> images[index].id },
         ) { index ->
             val backgroundColor = if (selectedItemIndex == index) {
                 Blue600.copy(alpha = 0.6f)
             } else {
                 Color.Transparent
             }
-            Box {
-                StyleImage(
-                    resId = images[index].styleResId,
-                    style = images[index].styleText,
-                    backgroundColor = backgroundColor,
-                    contentDescription = "Style Image",
-                    isSelectedIndex = selectedItemIndex == index,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                        .noRippleClickable {
-                            selectedItemIndex = if (selectedItemIndex == index) null else index
-                            onStyleSelect(images[index].styleText)
-                        },
-                )
-            }
+            StyleImage(
+                imageUrl = images[index].defaultImageUrl,
+                styleName = "#${images[index].name}",
+                backgroundColor = backgroundColor,
+                contentDescription = "Style Image",
+                isSelectedIndex = selectedItemIndex == index,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .noRippleClickable {
+                        selectedItemIndex = if (selectedItemIndex == index) null else index
+                        onStyleSelect(images[index].name)
+                    },
+            )
         }
     }
 }
@@ -222,6 +239,24 @@ fun InputStyleScreenPreview() {
         uiState = UploadPhotoState(),
         onBackClick = {},
         onStyleSelect = {},
+        getStyleList = {},
+        dismissNetworkErrorDialog = {},
         createProfileImage = {},
+    )
+}
+
+@ComponentPreview
+@Composable
+fun CheckableStyleImageListPreview() {
+    CheckableStyleImageList(
+        images = persistentListOf(
+            StyleEntity(
+                id = 0,
+                name = "ㅇㅇ",
+                presetStyle = "ㅇㅇ",
+                defaultImageUrl = "",
+            ),
+        ),
+        onStyleSelect = {},
     )
 }

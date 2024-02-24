@@ -1,7 +1,9 @@
-package com.nexters.ilab.android.core.network.di
+package com.nexters.ilab.android.core.data.di
 
-import com.nexters.ilab.android.core.network.service.ILabService
-import com.nexters.ilab.android.core.network.service.LoginService
+import com.nexters.ilab.android.core.data.service.ILabService
+import com.nexters.ilab.android.core.data.service.LoginService
+import com.nexters.ilab.android.core.network.di.ILabApi
+import com.nexters.ilab.android.core.network.di.LoginApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
