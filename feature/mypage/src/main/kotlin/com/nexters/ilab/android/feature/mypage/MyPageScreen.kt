@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,9 +47,16 @@ import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.android.core.domain.entity.UserInfoEntity
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyAlbum
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.LoadingIndicator
+import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
+import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
 @Suppress("unused")
@@ -73,6 +81,9 @@ internal fun MyPageRoute(
         onSettingClick = onSettingClick,
         onMoreBtnClick = {},
         onNavigateToMyAlbumImage = navigateToMyAlbum,
+        getUserInfo = viewModel::getUserInfo,
+        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
+        dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
     )
 }
 
@@ -83,6 +94,9 @@ internal fun MyPageScreen(
     onSettingClick: () -> Unit,
     onMoreBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
+    getUserInfo: () -> Unit,
+    dismissServerErrorDialog: () -> Unit,
+    dismissNetworkErrorDialog: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -90,8 +104,28 @@ internal fun MyPageScreen(
             .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+        if (uiState.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    dismissServerErrorDialog()
+                    getUserInfo()
+                },
+            )
+        }
+        if (uiState.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    dismissNetworkErrorDialog()
+                    getUserInfo()
+                },
+            )
+        }
         MyPageTopAppBar(onSettingClick)
         MyPageContent(
+            userInfo = uiState.userInfo,
             myAlbumImageList = uiState.myAlbumImageList,
             onMoreBtnClick = onMoreBtnClick,
             onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
@@ -115,6 +149,7 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
 
 @Composable
 internal fun MyPageContent(
+    userInfo: UserInfoEntity,
     myAlbumImageList: List<MyAlbum>,
     onMoreBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
@@ -128,13 +163,20 @@ internal fun MyPageContent(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp),
     ) {
-        item(span = span) {
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            },
+        ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                MyPageContentUser(myAlbumCount)
+                MyPageContentUser(
+                    userInfo = userInfo,
+                    albumImgCount = myAlbumCount,
+                )
             }
         }
         if (myAlbumCount == 0) {
@@ -158,19 +200,32 @@ internal fun MyPageContent(
 }
 
 @Composable
-internal fun MyPageContentUser(albumImgCount: Int) {
+internal fun MyPageContentUser(
+    userInfo: UserInfoEntity,
+    albumImgCount: Int,
+) {
     Spacer(modifier = Modifier.height(32.dp))
-    // UI 구현 용으로 프로필 url 대신 기본 Image 사용
-    Image(
-        painter = painterResource(R.drawable.ic_profile),
-        contentDescription = "profile image",
-        contentScale = ContentScale.Fit,
-        alignment = Alignment.Center,
-        modifier = Modifier.size(100.dp),
-    )
+    if (userInfo.profileImageUrl.isEmpty()) {
+        Image(
+            painter = painterResource(R.drawable.ic_profile),
+            contentDescription = "profile image",
+            contentScale = ContentScale.Fit,
+            alignment = Alignment.Center,
+            modifier = Modifier.size(100.dp),
+        )
+    } else {
+        NetworkImage(
+            imageUrl = userInfo.profileImageUrl,
+            contentDescription = "profile Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape),
+        )
+    }
     Spacer(modifier = Modifier.height(20.dp))
     Text(
-        text = "name" + stringResource(id = R.string.mypage_name_postfix),
+        text = userInfo.nickname,
         style = Title2,
         color = Gray900,
     )
@@ -269,6 +324,9 @@ fun MyPageScreenPreview() {
         onSettingClick = {},
         onMoreBtnClick = {},
         onNavigateToMyAlbumImage = {},
+        getUserInfo = {},
+        dismissNetworkErrorDialog = {},
+        dismissServerErrorDialog = {},
     )
 }
 

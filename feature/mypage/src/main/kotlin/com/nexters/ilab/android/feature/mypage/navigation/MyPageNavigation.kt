@@ -10,7 +10,7 @@ import androidx.navigation.navigation
 import com.nexters.ilab.android.core.common.extension.sharedViewModel
 import com.nexters.ilab.android.feature.mypage.MyAlbumImageRoute
 import com.nexters.ilab.android.feature.mypage.MyPageRoute
-import com.nexters.ilab.android.feature.mypage.MyPageViewModel
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 
 const val MY_PAGE_ROUTE = "my_page_route"
 const val MY_PROFILE_ROUTE = "my_profile_route"

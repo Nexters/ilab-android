@@ -15,12 +15,20 @@ class TokenRepositoryImpl @Inject constructor(
         dataSource.setRefreshToken(refreshToken)
     }
 
+    override suspend fun setUUID(uuid: Long) {
+        dataSource.setUUID(uuid)
+    }
+
     override suspend fun getAccessToken(): String {
         return dataSource.getAccessToken()
     }
 
     override suspend fun getRefreshToken(): String {
         return dataSource.getRefreshToken()
+    }
+
+    override suspend fun getUUID(): Long {
+        return dataSource.getUUID()
     }
 
     override suspend fun clear() {

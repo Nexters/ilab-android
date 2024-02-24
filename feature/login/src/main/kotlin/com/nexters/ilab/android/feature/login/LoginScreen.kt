@@ -73,6 +73,7 @@ internal fun LoginRoute(
                             resource.getString(R.string.unknown_error_message)
                         }
                     }
+
                     else -> resource.getString(R.string.unknown_error_message)
                 },
             )
@@ -95,8 +96,8 @@ internal fun LoginRoute(
 
             token != null -> UserApiClient.instance.me { user, _ ->
                 user?.let {
-                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.email}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
-                    viewModel.kakaoLogin(token.accessToken)
+                    Timber.d("로그인 성공: ${token.accessToken}, ${"${it.id}"} ${it.kakaoAccount?.email}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
+                    viewModel.kakaoLogin(token.accessToken, it.id!!)
                 } ?: viewModel.setErrorMessage(UiText.StringResource(R.string.unknown_error_message))
             }
 
@@ -119,6 +120,7 @@ internal fun LoginRoute(
                 is LoginSideEffect.LoginFail -> {
                     onShowErrorSnackBar(sideEffect.throwable)
                 }
+
                 is LoginSideEffect.ShowToast -> Toast.makeText(context, sideEffect.message.asString(context), Toast.LENGTH_SHORT).show()
             }
         }

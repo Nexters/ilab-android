@@ -16,5 +16,6 @@ dependencies {
 
         libs.bundles.coil,
         libs.lottie.compose,
+        libs.timber,
     )
 }
