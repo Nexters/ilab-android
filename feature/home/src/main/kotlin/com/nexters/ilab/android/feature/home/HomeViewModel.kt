@@ -45,4 +45,19 @@ class HomeViewModel @Inject constructor() : ViewModel(), ContainerHost<HomeState
             }
         }
     }
+
+    fun openProfileImageDialog(index: Int) = intent {
+        reduce {
+            state.copy(isProfileImageDialogVisible = true)
+        }
+        reduce {
+            state.copy(selectedIndex = index)
+        }
+    }
+
+    fun dismissProfileImageDialog() = intent {
+        reduce {
+            state.copy(isProfileImageDialogVisible = false)
+        }
+    }
 }

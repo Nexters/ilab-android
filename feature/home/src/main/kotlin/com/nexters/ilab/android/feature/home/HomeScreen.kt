@@ -1,11 +1,14 @@
 package com.nexters.ilab.android.feature.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +23,10 @@ import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +34,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -42,6 +53,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.core.ui.ComponentPreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
@@ -65,6 +77,8 @@ internal fun HomeRoute(
         padding = padding,
         onSettingClick = onSettingClick,
         onGenerateImgBtnClick = onGenerateImgBtnClick,
+        openProfileImageDialog = viewModel::openProfileImageDialog,
+        dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
     )
 }
 
@@ -74,6 +88,8 @@ internal fun HomeScreen(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onGenerateImgBtnClick: () -> Unit,
+    openProfileImageDialog: (Int) -> Unit,
+    dismissProfileImageDialog: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -81,11 +97,22 @@ internal fun HomeScreen(
             .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isProfileImageDialogVisible) {
+            ProfileImageDialog(
+                profileImage = uiState.profileImageList[uiState.selectedIndex],
+                onCloseClick = dismissProfileImageDialog,
+                onGenerateImgBtnClickClick = {
+                    dismissProfileImageDialog()
+                    onGenerateImgBtnClick()
+                },
+            )
+        }
         HomeTopAppBar(onSettingClick)
         HomeContent(
             styleImageList = uiState.styleImageList,
             profileImageList = uiState.profileImageList,
             onGenerateImgBtnClick = onGenerateImgBtnClick,
+            openProfileImageDialog = openProfileImageDialog,
         )
     }
 }
@@ -110,6 +137,7 @@ internal fun HomeContent(
     styleImageList: List<ProfileImage>,
     profileImageList: List<ProfileImage>,
     onGenerateImgBtnClick: () -> Unit,
+    openProfileImageDialog: (Int) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val imgSize = (configuration.screenWidthDp - 52)
@@ -137,6 +165,7 @@ internal fun HomeContent(
                 imageRatio = imageRatio,
                 startDp = startDp,
                 endDp = endDp,
+                openProfileImageDialog = { openProfileImageDialog(index) },
             )
         }
 
@@ -233,13 +262,14 @@ internal fun KeywordSampleImageItem(
     imageRatio: Dp,
     startDp: Dp,
     endDp: Dp,
+    openProfileImageDialog: () -> Unit,
 ) {
     Box(
         modifier = Modifier
             .height(imageRatio)
             .padding(start = startDp, end = endDp)
-            .clip(RoundedCornerShape(12.dp)),
-
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = openProfileImageDialog),
         contentAlignment = Alignment.Center,
     ) {
         NetworkImage(
@@ -258,6 +288,75 @@ internal fun KeywordSampleImageItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun ProfileImageDialog(
+    profileImage: ProfileImage,
+    onCloseClick: () -> Unit,
+    onGenerateImgBtnClickClick: () -> Unit,
+) {
+    BasicAlertDialog(
+        onDismissRequest = onCloseClick,
+        modifier = Modifier
+            .aspectRatio(9f / 12f)
+            .clip(RoundedCornerShape(12.dp)),
+    ) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            NetworkImage(
+                imageUrl = profileImage.profileImage,
+                contentDescription = "Profile Image",
+                modifier = Modifier.fillMaxSize(),
+            )
+            Image(
+                painter = painterResource(id = R.drawable.bg_img_dim),
+                contentDescription = "Background Dim",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.FillBounds,
+            )
+            IconButton(
+                onClick = onCloseClick,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 16.dp, end = 16.dp)
+                    .size(40.dp),
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_profile_close),
+                    contentDescription = "Close",
+                    tint = Color.Unspecified,
+                )
+            }
+
+            Column {
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "#" + profileImage.profileKeyword,
+                    color = Color.White,
+                    style = Title1,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                ILabButton(
+                    onClick = onGenerateImgBtnClickClick,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, bottom = 16.dp)
+                        .height(48.dp),
+                    containerColor = Blue600,
+                    contentColor = Color.White,
+                    text = {
+                        Text(
+                            text = stringResource(id = R.string.home_generate_img_with_this_style),
+                            style = Subtitle1,
+                        )
+                    },
+                )
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 internal fun previewHomeScreen() {
@@ -266,5 +365,17 @@ internal fun previewHomeScreen() {
         padding = PaddingValues(0.dp),
         onSettingClick = {},
         onGenerateImgBtnClick = {},
+        openProfileImageDialog = {},
+        dismissProfileImageDialog = {},
+    )
+}
+
+@ComponentPreview
+@Composable
+fun ProfileImageDialogPreview() {
+    ProfileImageDialog(
+        profileImage = ProfileImage(),
+        onCloseClick = {},
+        onGenerateImgBtnClickClick = {},
     )
 }
