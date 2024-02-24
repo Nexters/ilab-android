@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -49,6 +50,7 @@ internal fun SettingRoute(
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val appVersionInfo = viewModel.getVersionInfo(LocalContext.current)
 
     SettingScreen(
         uiState = uiState,
@@ -59,6 +61,7 @@ internal fun SettingRoute(
         onDeleteAccountClick = onDeleteAccountClick,
         openDeleteAccountDialog = viewModel::openDeleteAccountDialog,
         dismissDeleteAccountDialog = viewModel::dismissDeleteAccountDialog,
+        appVersionInfo = appVersionInfo,
     )
 }
 
@@ -73,6 +76,7 @@ internal fun SettingScreen(
     onDeleteAccountClick: () -> Unit,
     openDeleteAccountDialog: () -> Unit,
     dismissDeleteAccountDialog: () -> Unit,
+    appVersionInfo: String,
 ) {
     Column(
         modifier = Modifier
@@ -95,6 +99,7 @@ internal fun SettingScreen(
             onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
             onLogoutClick = onLogoutClick,
             openDeleteAccountDialog = openDeleteAccountDialog,
+            appVersionInfo = appVersionInfo,
         )
     }
 }
@@ -104,6 +109,7 @@ internal fun SettingContent(
     onNavigateToPrivacyPolicy: () -> Unit,
     onLogoutClick: () -> Unit,
     openDeleteAccountDialog: () -> Unit,
+    appVersionInfo: String,
 ) {
     SettingCellNavigation(
         stringId = R.string.setting_privacy,
@@ -117,7 +123,7 @@ internal fun SettingContent(
     )
     SettingCellText(
         stringId = R.string.setting_current_version,
-        version = "1.0.0",
+        version = appVersionInfo,
     )
     Spacer(
         modifier = Modifier
@@ -243,5 +249,6 @@ fun SettingScreenPreview() {
         onDeleteAccountClick = {},
         openDeleteAccountDialog = {},
         dismissDeleteAccountDialog = {},
+        appVersionInfo = "",
     )
 }
