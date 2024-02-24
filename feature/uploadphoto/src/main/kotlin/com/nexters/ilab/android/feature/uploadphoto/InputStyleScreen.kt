@@ -43,6 +43,7 @@ import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.StyleImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
@@ -77,6 +78,9 @@ internal fun InputStyleScreen(
     dismissNetworkErrorDialog: () -> Unit,
 ) {
     Column {
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
         if (uiState.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
                 onRetryClick = {
@@ -253,7 +257,6 @@ fun CheckableStyleImageListPreview() {
             StyleEntity(
                 id = 0,
                 name = "ㅇㅇ",
-                presetStyle = "ㅇㅇ",
                 defaultImageUrl = "",
             ),
         ),

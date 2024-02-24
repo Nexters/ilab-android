@@ -38,6 +38,9 @@ class UploadPhotoViewModel @Inject constructor(
 
     fun getStyleList() = intent {
         viewModelScope.launch {
+            reduce {
+                state.copy(isLoading = true)
+            }
             styleRepository.getStyleList()
                 .onSuccess { styleList ->
                     Timber.d("$styleList")
@@ -57,6 +60,9 @@ class UploadPhotoViewModel @Inject constructor(
                         }
                     }
                 }
+            reduce {
+                state.copy(isLoading = false)
+            }
         }
     }
 

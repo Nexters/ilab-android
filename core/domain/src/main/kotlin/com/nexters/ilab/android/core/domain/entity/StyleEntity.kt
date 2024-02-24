@@ -6,6 +6,5 @@ import androidx.compose.runtime.Stable
 data class StyleEntity(
     val id: Int,
     val name: String,
-    val presetStyle: String,
     val defaultImageUrl: String,
 )

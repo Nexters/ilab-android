@@ -7,6 +7,5 @@ internal fun StyleResponse.toEntity() =
     StyleEntity(
         id = id,
         name = name,
-        presetStyle = presetStyle,
         defaultImageUrl = defaultImageUrl,
     )

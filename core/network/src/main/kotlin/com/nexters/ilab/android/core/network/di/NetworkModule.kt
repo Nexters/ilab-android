@@ -15,7 +15,7 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-private const val MaxTimeoutMillis = 15_000L
+private const val MaxTimeoutMillis = 60_000L
 
 private val jsonRule = Json {
     encodeDefaults = true
