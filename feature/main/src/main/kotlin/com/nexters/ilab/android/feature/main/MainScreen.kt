@@ -80,7 +80,10 @@ internal fun MainScreen(
                 ) {
                     homeNavGraph(
                         padding = padding,
-                        onSettingClick = { navigator.navigateToSetting() },
+                        onSettingClick = navigator::navigateToSetting,
+                        onGenerateImgBtnClick = {
+                            navigator.navigate(MainTab.UPLOAD_PHOTO)
+                        },
                         onShowErrorSnackBar = onShowErrorSnackBar,
                     )
 

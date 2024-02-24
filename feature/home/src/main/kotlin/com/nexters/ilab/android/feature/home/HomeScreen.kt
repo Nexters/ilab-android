@@ -54,6 +54,7 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 internal fun HomeRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
+    onGenerateImgBtnClick: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -63,6 +64,7 @@ internal fun HomeRoute(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
+        onGenerateImgBtnClick = onGenerateImgBtnClick,
     )
 }
 
@@ -71,6 +73,7 @@ internal fun HomeScreen(
     uiState: HomeState,
     padding: PaddingValues,
     onSettingClick: () -> Unit,
+    onGenerateImgBtnClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -82,7 +85,7 @@ internal fun HomeScreen(
         HomeContent(
             styleImageList = uiState.styleImageList,
             profileImageList = uiState.profileImageList,
-            onGenerateImgBtnClick = {},
+            onGenerateImgBtnClick = onGenerateImgBtnClick,
         )
     }
 }
@@ -160,7 +163,6 @@ internal fun HomeKeywordView(
                 .fillMaxWidth()
                 .wrapContentHeight(),
         )
-
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
@@ -259,5 +261,10 @@ internal fun KeywordSampleImageItem(
 @Preview(showBackground = true)
 @Composable
 internal fun previewHomeScreen() {
-    HomeScreen(HomeState(), PaddingValues(0.dp), {})
+    HomeScreen(
+        uiState = HomeState(),
+        padding = PaddingValues(0.dp),
+        onSettingClick = {},
+        onGenerateImgBtnClick = {},
+    )
 }
