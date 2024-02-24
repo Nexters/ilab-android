@@ -211,7 +211,7 @@ internal fun HomeKeywordView(
                 contentColor = Color.White,
                 text = {
                     Text(
-                        text = stringResource(id = R.string.home_generate_img_with_this_keyword),
+                        text = stringResource(id = R.string.home_generate_img_with_this_style),
                         style = Subtitle1,
                     )
                 },
