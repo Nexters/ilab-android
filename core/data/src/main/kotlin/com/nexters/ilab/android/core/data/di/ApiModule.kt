@@ -1,7 +1,7 @@
 package com.nexters.ilab.android.core.data.di
 
 import com.nexters.ilab.android.core.data.service.ILabService
-import com.nexters.ilab.android.core.data.service.LoginService
+import com.nexters.ilab.android.core.data.service.AuthService
 import com.nexters.ilab.android.core.network.di.ILabApi
 import com.nexters.ilab.android.core.network.di.LoginApi
 import dagger.Module
@@ -27,7 +27,7 @@ internal object ApiModule {
     @Provides
     internal fun provideLoginService(
         @LoginApi retrofit: Retrofit,
-    ): LoginService {
-        return retrofit.create(LoginService::class.java)
+    ): AuthService {
+        return retrofit.create(AuthService::class.java)
     }
 }

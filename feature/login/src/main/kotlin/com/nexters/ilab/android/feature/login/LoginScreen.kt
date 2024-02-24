@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,9 +36,13 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Kakao
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
+import com.nexters.ilab.android.feature.login.viewmodel.LoginSideEffect
+import com.nexters.ilab.android.feature.login.viewmodel.LoginState
+import com.nexters.ilab.android.feature.login.viewmodel.LoginViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
+import com.nexters.ilab.core.ui.component.LoadingIndicator
 import timber.log.Timber
 
 @Composable
@@ -66,8 +69,8 @@ internal fun LoginRoute(
 
             token != null -> UserApiClient.instance.me { user, _ ->
                 user?.let {
-                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
-                    viewModel.kakaoLogin()
+                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.email}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
+                    viewModel.kakaoLogin(token.accessToken)
                 } ?: viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_unknown))
             }
 
@@ -87,6 +90,9 @@ internal fun LoginRoute(
                 }
 
                 is LoginSideEffect.LoginSuccess -> navigateToHome()
+                is LoginSideEffect.LoginFail -> {
+                    Toast.makeText(context, "${sideEffect.throwable}", Toast.LENGTH_SHORT).show()
+                }
                 is LoginSideEffect.ShowToast -> Toast.makeText(context, sideEffect.message.asString(context), Toast.LENGTH_SHORT).show()
             }
         }
@@ -104,7 +110,7 @@ internal fun LoginScreen(
     onLoginClick: () -> Unit,
 ) {
     if (uiState.isLoading) {
-        CircularProgressIndicator()
+        LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
