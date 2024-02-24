@@ -7,5 +7,5 @@ data class StyleEntity(
     val id: Int,
     val name: String,
     val presetStyle: String,
-    val defaultImageUrl: String
+    val defaultImageUrl: String,
 )
