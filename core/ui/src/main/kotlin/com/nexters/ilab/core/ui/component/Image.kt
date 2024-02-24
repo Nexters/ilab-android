@@ -4,6 +4,8 @@ import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,17 +21,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -109,6 +114,7 @@ fun StyleImage(
     resId: Int,
     style: String,
     contentDescription: String,
+    isSelectedIndex: Boolean,
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.Transparent,
 ) {
@@ -124,28 +130,41 @@ fun StyleImage(
                 .aspectRatio(1f),
         )
     } else {
-        Box {
-            AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(resId)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = contentDescription,
-                contentScale = ContentScale.Fit,
-                modifier = modifier,
-            )
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .background(backgroundColor),
-            )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box {
+                AsyncImage(
+                    model = ImageRequest.Builder(context)
+                        .data(resId)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = contentDescription,
+                    contentScale = ContentScale.Fit,
+                    modifier = modifier,
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .background(backgroundColor),
+                ) {
+                    if (isSelectedIndex) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_check),
+                            contentDescription = "Check Icon",
+                            modifier = Modifier.align(Alignment.Center),
+                            tint = Color.Unspecified,
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = style,
-                style = Title2,
-                color = Color.White,
-                modifier = Modifier.align(Alignment.Center),
+                style = Contents2,
+                color = Color.Black,
             )
         }
     }
@@ -228,10 +247,22 @@ fun LoadingImagePreview() {
 
 @ComponentPreview
 @Composable
-fun StyleImagePreview() {
+fun UnSelectedStyleImagePreview() {
     StyleImage(
         resId = 0,
         style = "#스타일",
         contentDescription = "Style Image",
+        isSelectedIndex = false,
+    )
+}
+
+@ComponentPreview
+@Composable
+fun SelectedStyleImagePreview() {
+    StyleImage(
+        resId = 0,
+        style = "#스타일",
+        contentDescription = "Style Image",
+        isSelectedIndex = true,
     )
 }
