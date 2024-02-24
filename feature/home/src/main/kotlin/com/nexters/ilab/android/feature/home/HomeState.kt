@@ -1,13 +1,14 @@
 package com.nexters.ilab.android.feature.home
 
-data class ProfileImage(
-    val profileImage: String = "",
-    val profileKeyword: String = "",
-)
+import com.nexters.ilab.android.core.domain.entity.ProfileEntity
+import com.nexters.ilab.android.core.domain.entity.StyleEntity
+
 data class HomeState(
     val isLoading: Boolean = false,
-    val styleImageList: List<ProfileImage> = emptyList(),
-    val profileImageList: List<ProfileImage> = emptyList(),
+    val styleImageList: List<StyleEntity> = emptyList(),
+    val profileImageList: List<ProfileEntity> = emptyList(),
     val isProfileImageDialogVisible: Boolean = false,
-    val selectedIndex: Int = 0,
+    val isNetworkErrorDialogVisible: Boolean = false,
+    val selectedProfileEntity: ProfileEntity = ProfileEntity("", "", ""),
+    val selectedStyleEntity: StyleEntity = StyleEntity(0, "", ""),
 )
