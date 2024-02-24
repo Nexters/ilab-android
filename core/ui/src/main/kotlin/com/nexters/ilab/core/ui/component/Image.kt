@@ -30,14 +30,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.core.ui.ComponentPreview
-import timber.log.Timber
 
 @Composable
 fun ExampleImage(
@@ -89,19 +87,6 @@ fun NetworkImage(
             contentDescription = contentDescription,
             contentScale = contentScale,
             modifier = modifier,
-            onState = { state ->
-                when (state) {
-                    is AsyncImagePainter.State.Success -> {
-                        Timber.d("load success")
-                    }
-
-                    is AsyncImagePainter.State.Error -> {
-                        Timber.e("${state.result.throwable}")
-                    }
-
-                    else -> {}
-                }
-            },
         )
     }
 }

@@ -15,7 +15,5 @@ dependencies {
         projects.core.common,
 
         libs.bundles.coil,
-        libs.lottie.compose,
-        libs.timber,
     )
 }
