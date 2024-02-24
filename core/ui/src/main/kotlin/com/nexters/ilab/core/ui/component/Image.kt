@@ -131,7 +131,7 @@ fun StyleImage(
         )
     } else {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box {
                 AsyncImage(
