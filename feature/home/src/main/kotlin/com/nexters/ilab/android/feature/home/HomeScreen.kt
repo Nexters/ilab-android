@@ -1,6 +1,5 @@
 package com.nexters.ilab.android.feature.home
 
-import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -40,7 +39,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -68,7 +66,6 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Suppress("unused")
 @Composable
