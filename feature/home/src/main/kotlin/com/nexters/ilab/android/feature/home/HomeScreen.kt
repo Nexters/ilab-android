@@ -1,5 +1,6 @@
 package com.nexters.ilab.android.feature.home
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -29,7 +30,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +40,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -53,13 +57,18 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.android.core.domain.entity.ProfileEntity
+import com.nexters.ilab.android.core.domain.entity.StyleEntity
 import com.nexters.ilab.core.ui.ComponentPreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
+import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Suppress("unused")
 @Composable
@@ -79,6 +88,9 @@ internal fun HomeRoute(
         onGenerateImgBtnClick = onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
+        getStyleList = viewModel::getStyleList,
+        dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
+        setSelectedStyleImage = viewModel::setSelectedStyleImage,
     )
 }
 
@@ -90,6 +102,9 @@ internal fun HomeScreen(
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     dismissProfileImageDialog: () -> Unit,
+    getStyleList: () -> Unit,
+    dismissNetworkErrorDialog: () -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -97,9 +112,21 @@ internal fun HomeScreen(
             .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+        if (uiState.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    dismissNetworkErrorDialog()
+                    getStyleList()
+                    // todo: getProfileList
+                },
+            )
+        }
         if (uiState.isProfileImageDialogVisible) {
             ProfileImageDialog(
-                profileImage = uiState.profileImageList[uiState.selectedIndex],
+                profileImage = uiState.selectedProfileEntity,
                 onCloseClick = dismissProfileImageDialog,
                 onGenerateImgBtnClickClick = {
                     dismissProfileImageDialog()
@@ -113,6 +140,7 @@ internal fun HomeScreen(
             profileImageList = uiState.profileImageList,
             onGenerateImgBtnClick = onGenerateImgBtnClick,
             openProfileImageDialog = openProfileImageDialog,
+            setSelectedStyleImage = setSelectedStyleImage,
         )
     }
 }
@@ -134,10 +162,11 @@ internal fun HomeTopAppBar(onSettingClick: () -> Unit) {
 
 @Composable
 internal fun HomeContent(
-    styleImageList: List<ProfileImage>,
-    profileImageList: List<ProfileImage>,
+    styleImageList: List<StyleEntity>,
+    profileImageList: List<ProfileEntity>,
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val imgSize = (configuration.screenWidthDp - 52)
@@ -152,6 +181,7 @@ internal fun HomeContent(
             HomeKeywordView(
                 styleImageList = styleImageList,
                 onGenerateImgBtnClick = onGenerateImgBtnClick,
+                setSelectedStyleImage = setSelectedStyleImage,
             )
         }
 
@@ -178,11 +208,18 @@ internal fun HomeContent(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeKeywordView(
-    styleImageList: List<ProfileImage>,
+    styleImageList: List<StyleEntity>,
     onGenerateImgBtnClick: () -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     val pageCount = styleImageList.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            setSelectedStyleImage(page)
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
@@ -208,13 +245,13 @@ internal fun HomeKeywordView(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = "#" + styleImageList[page].profileKeyword,
+                        text = "#" + styleImageList[page].name,
                         textAlign = TextAlign.Center,
                         style = Title1,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     NetworkImage(
-                        imageUrl = styleImageList[page].profileImage,
+                        imageUrl = styleImageList[page].defaultImageUrl,
                         contentDescription = "Style Image Example ${page + 1}",
                         modifier = Modifier
                             .clip(RoundedCornerShape(topStart = 999.dp, topEnd = 999.dp))
@@ -258,7 +295,7 @@ internal fun HomeKeywordView(
 
 @Composable
 internal fun KeywordSampleImageItem(
-    profileImage: ProfileImage,
+    profileImage: ProfileEntity,
     imageRatio: Dp,
     startDp: Dp,
     endDp: Dp,
@@ -273,12 +310,12 @@ internal fun KeywordSampleImageItem(
         contentAlignment = Alignment.Center,
     ) {
         NetworkImage(
-            imageUrl = profileImage.profileImage,
+            imageUrl = profileImage.imageUrl,
             contentDescription = "Profile Image",
             modifier = Modifier.fillMaxSize(),
         )
         Text(
-            text = "#" + profileImage.profileKeyword,
+            text = "#" + profileImage.name,
             style = Subtitle1,
             color = Color.White,
             modifier = Modifier
@@ -291,7 +328,7 @@ internal fun KeywordSampleImageItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileImageDialog(
-    profileImage: ProfileImage,
+    profileImage: ProfileEntity,
     onCloseClick: () -> Unit,
     onGenerateImgBtnClickClick: () -> Unit,
 ) {
@@ -303,7 +340,7 @@ internal fun ProfileImageDialog(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             NetworkImage(
-                imageUrl = profileImage.profileImage,
+                imageUrl = profileImage.imageUrl,
                 contentDescription = "Profile Image",
                 modifier = Modifier.fillMaxSize(),
             )
@@ -330,7 +367,7 @@ internal fun ProfileImageDialog(
             Column {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "#" + profileImage.profileKeyword,
+                    text = "#" + profileImage.name,
                     color = Color.White,
                     style = Title1,
                     modifier = Modifier.fillMaxWidth(),
@@ -357,6 +394,23 @@ internal fun ProfileImageDialog(
     }
 }
 
+@Composable
+internal fun NetworkErrorDialog(
+    onRetryClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.network_error_title,
+        iconResId = R.drawable.ic_network_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.network_error_description1,
+        secondDescriptionResId = R.string.network_error_description2,
+        confirmTextResId = R.string.network_error_confirm,
+        cancelTextResId = null,
+        onCancelClick = {},
+        onConfirmClick = onRetryClick,
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 internal fun previewHomeScreen() {
@@ -367,6 +421,9 @@ internal fun previewHomeScreen() {
         onGenerateImgBtnClick = {},
         openProfileImageDialog = {},
         dismissProfileImageDialog = {},
+        getStyleList = {},
+        dismissNetworkErrorDialog = {},
+        setSelectedStyleImage = {},
     )
 }
 
@@ -374,7 +431,7 @@ internal fun previewHomeScreen() {
 @Composable
 fun ProfileImageDialogPreview() {
     ProfileImageDialog(
-        profileImage = ProfileImage(),
+        profileImage = ProfileEntity("", "", ""),
         onCloseClick = {},
         onGenerateImgBtnClickClick = {},
     )
