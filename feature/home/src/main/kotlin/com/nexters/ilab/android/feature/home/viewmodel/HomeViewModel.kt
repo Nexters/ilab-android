@@ -70,12 +70,15 @@ class HomeViewModel @Inject constructor(
                                 Timber.e(exception)
                             }
                         }
+
                         is UnknownHostException -> {
                             openNetworkErrorDialog()
                         }
+
                         is SocketTimeoutException -> {
                             openServerErrorDialog()
                         }
+
                         else -> {
                             Timber.e(exception)
                         }
@@ -96,7 +99,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onGenerateImageClick() = intent {
-        postSideEffect(HomeSideEffect.NavigateToUploadPhoto(state.selectedStyle.name))
+        postSideEffect(
+            HomeSideEffect.NavigateToUploadPhoto(
+                if (state.selectedStyle.name.isEmpty()) {
+                    state.styleImageList[0].name
+                } else {
+                    state.selectedStyle.name
+                }
+            ),
+        )
     }
 
     fun openProfileImageDialog(index: Int) = intent {
