@@ -56,6 +56,8 @@ import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.ProfileEntity
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
+import com.nexters.ilab.android.feature.home.viewmodel.HomeState
+import com.nexters.ilab.android.feature.home.viewmodel.HomeViewModel
 import com.nexters.ilab.core.ui.ComponentPreview
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
@@ -65,6 +67,7 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
+import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
 @Suppress("unused")
@@ -87,6 +90,7 @@ internal fun HomeRoute(
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
         getStyleList = viewModel::getStyleList,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
+        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         setSelectedStyleImage = viewModel::setSelectedStyleImage,
     )
 }
@@ -101,6 +105,7 @@ internal fun HomeScreen(
     dismissProfileImageDialog: () -> Unit,
     getStyleList: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
+    dismissServerErrorDialog: () -> Unit,
     setSelectedStyleImage: (Int) -> Unit,
 ) {
     Column(
@@ -111,6 +116,15 @@ internal fun HomeScreen(
     ) {
         if (uiState.isLoading) {
             LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+        if (uiState.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    dismissServerErrorDialog()
+                    getStyleList()
+                    // todo: getProfileList
+                },
+            )
         }
         if (uiState.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
@@ -403,6 +417,7 @@ internal fun HomeScreenPreview() {
         dismissProfileImageDialog = {},
         getStyleList = {},
         dismissNetworkErrorDialog = {},
+        dismissServerErrorDialog = {},
         setSelectedStyleImage = {},
     )
 }

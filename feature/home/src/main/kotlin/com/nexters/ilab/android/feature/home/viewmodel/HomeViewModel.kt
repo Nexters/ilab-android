@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.home
+package com.nexters.ilab.android.feature.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +12,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -62,9 +63,14 @@ class HomeViewModel @Inject constructor(
                 .onFailure { exception ->
                     when (exception) {
                         is HttpException -> {
-                            if (exception.code() != 200) {
-                                openNetworkErrorDialog()
+                            if (exception.code() == 500) {
+                                openServerErrorDialog()
+                            } else {
+                                Timber.e(exception)
                             }
+                        }
+                        is UnknownHostException -> {
+                            openNetworkErrorDialog()
                         }
                         else -> {
                             Timber.e(exception)
@@ -99,6 +105,18 @@ class HomeViewModel @Inject constructor(
     fun dismissProfileImageDialog() = intent {
         reduce {
             state.copy(isProfileImageDialogVisible = false)
+        }
+    }
+
+    private fun openServerErrorDialog() = intent {
+        reduce {
+            state.copy(isServerErrorDialogVisible = true)
+        }
+    }
+
+    fun dismissServerErrorDialog() = intent {
+        reduce {
+            state.copy(isServerErrorDialogVisible = false)
         }
     }
 

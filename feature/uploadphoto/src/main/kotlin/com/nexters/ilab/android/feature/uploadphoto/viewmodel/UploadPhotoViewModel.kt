@@ -127,7 +127,7 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
-    fun openServerErrorDialog() = intent {
+    private fun openServerErrorDialog() = intent {
         reduce {
             state.copy(isServerErrorDialogVisible = true)
         }
@@ -139,7 +139,7 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
-    fun openNetworkErrorDialog() = intent {
+    private fun openNetworkErrorDialog() = intent {
         reduce {
             state.copy(isNetworkErrorDialogVisible = true)
         }
