@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
                     state.styleImageList[0].name
                 } else {
                     state.selectedStyle.name
-                }
+                },
             ),
         )
     }
