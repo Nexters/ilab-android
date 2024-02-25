@@ -49,6 +49,7 @@ import com.nexters.ilab.core.ui.component.LoadingIndicator
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 @Composable
@@ -73,7 +74,7 @@ internal fun LoginRoute(
                             resource.getString(R.string.unknown_error_message)
                         }
                     }
-
+                    is SocketTimeoutException -> resource.getString(R.string.server_error_message)
                     else -> resource.getString(R.string.unknown_error_message)
                 },
             )
