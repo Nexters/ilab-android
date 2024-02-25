@@ -8,10 +8,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -54,7 +56,6 @@ class HomeViewModel @Inject constructor(
             }
             styleRepository.getStyleList()
                 .onSuccess { styleImageList ->
-                    Timber.d("$styleImageList")
                     val endIndex = if (styleImageList.size < 4) styleImageList.size - 1 else 3
                     reduce {
                         state.copy(styleImageList = styleImageList.shuffled().slice(0..endIndex))
@@ -72,6 +73,9 @@ class HomeViewModel @Inject constructor(
                         is UnknownHostException -> {
                             openNetworkErrorDialog()
                         }
+                        is SocketTimeoutException -> {
+                            openServerErrorDialog()
+                        }
                         else -> {
                             Timber.e(exception)
                         }
@@ -86,9 +90,13 @@ class HomeViewModel @Inject constructor(
     fun setSelectedStyleImage(index: Int) = intent {
         if (index in 0..<state.styleImageList.size) {
             reduce {
-                state.copy(selectedStyleEntity = state.styleImageList[index])
+                state.copy(selectedStyle = state.styleImageList[index])
             }
         }
+    }
+
+    fun onGenerateImageClick() = intent {
+        postSideEffect(HomeSideEffect.NavigateToUploadPhoto(state.selectedStyle.name))
     }
 
     fun openProfileImageDialog(index: Int) = intent {

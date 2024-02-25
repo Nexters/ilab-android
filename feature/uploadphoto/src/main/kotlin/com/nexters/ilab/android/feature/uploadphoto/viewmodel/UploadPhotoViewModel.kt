@@ -1,9 +1,11 @@
 package com.nexters.ilab.android.feature.uploadphoto.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.domain.repository.PrivacyPolicyRepository
 import com.nexters.ilab.android.core.domain.repository.StyleRepository
+import com.nexters.ilab.android.feature.uploadphoto.navigation.SELECTED_STYLE
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
@@ -13,6 +15,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -20,13 +23,17 @@ import javax.inject.Inject
 class UploadPhotoViewModel @Inject constructor(
     private val privacyPolicyRepository: PrivacyPolicyRepository,
     private val styleRepository: StyleRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ContainerHost<UploadPhotoState, UploadPhotoSideEffect> {
 
     override val container = container<UploadPhotoState, UploadPhotoSideEffect>(UploadPhotoState())
+    private val selectedStyle = savedStateHandle[SELECTED_STYLE] ?: ""
 
     init {
+        Timber.d("selectedStyle: $selectedStyle")
         observePrivacyPolicyAgreement()
         getStyleList()
+        setSelectedStyle(selectedStyle)
     }
 
     private fun observePrivacyPolicyAgreement() = intent {
@@ -60,6 +67,9 @@ class UploadPhotoViewModel @Inject constructor(
                         }
                         is UnknownHostException -> {
                             openNetworkErrorDialog()
+                        }
+                        is SocketTimeoutException -> {
+                            openServerErrorDialog()
                         }
                         else -> {
                             Timber.e(exception)

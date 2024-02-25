@@ -52,6 +52,10 @@ internal class MainNavController(
         }
     }
 
+    fun navigateToUploadPhoto(selectedStyle: String) {
+        navController.navigateToUploadPhoto(null, selectedStyle)
+    }
+
     fun navigateToUploadCheck() {
         navController.navigateToUploadCheck()
     }

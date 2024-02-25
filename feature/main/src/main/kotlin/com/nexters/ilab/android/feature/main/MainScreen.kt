@@ -85,8 +85,8 @@ internal fun MainScreen(
                 homeNavGraph(
                     padding = padding,
                     onSettingClick = navigator::navigateToSetting,
-                    onGenerateImgBtnClick = {
-                        navigator.navigate(MainTab.UPLOAD_PHOTO)
+                    onGenerateImgBtnClick = { selectedStyle ->
+                        navigator.navigateToUploadPhoto(selectedStyle)
                     },
                 )
 

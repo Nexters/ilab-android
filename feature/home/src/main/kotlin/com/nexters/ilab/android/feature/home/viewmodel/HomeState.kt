@@ -11,5 +11,5 @@ data class HomeState(
     val isServerErrorDialogVisible: Boolean = false,
     val isNetworkErrorDialogVisible: Boolean = false,
     val selectedProfileEntity: ProfileEntity = ProfileEntity("", "", ""),
-    val selectedStyleEntity: StyleEntity = StyleEntity(0, "", ""),
+    val selectedStyle: StyleEntity = StyleEntity(0, "", ""),
 )
