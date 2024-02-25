@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ilab.android.library)
     alias(libs.plugins.ilab.android.library.compose)
     alias(libs.plugins.ilab.android.hilt)
+    alias(libs.plugins.ilab.android.retrofit)
 }
 
 android {
@@ -16,7 +17,7 @@ dependencies {
         libs.androidx.core,
         libs.androidx.hilt.navigation.compose,
 
+        libs.timber,
         libs.bundles.androidx.lifecycle,
-
     )
 }

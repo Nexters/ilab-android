@@ -2,6 +2,8 @@ package com.nexters.ilab.android.feature.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.ilab.android.core.common.ErrorHandlerActions
+import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.entity.ProfileEntity
 import com.nexters.ilab.android.core.domain.repository.StyleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,16 +13,12 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import retrofit2.HttpException
-import timber.log.Timber
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val styleRepository: StyleRepository,
-) : ViewModel(), ContainerHost<HomeState, HomeSideEffect> {
+) : ViewModel(), ContainerHost<HomeState, HomeSideEffect>, ErrorHandlerActions {
     override val container = container<HomeState, HomeSideEffect>(HomeState())
 
     // for test
@@ -62,27 +60,7 @@ class HomeViewModel @Inject constructor(
                     }
                 }
                 .onFailure { exception ->
-                    when (exception) {
-                        is HttpException -> {
-                            if (exception.code() == 500) {
-                                openServerErrorDialog()
-                            } else {
-                                Timber.e(exception)
-                            }
-                        }
-
-                        is UnknownHostException -> {
-                            openNetworkErrorDialog()
-                        }
-
-                        is SocketTimeoutException -> {
-                            openServerErrorDialog()
-                        }
-
-                        else -> {
-                            Timber.e(exception)
-                        }
-                    }
+                    handleException(exception, this@HomeViewModel)
                 }
             reduce {
                 state.copy(isLoading = false)
@@ -127,7 +105,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun openServerErrorDialog() = intent {
+    override fun openServerErrorDialog() = intent {
         reduce {
             state.copy(isServerErrorDialogVisible = true)
         }
@@ -139,7 +117,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun openNetworkErrorDialog() = intent {
+    override fun openNetworkErrorDialog() = intent {
         reduce {
             state.copy(isNetworkErrorDialogVisible = true)
         }

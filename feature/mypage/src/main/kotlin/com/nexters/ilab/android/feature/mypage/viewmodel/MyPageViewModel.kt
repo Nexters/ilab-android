@@ -2,6 +2,8 @@ package com.nexters.ilab.android.feature.mypage.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nexters.ilab.android.core.common.ErrorHandlerActions
+import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -9,14 +11,12 @@ import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
-import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect> {
+) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect>, ErrorHandlerActions {
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
 
     // for test
@@ -41,27 +41,16 @@ class MyPageViewModel @Inject constructor(
 
     fun getUserInfo() = intent {
         viewModelScope.launch {
-            reduce { state.copy(isLoading = true) }
+            reduce {
+                state.copy(isLoading = true)
+            }
             authRepository.getUserInfo()
                 .onSuccess { userInfo ->
-                    Timber.d("$userInfo")
-                    reduce { state.copy(userInfo = userInfo) }
-                }.onFailure { exception ->
-                    when (exception) {
-                        is retrofit2.HttpException -> {
-                            if (exception.code() == 500) {
-                                openServerErrorDialog()
-                            } else {
-                                Timber.e(exception)
-                            }
-                        }
-                        is UnknownHostException -> {
-                            openNetworkErrorDialog()
-                        }
-                        else -> {
-                            Timber.e(exception)
-                        }
+                    reduce {
+                        state.copy(userInfo = userInfo)
                     }
+                }.onFailure { exception ->
+                    handleException(exception, this@MyPageViewModel)
                 }
             reduce {
                 state.copy(
@@ -78,7 +67,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun openServerErrorDialog() = intent {
+    override fun openServerErrorDialog() = intent {
         reduce {
             state.copy(isServerErrorDialogVisible = true)
         }
@@ -90,7 +79,7 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun openNetworkErrorDialog() = intent {
+    override fun openNetworkErrorDialog() = intent {
         reduce {
             state.copy(isNetworkErrorDialogVisible = true)
         }
