@@ -10,5 +10,6 @@ data class UploadPhotoState(
     val isPermissionDialogVisible: Boolean = false,
     val isUploadPhotoDialogVisible: Boolean = false,
     val styleList: List<StyleEntity> = emptyList(),
+    val isServerErrorDialogVisible: Boolean = false,
     val isNetworkErrorDialogVisible: Boolean = false,
 )

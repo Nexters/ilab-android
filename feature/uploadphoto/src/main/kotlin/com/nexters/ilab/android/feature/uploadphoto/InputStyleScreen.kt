@@ -41,9 +41,10 @@ import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewMod
 import com.nexters.ilab.core.ui.ComponentPreview
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabButton
-import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingIndicator
+import com.nexters.ilab.core.ui.component.NetworkErrorDialog
+import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.StyleImage
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
@@ -64,6 +65,7 @@ internal fun InputStyleRoute(
         onStyleSelect = viewModel::setSelectedStyle,
         createProfileImage = onNavigateToCreateImage,
         getStyleList = viewModel::getStyleList,
+        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
     )
 }
@@ -75,11 +77,20 @@ internal fun InputStyleScreen(
     onStyleSelect: (String) -> Unit,
     createProfileImage: () -> Unit,
     getStyleList: () -> Unit,
+    dismissServerErrorDialog: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
 ) {
     Column {
         if (uiState.isLoading) {
             LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+        if (uiState.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    dismissServerErrorDialog()
+                    getStyleList()
+                },
+            )
         }
         if (uiState.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
@@ -97,23 +108,6 @@ internal fun InputStyleScreen(
             createProfileImage = createProfileImage,
         )
     }
-}
-
-@Composable
-internal fun NetworkErrorDialog(
-    onRetryClick: () -> Unit,
-) {
-    ILabDialog(
-        titleResId = R.string.network_error_title,
-        iconResId = R.drawable.ic_network_error,
-        iconDescription = "Network Error Icon",
-        firstDescriptionResId = R.string.network_error_description1,
-        secondDescriptionResId = R.string.network_error_description2,
-        confirmTextResId = R.string.network_error_confirm,
-        cancelTextResId = null,
-        onCancelClick = {},
-        onConfirmClick = onRetryClick,
-    )
 }
 
 @Composable
@@ -243,9 +237,10 @@ fun InputStyleScreenPreview() {
         uiState = UploadPhotoState(),
         onBackClick = {},
         onStyleSelect = {},
-        getStyleList = {},
-        dismissNetworkErrorDialog = {},
         createProfileImage = {},
+        getStyleList = {},
+        dismissServerErrorDialog = {},
+        dismissNetworkErrorDialog = {},
     )
 }
 

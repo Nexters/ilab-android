@@ -1,6 +1,6 @@
-package com.nexters.ilab.android.core.datastore
+package com.nexters.ilab.android.core.domain.repository
 
-interface TokenDataSource {
+interface TokenRepository {
     suspend fun setAccessToken(accessToken: String)
     suspend fun setRefreshToken(refreshToken: String)
     suspend fun setUUID(uuid: Long)

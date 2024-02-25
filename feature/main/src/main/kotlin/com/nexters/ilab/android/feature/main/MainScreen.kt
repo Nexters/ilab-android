@@ -45,25 +45,31 @@ import com.nexters.ilab.feature.createimage.navigation.createImageNavGraph
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import java.net.UnknownHostException
 
 @Composable
 internal fun MainScreen(
     onChangeDarkTheme: (Boolean) -> Unit,
-    onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     navigator: MainNavController = rememberMainNavController(),
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
-
     val coroutineScope = rememberCoroutineScope()
     val resource = LocalContext.current.resources
     val onShowErrorSnackBar: (throwable: Throwable?) -> Unit = { throwable ->
         coroutineScope.launch {
             snackBarHostState.showSnackbar(
                 when (throwable) {
-                    is UnknownHostException -> resource.getString(R.string.error_message_network)
-                    else -> resource.getString(R.string.error_message_unknown)
+                    is UnknownHostException -> resource.getString(R.string.network_error_message)
+                    is HttpException -> {
+                        if (throwable.code() == 500) {
+                            resource.getString(R.string.server_error_message)
+                        } else {
+                            resource.getString(R.string.unknown_error_message)
+                        }
+                    }
+                    else -> resource.getString(R.string.unknown_error_message)
                 },
             )
         }
@@ -82,7 +88,6 @@ internal fun MainScreen(
                     onGenerateImgBtnClick = {
                         navigator.navigate(MainTab.UPLOAD_PHOTO)
                     },
-                    onShowErrorSnackBar = onShowErrorSnackBar,
                 )
 
                 uploadPhotoNavGraph(
@@ -106,15 +111,13 @@ internal fun MainScreen(
                     onCloseClick = navigator::popBackStackIfNotHome,
                     onSettingClick = { navigator.navigateToSetting() },
                     onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
-                    onShowErrorSnackBar = onShowErrorSnackBar,
                 )
 
                 settingNavGraph(
                     onBackClick = navigator::popBackStackIfNotHome,
                     onChangeDarkTheme = onChangeDarkTheme,
                     onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
-                    onLogoutClick = onLogoutClick,
-                    onDeleteAccountClick = onDeleteAccountClick,
+                    onNavigateToLogin = onNavigateToLogin,
                     onShowErrorSnackBar = onShowErrorSnackBar,
                 )
 

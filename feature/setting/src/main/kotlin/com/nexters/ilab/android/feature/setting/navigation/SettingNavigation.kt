@@ -17,8 +17,7 @@ fun NavGraphBuilder.settingNavGraph(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
     onNavigateToPrivacyPolicy: () -> Unit,
-    onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     composable(
@@ -40,8 +39,7 @@ fun NavGraphBuilder.settingNavGraph(
             onBackClick = onBackClick,
             onChangeDarkTheme = onChangeDarkTheme,
             onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
-            onLogoutClick = onLogoutClick,
-            onDeleteAccountClick = onDeleteAccountClick,
+            onNavigateToLogin = onNavigateToLogin,
             onShowErrorSnackBar = onShowErrorSnackBar,
         )
     }

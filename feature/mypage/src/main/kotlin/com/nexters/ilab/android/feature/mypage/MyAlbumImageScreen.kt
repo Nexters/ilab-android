@@ -34,6 +34,9 @@ import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
 import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyAlbum
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton

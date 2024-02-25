@@ -20,6 +20,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.ILab"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <provider

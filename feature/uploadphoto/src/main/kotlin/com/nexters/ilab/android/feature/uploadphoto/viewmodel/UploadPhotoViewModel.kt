@@ -13,6 +13,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import retrofit2.HttpException
 import timber.log.Timber
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -52,8 +53,13 @@ class UploadPhotoViewModel @Inject constructor(
                     when (exception) {
                         is HttpException -> {
                             if (exception.code() == 500) {
-                                openNetworkErrorDialog()
+                                openServerErrorDialog()
+                            } else {
+                                Timber.e(exception)
                             }
+                        }
+                        is UnknownHostException -> {
+                            openNetworkErrorDialog()
                         }
                         else -> {
                             Timber.e(exception)
@@ -121,7 +127,19 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
-    fun openNetworkErrorDialog() = intent {
+    private fun openServerErrorDialog() = intent {
+        reduce {
+            state.copy(isServerErrorDialogVisible = true)
+        }
+    }
+
+    fun dismissServerErrorDialog() = intent {
+        reduce {
+            state.copy(isServerErrorDialogVisible = false)
+        }
+    }
+
+    private fun openNetworkErrorDialog() = intent {
         reduce {
             state.copy(isNetworkErrorDialogVisible = true)
         }

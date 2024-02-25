@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.core.network.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.nexters.ilab.android.core.datastore.TokenDataSource
 import com.nexters.ilab.android.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -46,13 +47,23 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
+    internal fun provideTokenInterceptor(
+        dataStore: TokenDataSource,
+    ): TokenInterceptor {
+        return TokenInterceptor(dataStore)
+    }
+
+    @Singleton
+    @Provides
     internal fun provideOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
+        tokenInterceptor: TokenInterceptor,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
             .readTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
             .writeTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
+            .addInterceptor(tokenInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
     }
