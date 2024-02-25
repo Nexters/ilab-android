@@ -43,7 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,11 +57,12 @@ import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.ProfileEntity
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
 import com.nexters.ilab.core.ui.ComponentPreview
+import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
-import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingIndicator
+import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
@@ -391,26 +391,9 @@ internal fun ProfileImageDialog(
     }
 }
 
+@DevicePreview
 @Composable
-internal fun NetworkErrorDialog(
-    onRetryClick: () -> Unit,
-) {
-    ILabDialog(
-        titleResId = R.string.network_error_title,
-        iconResId = R.drawable.ic_network_error,
-        iconDescription = "Network Error Icon",
-        firstDescriptionResId = R.string.network_error_description1,
-        secondDescriptionResId = R.string.network_error_description2,
-        confirmTextResId = R.string.network_error_confirm,
-        cancelTextResId = null,
-        onCancelClick = {},
-        onConfirmClick = onRetryClick,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-internal fun previewHomeScreen() {
+internal fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeState(),
         padding = PaddingValues(0.dp),
