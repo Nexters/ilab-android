@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onGenerateImageClick() = intent {
+    fun onGenerateImgBtnClick() = intent {
         postSideEffect(
             HomeSideEffect.NavigateToUploadPhoto(
                 if (state.selectedStyle.name.isEmpty()) {

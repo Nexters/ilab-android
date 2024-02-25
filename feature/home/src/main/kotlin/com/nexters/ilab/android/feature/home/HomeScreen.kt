@@ -94,7 +94,7 @@ internal fun HomeRoute(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onGenerateImgBtnClick = viewModel::onGenerateImageClick,
+        onGenerateImgBtnClick = viewModel::onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
         getStyleList = viewModel::getStyleList,
