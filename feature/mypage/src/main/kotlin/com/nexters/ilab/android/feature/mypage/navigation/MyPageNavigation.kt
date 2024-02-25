@@ -30,7 +30,6 @@ fun NavGraphBuilder.myPageNavGraph(
     onCloseClick: () -> Unit,
     onSettingClick: () -> Unit,
     onNavigateToMyAlbumImage: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     navigation(
         startDestination = MY_PROFILE_ROUTE,
@@ -42,7 +41,6 @@ fun NavGraphBuilder.myPageNavGraph(
                 padding = padding,
                 onSettingClick = onSettingClick,
                 onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
-                onShowErrorSnackBar = onShowErrorSnackBar,
                 viewModel = viewModel,
             )
         }

@@ -88,7 +88,6 @@ internal fun MainScreen(
                     onGenerateImgBtnClick = {
                         navigator.navigate(MainTab.UPLOAD_PHOTO)
                     },
-                    onShowErrorSnackBar = onShowErrorSnackBar,
                 )
 
                 uploadPhotoNavGraph(
@@ -112,7 +111,6 @@ internal fun MainScreen(
                     onCloseClick = navigator::popBackStackIfNotHome,
                     onSettingClick = { navigator.navigateToSetting() },
                     onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
-                    onShowErrorSnackBar = onShowErrorSnackBar,
                 )
 
                 settingNavGraph(

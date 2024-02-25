@@ -59,13 +59,11 @@ import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun MyPageRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onNavigateToMyAlbumImage: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()

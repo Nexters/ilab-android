@@ -40,7 +40,6 @@ import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun SettingRoute(
     onBackClick: () -> Unit,

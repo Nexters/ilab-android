@@ -76,7 +76,6 @@ internal fun HomeRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onGenerateImgBtnClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
