@@ -97,7 +97,7 @@ internal fun HomeRoute(
         onGenerateImgBtnClick = viewModel::onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
-        getStyleList = viewModel::getStyleList,
+        getStyleProfileList = viewModel::getStyleProfileList,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         setSelectedStyleImage = viewModel::setSelectedStyleImage,
@@ -112,7 +112,7 @@ internal fun HomeScreen(
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     dismissProfileImageDialog: () -> Unit,
-    getStyleList: () -> Unit,
+    getStyleProfileList: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
     dismissServerErrorDialog: () -> Unit,
     setSelectedStyleImage: (Int) -> Unit,
@@ -130,8 +130,7 @@ internal fun HomeScreen(
             ServerErrorDialog(
                 onRetryClick = {
                     dismissServerErrorDialog()
-                    getStyleList()
-                    // todo: getProfileList
+                    getStyleProfileList()
                 },
             )
         }
@@ -139,8 +138,7 @@ internal fun HomeScreen(
             NetworkErrorDialog(
                 onRetryClick = {
                     dismissNetworkErrorDialog()
-                    getStyleList()
-                    // todo: getProfileList
+                    getStyleProfileList()
                 },
             )
         }
@@ -210,7 +208,7 @@ internal fun HomeContent(
             val startDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 20.dp else 0.dp
             val endDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 0.dp else 20.dp
 
-            KeywordSampleImageItem(
+            ProfileImageItem(
                 profileImage = item,
                 imageRatio = imageRatio,
                 startDp = startDp,
@@ -317,7 +315,7 @@ internal fun HomeKeywordView(
 }
 
 @Composable
-internal fun KeywordSampleImageItem(
+internal fun ProfileImageItem(
     profileImage: ProfileEntity,
     imageRatio: Dp,
     startDp: Dp,
@@ -336,6 +334,12 @@ internal fun KeywordSampleImageItem(
             imageUrl = profileImage.imageUrl,
             contentDescription = "Profile Image",
             modifier = Modifier.fillMaxSize(),
+        )
+        Image(
+            painter = painterResource(id = R.drawable.bg_img_dim_small),
+            contentDescription = "Background Dim",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
         )
         Text(
             text = "#" + profileImage.name,
@@ -368,7 +372,7 @@ internal fun ProfileImageDialog(
                 modifier = Modifier.fillMaxSize(),
             )
             Image(
-                painter = painterResource(id = R.drawable.bg_img_dim),
+                painter = painterResource(id = R.drawable.bg_img_dim_large),
                 contentDescription = "Background Dim",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
@@ -427,7 +431,7 @@ internal fun HomeScreenPreview() {
         onGenerateImgBtnClick = {},
         openProfileImageDialog = {},
         dismissProfileImageDialog = {},
-        getStyleList = {},
+        getStyleProfileList = {},
         dismissNetworkErrorDialog = {},
         dismissServerErrorDialog = {},
         setSelectedStyleImage = {},

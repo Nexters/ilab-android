@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.common.ErrorHandlerActions
 import com.nexters.ilab.android.core.common.handleException
-import com.nexters.ilab.android.core.domain.entity.ProfileEntity
+import com.nexters.ilab.android.core.domain.repository.ProfileRepository
 import com.nexters.ilab.android.core.domain.repository.StyleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,36 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val styleRepository: StyleRepository,
+    private val profileRepository: ProfileRepository,
 ) : ViewModel(), ContainerHost<HomeState, HomeSideEffect>, ErrorHandlerActions {
     override val container = container<HomeState, HomeSideEffect>(HomeState())
 
-    // for test
-    val dummyProfileImageList: List<ProfileEntity> = listOf(
-        ProfileEntity("1", "https://picsum.photos/162/336", "느와르"),
-        ProfileEntity("2", "https://picsum.photos/162/336", "경성"),
-        ProfileEntity("3", "https://picsum.photos/162/336", "일본애니"),
-        ProfileEntity("4", "https://picsum.photos/162/336", "반고흐"),
-        ProfileEntity("5", "https://picsum.photos/162/336", "고독한"),
-        ProfileEntity("6", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("7", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("8", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("9", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("10", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("11", "https://picsum.photos/162/336", "몽환적인"),
-        ProfileEntity("12", "https://picsum.photos/162/336", "몽환적인"),
-    )
-
     init {
-        getStyleList()
-        // todo: getProfileList
-        intent {
-            reduce {
-                state.copy(profileImageList = dummyProfileImageList)
-            }
-        }
+        getStyleProfileList()
     }
 
-    fun getStyleList() = intent {
+    fun getStyleProfileList() = intent {
         viewModelScope.launch {
             reduce {
                 state.copy(isLoading = true)
@@ -57,6 +36,16 @@ class HomeViewModel @Inject constructor(
                     val endIndex = if (styleImageList.size < 4) styleImageList.size - 1 else 3
                     reduce {
                         state.copy(styleImageList = styleImageList.shuffled().slice(0..endIndex))
+                    }
+                }
+                .onFailure { exception ->
+                    handleException(exception, this@HomeViewModel)
+                }
+
+            profileRepository.getProfileList()
+                .onSuccess { profileImageList ->
+                    reduce {
+                        state.copy(profileImageList = profileImageList)
                     }
                 }
                 .onFailure { exception ->
