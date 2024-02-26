@@ -56,6 +56,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.ProfileEntity
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
+import com.nexters.ilab.android.feature.home.viewmodel.HomeSideEffect
 import com.nexters.ilab.android.feature.home.viewmodel.HomeState
 import com.nexters.ilab.android.feature.home.viewmodel.HomeViewModel
 import com.nexters.ilab.core.ui.ComponentPreview
@@ -70,21 +71,30 @@ import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun HomeRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onGenerateImgBtnClick: () -> Unit,
+    onGenerateImgBtnClick: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is HomeSideEffect.NavigateToUploadPhoto -> {
+                    onGenerateImgBtnClick(sideEffect.selectedStyle)
+                }
+            }
+        }
+    }
 
     HomeScreen(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onGenerateImgBtnClick = onGenerateImgBtnClick,
+        onGenerateImgBtnClick = viewModel::onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
         getStyleList = viewModel::getStyleList,
@@ -205,7 +215,10 @@ internal fun HomeContent(
                 imageRatio = imageRatio,
                 startDp = startDp,
                 endDp = endDp,
-                openProfileImageDialog = { openProfileImageDialog(index) },
+                openProfileImageDialog = {
+                    setSelectedStyleImage(index)
+                    openProfileImageDialog(index)
+                },
             )
         }
 

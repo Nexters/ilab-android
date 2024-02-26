@@ -21,10 +21,12 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signOut() = runSuspendCatching {
-        authDataSource.signOut()
+        val uuid = tokenDataSource.getUUID()
+        authDataSource.signOut(uuid)
     }
 
     override suspend fun deleteAccount() = runSuspendCatching {
-        authDataSource.deleteAccount()
+        val uuid = tokenDataSource.getUUID()
+        authDataSource.deleteAccount(uuid)
     }
 }

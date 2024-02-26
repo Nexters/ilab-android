@@ -103,6 +103,7 @@ internal fun InputStyleScreen(
         InputStyleTopAppBar(onBackClick = onBackClick)
         InputStyleContent(
             styleList = uiState.styleList.toImmutableList(),
+            selectedStyle = uiState.selectedStyle,
             isStyleSelected = uiState.selectedStyle.isNotEmpty(),
             onStyleSelect = onStyleSelect,
             createProfileImage = createProfileImage,
@@ -128,6 +129,7 @@ internal fun InputStyleTopAppBar(
 @Composable
 internal fun InputStyleContent(
     styleList: ImmutableList<StyleEntity>,
+    selectedStyle: String,
     isStyleSelected: Boolean,
     createProfileImage: () -> Unit,
     onStyleSelect: (String) -> Unit,
@@ -139,7 +141,8 @@ internal fun InputStyleContent(
                 .padding(horizontal = 20.dp),
         ) {
             CheckableStyleImageList(
-                images = styleList,
+                styleList = styleList,
+                selectedStyle = selectedStyle,
                 onStyleSelect = onStyleSelect,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -169,11 +172,16 @@ internal fun InputStyleContent(
 
 @Composable
 fun CheckableStyleImageList(
-    images: ImmutableList<StyleEntity>,
+    styleList: ImmutableList<StyleEntity>,
+    selectedStyle: String,
     onStyleSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedItemIndex by remember { mutableStateOf<Int?>(null) }
+    var selectedItemIndex by remember {
+        mutableStateOf<Int?>(
+            styleList.indexOfFirst { it.name == selectedStyle },
+        )
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = 3),
@@ -203,8 +211,8 @@ fun CheckableStyleImageList(
             }
         }
         items(
-            count = images.size,
-            key = { index -> images[index].id },
+            count = styleList.size,
+            key = { index -> styleList[index].id },
         ) { index ->
             val backgroundColor = if (selectedItemIndex == index) {
                 Blue600.copy(alpha = 0.6f)
@@ -212,8 +220,8 @@ fun CheckableStyleImageList(
                 Color.Transparent
             }
             StyleImage(
-                imageUrl = images[index].defaultImageUrl,
-                styleName = "#${images[index].name}",
+                imageUrl = styleList[index].defaultImageUrl,
+                styleName = "#${styleList[index].name}",
                 backgroundColor = backgroundColor,
                 contentDescription = "Style Image",
                 isSelectedIndex = selectedItemIndex == index,
@@ -223,7 +231,7 @@ fun CheckableStyleImageList(
                     .aspectRatio(1f)
                     .noRippleClickable {
                         selectedItemIndex = if (selectedItemIndex == index) null else index
-                        onStyleSelect(images[index].name)
+                        onStyleSelect(styleList[index].name)
                     },
             )
         }
@@ -248,13 +256,14 @@ fun InputStyleScreenPreview() {
 @Composable
 fun CheckableStyleImageListPreview() {
     CheckableStyleImageList(
-        images = persistentListOf(
+        styleList = persistentListOf(
             StyleEntity(
                 id = 0,
                 name = "ㅇㅇ",
                 defaultImageUrl = "",
             ),
         ),
+        selectedStyle = "",
         onStyleSelect = {},
     )
 }

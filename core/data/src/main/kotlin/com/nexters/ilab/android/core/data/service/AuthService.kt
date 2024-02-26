@@ -15,9 +15,13 @@ interface AuthService {
         @Path("uuid") uuid: Long,
     ): UserInfoResponse
 
-    @POST("users/logout")
-    suspend fun signOut()
+    @POST("users/logout/{uuid}")
+    suspend fun signOut(
+        @Path("uuid") uuid: Long,
+    )
 
-    @POST("users/delete")
-    suspend fun deleteAccount()
+    @POST("users/delete/{uuid}")
+    suspend fun deleteAccount(
+        @Path("uuid") uuid: Long,
+    )
 }

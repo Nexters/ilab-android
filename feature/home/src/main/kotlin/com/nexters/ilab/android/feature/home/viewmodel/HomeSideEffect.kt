@@ -1,3 +1,5 @@
 package com.nexters.ilab.android.feature.home.viewmodel
 
-interface HomeSideEffect
+sealed interface HomeSideEffect {
+    data class NavigateToUploadPhoto(val selectedStyle: String) : HomeSideEffect
+}
