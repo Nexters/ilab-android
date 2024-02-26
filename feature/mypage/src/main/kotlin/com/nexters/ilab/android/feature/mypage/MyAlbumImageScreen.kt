@@ -53,11 +53,12 @@ internal fun MyAlbumImageRoute(
 ) {
     val myPageState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val systemUiController = rememberExSystemUiController()
+    val isDarkTheme = isSystemInDarkTheme()
 
     DisposableEffect(systemUiController) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = true,
+            darkIcons = !isDarkTheme,
             isNavigationBarContrastEnforced = false,
         )
         onDispose {}

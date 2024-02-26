@@ -67,11 +67,12 @@ internal fun CreateImageCompleteRoute(
     val context = LocalContext.current
 
     val systemUiController = rememberExSystemUiController()
+    val isDarkTheme = isSystemInDarkTheme()
 
     DisposableEffect(systemUiController) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = true,
+            darkIcons = !isDarkTheme,
             isNavigationBarContrastEnforced = false,
         )
 
