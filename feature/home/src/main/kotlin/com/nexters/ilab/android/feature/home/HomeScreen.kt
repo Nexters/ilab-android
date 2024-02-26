@@ -336,6 +336,12 @@ internal fun KeywordSampleImageItem(
             contentDescription = "Profile Image",
             modifier = Modifier.fillMaxSize(),
         )
+        Image(
+            painter = painterResource(id = R.drawable.bg_img_dim_small),
+            contentDescription = "Background Dim",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
+        )
         Text(
             text = "#" + profileImage.name,
             style = Subtitle1,
@@ -367,7 +373,7 @@ internal fun ProfileImageDialog(
                 modifier = Modifier.fillMaxSize(),
             )
             Image(
-                painter = painterResource(id = R.drawable.bg_img_dim),
+                painter = painterResource(id = R.drawable.bg_img_dim_large),
                 contentDescription = "Background Dim",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
