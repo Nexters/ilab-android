@@ -209,7 +209,7 @@ internal fun HomeContent(
             val startDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 20.dp else 0.dp
             val endDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 0.dp else 20.dp
 
-            KeywordSampleImageItem(
+            ProfileImageItem(
                 profileImage = item,
                 imageRatio = imageRatio,
                 startDp = startDp,
@@ -316,7 +316,7 @@ internal fun HomeKeywordView(
 }
 
 @Composable
-internal fun KeywordSampleImageItem(
+internal fun ProfileImageItem(
     profileImage: ProfileEntity,
     imageRatio: Dp,
     startDp: Dp,
