@@ -130,8 +130,7 @@ internal fun HomeScreen(
             ServerErrorDialog(
                 onRetryClick = {
                     dismissServerErrorDialog()
-                    getStyleList()
-                    // todo: getProfileList
+                    getStyleProfileList()
                 },
             )
         }
