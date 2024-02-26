@@ -50,13 +50,14 @@ fun ILabDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = Color.White),
+                .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = stringResource(id = titleResId),
                 style = Title2,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.height(24.dp))
             if (iconResId != null && iconDescription != null) {
