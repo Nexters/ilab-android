@@ -154,7 +154,7 @@ internal fun MyPageContent(
     val myAlbumCount = myAlbumImageList.size
 
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 162.dp),
+        columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp),
@@ -287,6 +287,12 @@ internal fun MyAlbumImage(
                 .clickable {
                     onNavigateToMyAlbumImage(index)
                 },
+        )
+        Image(
+            painter = painterResource(id = R.drawable.bg_img_dim_small),
+            contentDescription = "Background Dim",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
         )
         IconButton(
             onClick = onMoreBtnClick,
