@@ -25,9 +25,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             // TODO isDarkTheme 를 dataStore 에서 가져와서 구독하는 방식으로 수정
-            val isDarkTheme = false
+            // val isDarkTheme = false
             val navigator: MainNavController = rememberMainNavController()
-
             val systemUiController = rememberExSystemUiController()
 
             DisposableEffect(systemUiController) {
@@ -40,7 +39,7 @@ class MainActivity : ComponentActivity() {
                 onDispose {}
             }
 
-            ILabTheme(darkTheme = isDarkTheme) {
+            ILabTheme {
                 MainScreen(
                     onChangeDarkTheme = { isDarkTheme -> viewModel.toggleDarkTheme(isDarkTheme) },
                     onLogoutClick = {

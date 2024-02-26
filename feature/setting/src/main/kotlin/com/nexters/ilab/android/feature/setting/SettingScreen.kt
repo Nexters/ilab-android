@@ -12,13 +12,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -28,8 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
-import com.nexters.ilab.android.core.designsystem.theme.Gray100
-import com.nexters.ilab.android.core.designsystem.theme.Gray200
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingState
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingViewModel
@@ -79,9 +78,7 @@ internal fun SettingScreen(
     appVersionInfo: String,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
+        modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -115,22 +112,12 @@ internal fun SettingContent(
         stringId = R.string.setting_privacy,
         onNavigationClick = onNavigateToPrivacyPolicy,
     )
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Gray200),
-    )
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     SettingCellText(
         stringId = R.string.setting_current_version,
         version = appVersionInfo,
     )
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Gray200),
-    )
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     SettingCellNavigation(
         stringId = R.string.setting_logout,
         onNavigationClick = onLogoutClick,
@@ -139,18 +126,18 @@ internal fun SettingContent(
         modifier = Modifier
             .fillMaxWidth()
             .height(20.dp)
-            .background(Gray100),
+            .background(MaterialTheme.colorScheme.inverseSurface),
     )
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Gray100),
+            .background(MaterialTheme.colorScheme.inverseSurface),
         contentAlignment = Alignment.TopCenter,
     ) {
         Text(
             text = stringResource(id = R.string.setting_delete_account),
             style = Contents1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.inverseOnSurface,
             modifier = Modifier
                 .clickable(onClick = openDeleteAccountDialog),
         )
@@ -163,19 +150,20 @@ internal fun SettingCellText(stringId: Int, version: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
+            .background(MaterialTheme.colorScheme.background)
             .padding(start = 20.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = stringResource(id = stringId),
             style = Contents1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = version,
             style = Subtitle2,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }
@@ -189,6 +177,7 @@ internal fun SettingCellNavigation(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
+            .background(MaterialTheme.colorScheme.background)
             .clickable(onClick = onNavigationClick)
             .padding(start = 20.dp, end = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -196,7 +185,7 @@ internal fun SettingCellNavigation(
         Text(
             text = stringResource(id = stringId),
             style = Contents1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.weight(1f))
         Icon(

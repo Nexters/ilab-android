@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,9 +37,6 @@ import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
@@ -169,13 +167,13 @@ private fun UploadCheckContent(
         Text(
             text = stringResource(id = R.string.check_guide_twice),
             style = Title1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = stringResource(id = R.string.check_needed_for_accurate_result),
             style = Contents1,
-            color = Gray500,
+            color = MaterialTheme.colorScheme.inverseOnSurface,
         )
         Spacer(modifier = Modifier.height(36.dp))
         NetworkImage(
@@ -226,8 +224,8 @@ private fun UploadCheckContent(
                     .weight(1f)
                     .height(60.dp)
                     .padding(end = 4.dp),
-                containerColor = PurpleBlue200,
-                contentColor = PurpleBlue900,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 text = {
                     Text(
                         text = stringResource(id = R.string.change_photo),
@@ -271,7 +269,7 @@ private fun GuideRow(
         Text(
             text = text,
             style = Contents2,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

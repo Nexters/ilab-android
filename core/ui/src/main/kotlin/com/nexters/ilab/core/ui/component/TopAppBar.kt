@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -19,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.core.ui.ComponentPreview
 
@@ -29,8 +29,8 @@ fun ILabTopAppBar(
     navigationType: TopAppBarNavigationType,
     navigationIconContentDescription: String?,
     modifier: Modifier = Modifier,
-    contentColor: Color = Color.Black,
-    containerColor: Color = Color.White,
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    contentColor: Color = MaterialTheme.colorScheme.onBackground,
     onNavigationClick: () -> Unit = {},
     isTextLogo: Boolean = false,
 ) {
@@ -82,7 +82,7 @@ fun ILabTopAppBar(
                         .align(Alignment.CenterStart),
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_text_logo),
                     contentDescription = navigationIconContentDescription,
-                    tint = Blue900,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             } else {
                 if (titleRes != null) {

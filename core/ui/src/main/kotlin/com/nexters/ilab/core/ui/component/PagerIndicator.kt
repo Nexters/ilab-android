@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nexters.ilab.android.core.designsystem.theme.Blue600
-import com.nexters.ilab.android.core.designsystem.theme.Gray300
 import com.nexters.ilab.core.ui.ComponentPreview
 import kotlin.math.absoluteValue
 
@@ -31,8 +30,8 @@ fun PagerIndicator(
     targetPage: Int,
     currentPageOffsetFraction: Float,
     modifier: Modifier = Modifier,
-    selectedIndicatorColor: Color = Blue600,
-    unselectedIndicatorColor: Color = Gray300,
+    selectedIndicatorColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    unselectedIndicatorColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
     indicatorSize: Dp = 6.dp,
     selectedIndicatorWidth: Dp = 18.dp,
     indicatorPadding: Dp = 4.dp,

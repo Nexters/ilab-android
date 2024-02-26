@@ -27,6 +27,7 @@ import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,8 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue500
-import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
@@ -196,7 +195,7 @@ internal fun HomeKeywordView(
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = stringResource(id = R.string.home_style),
-                color = Blue500,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 style = Subtitle2,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -236,8 +235,8 @@ internal fun HomeKeywordView(
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp)
                     .height(48.dp),
-                containerColor = Blue600,
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 text = {
                     Text(
                         text = stringResource(id = R.string.home_generate_img_with_this_style),
@@ -343,8 +342,8 @@ internal fun ProfileImageDialog(
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp, bottom = 16.dp)
                         .height(48.dp),
-                    containerColor = Blue600,
-                    contentColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     text = {
                         Text(
                             text = stringResource(id = R.string.home_generate_img_with_this_style),

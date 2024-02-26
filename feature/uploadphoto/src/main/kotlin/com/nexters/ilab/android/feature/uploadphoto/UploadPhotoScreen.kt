@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,13 +51,7 @@ import com.nexters.ilab.android.core.common.extension.openAppSettings
 import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
-import com.nexters.ilab.android.core.designsystem.theme.Gray100
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
-import com.nexters.ilab.android.core.designsystem.theme.SystemGreen
-import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.designsystem.theme.pretendardFamily
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
@@ -209,10 +204,10 @@ private fun UploadPhotoContent(
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = SystemGreen)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.error)) {
                         append(stringResource(id = R.string.good))
                     }
-                    withStyle(style = SpanStyle(color = Color.Black)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
                         append(stringResource(id = R.string.good_example))
                     }
                 },
@@ -222,28 +217,27 @@ private fun UploadPhotoContent(
             Text(
                 text = stringResource(id = R.string.good_example_description),
                 style = Contents2,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.height(20.dp))
             ImageRow(images = goodExamples)
             Spacer(modifier = Modifier.height(42.dp))
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = SystemRed)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.error)) {
                         append(stringResource(id = R.string.bad))
                     }
-                    withStyle(style = SpanStyle(color = Color.Black)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
                         append(stringResource(id = R.string.bad_example))
                     }
                 },
                 style = Title2,
-                color = Color.Black,
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(id = R.string.bad_example_description),
                 style = Contents2,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.height(20.dp))
             ImageRow(images = badExamples)
@@ -252,17 +246,18 @@ private fun UploadPhotoContent(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .background(Color.White),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             HorizontalDivider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Gray100),
+                    .background(MaterialTheme.colorScheme.inverseSurface),
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(horizontal = 20.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -277,7 +272,7 @@ private fun UploadPhotoContent(
                     Text(
                         text = stringResource(id = R.string.personal_information_collection_and_usage_agreement),
                         style = Contents2,
-                        color = Gray500,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -293,14 +288,19 @@ private fun UploadPhotoContent(
                         lineHeight = 22.sp,
                         textDecoration = TextDecoration.Underline,
                     ),
-                    color = Gray500,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
                 )
             }
-            Spacer(modifier = Modifier.height(13.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(13.dp)
+                    .background(MaterialTheme.colorScheme.background),
+            )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .navigationBarsPadding()
+                    .background(MaterialTheme.colorScheme.background)
                     .padding(start = 20.dp, end = 20.dp, bottom = 18.dp),
             ) {
                 ILabButton(
@@ -310,8 +310,8 @@ private fun UploadPhotoContent(
                         .height(60.dp)
                         .padding(end = 4.dp),
                     enabled = isPrivacyPolicyAgreed,
-                    containerColor = PurpleBlue200,
-                    contentColor = PurpleBlue900,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                     text = {
                         Text(
                             text = stringResource(id = R.string.photo_library),

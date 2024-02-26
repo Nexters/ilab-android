@@ -1,52 +1,71 @@
 package com.nexters.ilab.android.core.designsystem.theme
 
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.Color.Companion.White
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
+    onPrimary = DarkBlue900,
+    background = LightGray900,
+    onBackground = DarkGray900,
+    primaryContainer = DarkBlue600,
+    onPrimaryContainer = White,
+    inversePrimary = DarkBlue500,
+    secondary = SystemGreen,
+    onSecondary = White,
+    secondaryContainer = LightBlue200,
+    onSecondaryContainer = LightBlue900,
+    onTertiary = DarkGray400,
+    tertiaryContainer = DarkGray300,
+    onTertiaryContainer = White,
+    error = SystemRed,
+    onError = White,
+    errorContainer = SystemRed,
+    onErrorContainer = White,
+    surface = LightGray900,
+    onSurface = White,
+    inverseSurface = DarkGray100,
+    inverseOnSurface = DarkGray500,
+    outline = DarkGray200,
+    scrim = Black,
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-
-//    // Other default colors to override
-//    background = Color(0xFFFFFBFE),
-//    surface = Color(0xFFFFFBFE),
-//    onPrimary = Color.White,
-//    onSecondary = Color.White,
-//    onTertiary = Color.White,
-//    onBackground = Color(0xFF1C1B1F),
-//    onSurface = Color(0xFF1C1B1F),
+    onPrimary = LightBlue900,
+    background = White,
+    onBackground = LightGray900,
+    primaryContainer = LightBlue600,
+    onPrimaryContainer = White,
+    inversePrimary = LightBlue500,
+    secondary = SystemGreen,
+    onSecondary = Black,
+    secondaryContainer = LightBlue200,
+    onSecondaryContainer = LightBlue900,
+    onTertiary = LightGray400,
+    tertiaryContainer = LightGray300,
+    onTertiaryContainer = White,
+    error = SystemRed,
+    onError = White,
+    errorContainer = SystemRed,
+    onErrorContainer = White,
+    surface = LightGray900,
+    onSurface = Black,
+    inverseSurface = LightGray100,
+    inverseOnSurface = LightGray500,
+    outline = LightGray200,
+    scrim = Black,
 )
 
 @Composable
 fun ILabTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     MaterialTheme(
         colorScheme = colorScheme,

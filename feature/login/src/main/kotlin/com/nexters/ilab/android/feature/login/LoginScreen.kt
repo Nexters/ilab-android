@@ -34,8 +34,8 @@ import com.kakao.sdk.user.UserApiClient
 import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
-import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Kakao
+import com.nexters.ilab.android.core.designsystem.theme.LightGray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
@@ -154,7 +154,7 @@ fun LoginContent(
                 .padding(start = 20.dp, end = 20.dp, bottom = 34.dp)
                 .height(60.dp),
             containerColor = Kakao,
-            contentColor = Gray900,
+            contentColor = LightGray900,
             text = {
                 Text(
                     text = stringResource(id = R.string.kakao_login),

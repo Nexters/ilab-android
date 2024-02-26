@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,9 +24,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.core.ui.ComponentPreview
@@ -71,14 +69,14 @@ fun ILabDialog(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(id = firstDescriptionResId),
-                color = Gray500,
+                color = MaterialTheme.colorScheme.inverseOnSurface,
                 style = Contents2,
             )
             Spacer(modifier = Modifier.height(4.dp))
             if (secondDescriptionResId != null) {
                 Text(
                     text = stringResource(id = secondDescriptionResId),
-                    color = Gray500,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
                     style = Contents2,
                 )
             }
@@ -95,8 +93,8 @@ fun ILabDialog(
                             .weight(1f)
                             .height(48.dp)
                             .padding(end = 4.dp),
-                        containerColor = PurpleBlue200,
-                        contentColor = PurpleBlue900,
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         text = {
                             Text(
                                 text = stringResource(id = cancelTextResId),

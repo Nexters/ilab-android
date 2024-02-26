@@ -25,6 +25,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -39,8 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
@@ -187,7 +186,7 @@ private fun CreateImageCompleteContent(
         Text(
             text = stringResource(id = R.string.create_image_complete),
             style = Title1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(40.dp))
         HorizontalPager(state = pagerState) { page ->
@@ -226,8 +225,8 @@ private fun CreateImageCompleteContent(
                     .weight(1f)
                     .height(60.dp)
                     .padding(end = 4.dp),
-                containerColor = PurpleBlue200,
-                contentColor = PurpleBlue900,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 text = {
                     Text(
                         text = stringResource(id = R.string.create_image_share),
