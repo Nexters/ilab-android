@@ -97,7 +97,7 @@ internal fun HomeRoute(
         onGenerateImgBtnClick = viewModel::onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
-        getStyleList = viewModel::getStyleList,
+        getStyleProfileList = viewModel::getStyleProfileList,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         setSelectedStyleImage = viewModel::setSelectedStyleImage,
@@ -112,7 +112,7 @@ internal fun HomeScreen(
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     dismissProfileImageDialog: () -> Unit,
-    getStyleList: () -> Unit,
+    getStyleProfileList: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
     dismissServerErrorDialog: () -> Unit,
     setSelectedStyleImage: (Int) -> Unit,
@@ -139,8 +139,7 @@ internal fun HomeScreen(
             NetworkErrorDialog(
                 onRetryClick = {
                     dismissNetworkErrorDialog()
-                    getStyleList()
-                    // todo: getProfileList
+                    getStyleProfileList()
                 },
             )
         }
@@ -427,7 +426,7 @@ internal fun HomeScreenPreview() {
         onGenerateImgBtnClick = {},
         openProfileImageDialog = {},
         dismissProfileImageDialog = {},
-        getStyleList = {},
+        getStyleProfileList = {},
         dismissNetworkErrorDialog = {},
         dismissServerErrorDialog = {},
         setSelectedStyleImage = {},
