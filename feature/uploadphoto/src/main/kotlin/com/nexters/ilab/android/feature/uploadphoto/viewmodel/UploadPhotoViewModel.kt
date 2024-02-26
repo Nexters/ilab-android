@@ -29,7 +29,6 @@ class UploadPhotoViewModel @Inject constructor(
     private val selectedStyle = savedStateHandle[SELECTED_STYLE] ?: ""
 
     init {
-        Timber.d("selectedStyle: $selectedStyle")
         observePrivacyPolicyAgreement()
         getStyleList()
         setSelectedStyle(selectedStyle)
@@ -50,7 +49,6 @@ class UploadPhotoViewModel @Inject constructor(
             }
             styleRepository.getStyleList()
                 .onSuccess { styleList ->
-                    Timber.d("$styleList")
                     reduce {
                         state.copy(styleList = styleList)
                     }
