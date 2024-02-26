@@ -42,13 +42,7 @@ class MainActivity : ComponentActivity() {
             ILabTheme {
                 MainScreen(
                     onChangeDarkTheme = { isDarkTheme -> viewModel.toggleDarkTheme(isDarkTheme) },
-                    onLogoutClick = {
-                        loginNavigator.navigateFrom(
-                            activity = this,
-                            withFinish = true,
-                        )
-                    },
-                    onDeleteAccountClick = {
+                    onNavigateToLogin = {
                         loginNavigator.navigateFrom(
                             activity = this,
                             withFinish = true,

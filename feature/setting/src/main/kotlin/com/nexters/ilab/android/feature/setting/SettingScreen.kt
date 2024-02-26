@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
+import com.nexters.ilab.android.feature.setting.viewmodel.SettingSideEffect
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingState
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -37,27 +39,40 @@ import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun SettingRoute(
     onBackClick: () -> Unit,
     onChangeDarkTheme: (Boolean) -> Unit,
     onNavigateToPrivacyPolicy: () -> Unit,
-    onLogoutClick: () -> Unit,
-    onDeleteAccountClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val appVersionInfo = viewModel.getVersionInfo(LocalContext.current)
 
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is SettingSideEffect.LogoutSuccess -> onNavigateToLogin()
+                is SettingSideEffect.LogoutFail -> {
+                    onShowErrorSnackBar(sideEffect.throwable)
+                }
+                is SettingSideEffect.DeleteAccountSuccess -> onNavigateToLogin()
+                is SettingSideEffect.DeleteAccountFail -> {
+                    onShowErrorSnackBar(sideEffect.throwable)
+                }
+            }
+        }
+    }
+
     SettingScreen(
         uiState = uiState,
         onBackClick = onBackClick,
         onChangeDarkTheme = onChangeDarkTheme,
         onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
-        onLogoutClick = onLogoutClick,
-        onDeleteAccountClick = onDeleteAccountClick,
+        onLogoutClick = viewModel::signOut,
+        onDeleteAccountClick = viewModel::deleteAccount,
         openDeleteAccountDialog = viewModel::openDeleteAccountDialog,
         dismissDeleteAccountDialog = viewModel::dismissDeleteAccountDialog,
         appVersionInfo = appVersionInfo,
@@ -94,7 +109,7 @@ internal fun SettingScreen(
         SettingTopAppBar(onBackClick)
         SettingContent(
             onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
-            onLogoutClick = onLogoutClick,
+            onNavigateToLogin = onLogoutClick,
             openDeleteAccountDialog = openDeleteAccountDialog,
             appVersionInfo = appVersionInfo,
         )
@@ -104,7 +119,7 @@ internal fun SettingScreen(
 @Composable
 internal fun SettingContent(
     onNavigateToPrivacyPolicy: () -> Unit,
-    onLogoutClick: () -> Unit,
+    onNavigateToLogin: () -> Unit,
     openDeleteAccountDialog: () -> Unit,
     appVersionInfo: String,
 ) {
@@ -120,7 +135,7 @@ internal fun SettingContent(
     HorizontalDivider(color = MaterialTheme.colorScheme.outline)
     SettingCellNavigation(
         stringId = R.string.setting_logout,
-        onNavigationClick = onLogoutClick,
+        onNavigationClick = onNavigateToLogin,
     )
     Spacer(
         modifier = Modifier

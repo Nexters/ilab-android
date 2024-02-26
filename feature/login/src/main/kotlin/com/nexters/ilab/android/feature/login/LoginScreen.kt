@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,10 +39,18 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Kakao
 import com.nexters.ilab.android.core.designsystem.theme.LightGray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
+import com.nexters.ilab.android.feature.login.viewmodel.LoginSideEffect
+import com.nexters.ilab.android.feature.login.viewmodel.LoginState
+import com.nexters.ilab.android.feature.login.viewmodel.LoginViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
+import com.nexters.ilab.core.ui.component.LoadingIndicator
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 @Composable
 internal fun LoginRoute(
@@ -48,30 +58,51 @@ internal fun LoginRoute(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val snackBarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+    val resource = LocalContext.current.resources
     val context = LocalContext.current
+    val onShowErrorSnackBar: (throwable: Throwable?) -> Unit = { throwable ->
+        coroutineScope.launch {
+            snackBarHostState.showSnackbar(
+                when (throwable) {
+                    is UnknownHostException -> resource.getString(R.string.network_error_message)
+                    is HttpException -> {
+                        if (throwable.code() == 500) {
+                            resource.getString(R.string.server_error_message)
+                        } else {
+                            resource.getString(R.string.unknown_error_message)
+                        }
+                    }
+                    is SocketTimeoutException -> resource.getString(R.string.server_error_message)
+                    else -> resource.getString(R.string.unknown_error_message)
+                },
+            )
+        }
+    }
 
     val kakaoCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         when {
             error != null -> when {
                 (error is AuthError && error.response.error == "ProtocolError") -> {
                     Timber.e("로그인 실패: ${error.response.error}, ${error.response.errorDescription}")
-                    viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_network))
+                    viewModel.setErrorMessage(UiText.StringResource(R.string.network_error_message))
                 }
 
                 else -> {
                     Timber.e("로그인 실패: ${error.message}")
-                    viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_unknown))
+                    viewModel.setErrorMessage(UiText.StringResource(R.string.unknown_error_message))
                 }
             }
 
             token != null -> UserApiClient.instance.me { user, _ ->
                 user?.let {
-                    Timber.d("로그인 성공: ${token.accessToken}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
-                    viewModel.kakaoLogin()
-                } ?: viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_unknown))
+                    Timber.d("로그인 성공: ${token.accessToken}, ${"${it.id}"} ${it.kakaoAccount?.email}, ${it.kakaoAccount?.profile?.nickname}, ${it.kakaoAccount?.profile?.profileImageUrl}")
+                    viewModel.kakaoLogin(token.accessToken, it.id!!)
+                } ?: viewModel.setErrorMessage(UiText.StringResource(R.string.unknown_error_message))
             }
 
-            else -> viewModel.setErrorMessage(UiText.StringResource(R.string.error_message_unknown))
+            else -> viewModel.setErrorMessage(UiText.StringResource(R.string.unknown_error_message))
         }
     }
 
@@ -87,6 +118,10 @@ internal fun LoginRoute(
                 }
 
                 is LoginSideEffect.LoginSuccess -> navigateToHome()
+                is LoginSideEffect.LoginFail -> {
+                    onShowErrorSnackBar(sideEffect.throwable)
+                }
+
                 is LoginSideEffect.ShowToast -> Toast.makeText(context, sideEffect.message.asString(context), Toast.LENGTH_SHORT).show()
             }
         }
@@ -104,7 +139,7 @@ internal fun LoginScreen(
     onLoginClick: () -> Unit,
 ) {
     if (uiState.isLoading) {
-        CircularProgressIndicator()
+        LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 
     Box(modifier = Modifier.fillMaxSize()) {

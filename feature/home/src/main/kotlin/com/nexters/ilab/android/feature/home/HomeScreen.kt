@@ -31,7 +31,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +45,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,32 +54,53 @@ import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
+import com.nexters.ilab.android.core.domain.entity.ProfileEntity
+import com.nexters.ilab.android.core.domain.entity.StyleEntity
+import com.nexters.ilab.android.feature.home.viewmodel.HomeSideEffect
+import com.nexters.ilab.android.feature.home.viewmodel.HomeState
+import com.nexters.ilab.android.feature.home.viewmodel.HomeViewModel
 import com.nexters.ilab.core.ui.ComponentPreview
+import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
+import com.nexters.ilab.core.ui.component.LoadingIndicator
+import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
+import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-@Suppress("unused")
 @Composable
 internal fun HomeRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onGenerateImgBtnClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onGenerateImgBtnClick: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is HomeSideEffect.NavigateToUploadPhoto -> {
+                    onGenerateImgBtnClick(sideEffect.selectedStyle)
+                }
+            }
+        }
+    }
 
     HomeScreen(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onGenerateImgBtnClick = onGenerateImgBtnClick,
+        onGenerateImgBtnClick = viewModel::onGenerateImgBtnClick,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
+        getStyleProfileList = viewModel::getStyleProfileList,
+        dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
+        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
+        setSelectedStyleImage = viewModel::setSelectedStyleImage,
     )
 }
 
@@ -90,6 +112,10 @@ internal fun HomeScreen(
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     dismissProfileImageDialog: () -> Unit,
+    getStyleProfileList: () -> Unit,
+    dismissNetworkErrorDialog: () -> Unit,
+    dismissServerErrorDialog: () -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -97,9 +123,28 @@ internal fun HomeScreen(
             .padding(bottom = padding.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+        if (uiState.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    dismissServerErrorDialog()
+                    getStyleProfileList()
+                },
+            )
+        }
+        if (uiState.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    dismissNetworkErrorDialog()
+                    getStyleProfileList()
+                },
+            )
+        }
         if (uiState.isProfileImageDialogVisible) {
             ProfileImageDialog(
-                profileImage = uiState.profileImageList[uiState.selectedIndex],
+                profileImage = uiState.selectedProfileEntity,
                 onCloseClick = dismissProfileImageDialog,
                 onGenerateImgBtnClickClick = {
                     dismissProfileImageDialog()
@@ -113,6 +158,7 @@ internal fun HomeScreen(
             profileImageList = uiState.profileImageList,
             onGenerateImgBtnClick = onGenerateImgBtnClick,
             openProfileImageDialog = openProfileImageDialog,
+            setSelectedStyleImage = setSelectedStyleImage,
         )
     }
 }
@@ -134,10 +180,11 @@ internal fun HomeTopAppBar(onSettingClick: () -> Unit) {
 
 @Composable
 internal fun HomeContent(
-    styleImageList: List<ProfileImage>,
-    profileImageList: List<ProfileImage>,
+    styleImageList: List<StyleEntity>,
+    profileImageList: List<ProfileEntity>,
     onGenerateImgBtnClick: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val imgSize = (configuration.screenWidthDp - 52)
@@ -152,6 +199,7 @@ internal fun HomeContent(
             HomeKeywordView(
                 styleImageList = styleImageList,
                 onGenerateImgBtnClick = onGenerateImgBtnClick,
+                setSelectedStyleImage = setSelectedStyleImage,
             )
         }
 
@@ -160,12 +208,15 @@ internal fun HomeContent(
             val startDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 20.dp else 0.dp
             val endDp = if (index % 6 == 0 || index % 6 == 2 || index % 6 == 3) 0.dp else 20.dp
 
-            KeywordSampleImageItem(
+            ProfileImageItem(
                 profileImage = item,
                 imageRatio = imageRatio,
                 startDp = startDp,
                 endDp = endDp,
-                openProfileImageDialog = { openProfileImageDialog(index) },
+                openProfileImageDialog = {
+                    setSelectedStyleImage(index)
+                    openProfileImageDialog(index)
+                },
             )
         }
 
@@ -178,11 +229,18 @@ internal fun HomeContent(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun HomeKeywordView(
-    styleImageList: List<ProfileImage>,
+    styleImageList: List<StyleEntity>,
     onGenerateImgBtnClick: () -> Unit,
+    setSelectedStyleImage: (Int) -> Unit,
 ) {
     val pageCount = styleImageList.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            setSelectedStyleImage(page)
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
@@ -209,13 +267,13 @@ internal fun HomeKeywordView(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
-                        text = "#" + styleImageList[page].profileKeyword,
+                        text = "#" + styleImageList[page].name,
                         textAlign = TextAlign.Center,
                         style = Title1,
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     NetworkImage(
-                        imageUrl = styleImageList[page].profileImage,
+                        imageUrl = styleImageList[page].defaultImageUrl,
                         contentDescription = "Style Image Example ${page + 1}",
                         modifier = Modifier
                             .clip(RoundedCornerShape(topStart = 999.dp, topEnd = 999.dp))
@@ -258,8 +316,8 @@ internal fun HomeKeywordView(
 }
 
 @Composable
-internal fun KeywordSampleImageItem(
-    profileImage: ProfileImage,
+internal fun ProfileImageItem(
+    profileImage: ProfileEntity,
     imageRatio: Dp,
     startDp: Dp,
     endDp: Dp,
@@ -274,12 +332,18 @@ internal fun KeywordSampleImageItem(
         contentAlignment = Alignment.Center,
     ) {
         NetworkImage(
-            imageUrl = profileImage.profileImage,
+            imageUrl = profileImage.imageUrl,
             contentDescription = "Profile Image",
             modifier = Modifier.fillMaxSize(),
         )
+        Image(
+            painter = painterResource(id = R.drawable.bg_img_dim_small),
+            contentDescription = "Background Dim",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
+        )
         Text(
-            text = "#" + profileImage.profileKeyword,
+            text = "#" + profileImage.name,
             style = Subtitle1,
             color = Color.White,
             modifier = Modifier
@@ -292,7 +356,7 @@ internal fun KeywordSampleImageItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun ProfileImageDialog(
-    profileImage: ProfileImage,
+    profileImage: ProfileEntity,
     onCloseClick: () -> Unit,
     onGenerateImgBtnClickClick: () -> Unit,
 ) {
@@ -304,12 +368,12 @@ internal fun ProfileImageDialog(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             NetworkImage(
-                imageUrl = profileImage.profileImage,
+                imageUrl = profileImage.imageUrl,
                 contentDescription = "Profile Image",
                 modifier = Modifier.fillMaxSize(),
             )
             Image(
-                painter = painterResource(id = R.drawable.bg_img_dim),
+                painter = painterResource(id = R.drawable.bg_img_dim_large),
                 contentDescription = "Background Dim",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds,
@@ -331,7 +395,7 @@ internal fun ProfileImageDialog(
             Column {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "#" + profileImage.profileKeyword,
+                    text = "#" + profileImage.name,
                     color = Color.White,
                     style = Title1,
                     modifier = Modifier.fillMaxWidth(),
@@ -358,9 +422,9 @@ internal fun ProfileImageDialog(
     }
 }
 
-@Preview(showBackground = true)
+@DevicePreview
 @Composable
-internal fun previewHomeScreen() {
+internal fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeState(),
         padding = PaddingValues(0.dp),
@@ -368,6 +432,10 @@ internal fun previewHomeScreen() {
         onGenerateImgBtnClick = {},
         openProfileImageDialog = {},
         dismissProfileImageDialog = {},
+        getStyleProfileList = {},
+        dismissNetworkErrorDialog = {},
+        dismissServerErrorDialog = {},
+        setSelectedStyleImage = {},
     )
 }
 
@@ -375,7 +443,7 @@ internal fun previewHomeScreen() {
 @Composable
 fun ProfileImageDialogPreview() {
     ProfileImageDialog(
-        profileImage = ProfileImage(),
+        profileImage = ProfileEntity("", "", ""),
         onCloseClick = {},
         onGenerateImgBtnClickClick = {},
     )

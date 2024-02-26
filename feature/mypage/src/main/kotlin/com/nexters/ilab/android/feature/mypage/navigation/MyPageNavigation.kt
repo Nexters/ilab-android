@@ -10,7 +10,7 @@ import androidx.navigation.navigation
 import com.nexters.ilab.android.core.common.extension.sharedViewModel
 import com.nexters.ilab.android.feature.mypage.MyAlbumImageRoute
 import com.nexters.ilab.android.feature.mypage.MyPageRoute
-import com.nexters.ilab.android.feature.mypage.MyPageViewModel
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 
 const val MY_PAGE_ROUTE = "my_page_route"
 const val MY_PROFILE_ROUTE = "my_profile_route"
@@ -30,7 +30,6 @@ fun NavGraphBuilder.myPageNavGraph(
     onCloseClick: () -> Unit,
     onSettingClick: () -> Unit,
     onNavigateToMyAlbumImage: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
 ) {
     navigation(
         startDestination = MY_PROFILE_ROUTE,
@@ -42,7 +41,6 @@ fun NavGraphBuilder.myPageNavGraph(
                 padding = padding,
                 onSettingClick = onSettingClick,
                 onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
-                onShowErrorSnackBar = onShowErrorSnackBar,
                 viewModel = viewModel,
             )
         }

@@ -2,6 +2,10 @@ package com.nexters.ilab.android.core.data.di
 
 import com.nexters.ilab.android.core.data.datasource.FileDataSource
 import com.nexters.ilab.android.core.data.datasource.FileDataSourceImpl
+import com.nexters.ilab.android.core.data.datasource.AuthDataSource
+import com.nexters.ilab.android.core.data.datasource.AuthDataSourceImpl
+import com.nexters.ilab.android.core.data.datasource.ProfileDataSource
+import com.nexters.ilab.android.core.data.datasource.ProfileDataSourceImpl
 import com.nexters.ilab.android.core.data.datasource.StyleDataSource
 import com.nexters.ilab.android.core.data.datasource.StyleDataSourceImpl
 import com.nexters.ilab.android.core.datastore.PrivacyPolicyDataSource
@@ -33,4 +37,12 @@ abstract class DataSourceModule {
     @Singleton
     @Binds
     abstract fun bindStyleDataSource(styleDataSourceImpl: StyleDataSourceImpl): StyleDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindLoginDataSource(loginDataSourceImpl: AuthDataSourceImpl): AuthDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindProfileDataSource(profileDataSourceImpl: ProfileDataSourceImpl): ProfileDataSource
 }

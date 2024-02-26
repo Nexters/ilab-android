@@ -16,15 +16,13 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onGenerateImgBtnClick: () -> Unit,
-    onShowErrorSnackBar: (throwable: Throwable?) -> Unit,
+    onGenerateImgBtnClick: (String) -> Unit,
 ) {
     composable(route = HOME_ROUTE) {
         HomeRoute(
             padding = padding,
             onSettingClick = onSettingClick,
             onGenerateImgBtnClick = onGenerateImgBtnClick,
-            onShowErrorSnackBar = onShowErrorSnackBar,
         )
     }
 }

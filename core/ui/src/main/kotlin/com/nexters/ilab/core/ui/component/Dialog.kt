@@ -122,6 +122,40 @@ fun ILabDialog(
     }
 }
 
+@Composable
+fun ServerErrorDialog(
+    onRetryClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.server_error_title,
+        iconResId = R.drawable.ic_server_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.server_error_description1,
+        secondDescriptionResId = R.string.server_error_description2,
+        confirmTextResId = R.string.retry,
+        cancelTextResId = null,
+        onCancelClick = {},
+        onConfirmClick = onRetryClick,
+    )
+}
+
+@Composable
+fun NetworkErrorDialog(
+    onRetryClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.network_error_title,
+        iconResId = R.drawable.ic_network_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.network_error_description1,
+        secondDescriptionResId = R.string.network_error_description2,
+        confirmTextResId = R.string.retry,
+        cancelTextResId = null,
+        onCancelClick = {},
+        onConfirmClick = onRetryClick,
+    )
+}
+
 @ComponentPreview
 @Composable
 fun CreateImageStopDialogPreview() {
@@ -156,6 +190,22 @@ fun DeleteAccountDialogPreview() {
 
 @ComponentPreview
 @Composable
+fun ServerErrorDialogPreview() {
+    ILabDialog(
+        titleResId = R.string.server_error_title,
+        iconResId = R.drawable.ic_server_error,
+        iconDescription = "Network Error Icon",
+        firstDescriptionResId = R.string.server_error_description1,
+        secondDescriptionResId = R.string.server_error_description2,
+        confirmTextResId = R.string.retry,
+        cancelTextResId = null,
+        onCancelClick = {},
+        onConfirmClick = {},
+    )
+}
+
+@ComponentPreview
+@Composable
 fun NetworkErrorDialogPreview() {
     ILabDialog(
         titleResId = R.string.network_error_title,
@@ -163,7 +213,7 @@ fun NetworkErrorDialogPreview() {
         iconDescription = "Network Error Icon",
         firstDescriptionResId = R.string.network_error_description1,
         secondDescriptionResId = R.string.network_error_description2,
-        confirmTextResId = R.string.network_error_confirm,
+        confirmTextResId = R.string.retry,
         cancelTextResId = null,
         onCancelClick = {},
         onConfirmClick = {},
