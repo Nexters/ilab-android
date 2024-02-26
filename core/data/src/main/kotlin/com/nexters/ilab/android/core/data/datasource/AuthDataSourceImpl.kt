@@ -16,11 +16,11 @@ class AuthDataSourceImpl @Inject constructor(
         return service.getUserInfo(uuid)
     }
 
-    override suspend fun signOut() {
-        service.signOut()
+    override suspend fun signOut(uuid: Long) {
+        service.signOut(uuid)
     }
 
-    override suspend fun deleteAccount() {
-        service.deleteAccount()
+    override suspend fun deleteAccount(uuid: Long) {
+        service.deleteAccount(uuid)
     }
 }
