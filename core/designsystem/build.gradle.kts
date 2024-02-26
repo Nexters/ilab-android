@@ -12,6 +12,7 @@ android {
 dependencies {
     implementations(
         libs.androidx.core,
+        libs.androidx.splash,
         libs.coil.compose,
     )
 }
