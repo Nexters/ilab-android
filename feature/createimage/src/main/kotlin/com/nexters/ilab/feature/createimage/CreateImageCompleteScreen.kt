@@ -8,6 +8,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -130,7 +131,8 @@ private fun CreateImageCompleteScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_my_page_screen,
+            resId = if (isSystemInDarkTheme()) R.drawable.bg_my_page_screen_dark
+            else R.drawable.bg_my_page_screen,
             contentDescription = "Background Image for Create Image Complete Screen",
             modifier = Modifier
                 .fillMaxWidth()

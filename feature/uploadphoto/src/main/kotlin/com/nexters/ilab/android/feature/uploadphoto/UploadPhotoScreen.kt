@@ -204,7 +204,7 @@ private fun UploadPhotoContent(
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.error)) {
+                    withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.secondary)) {
                         append(stringResource(id = R.string.good))
                     }
                     withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {

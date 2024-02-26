@@ -3,6 +3,7 @@ package com.nexters.ilab.android.feature.home
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -185,7 +186,8 @@ internal fun HomeKeywordView(
 
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_home_screen,
+            resId = if (isSystemInDarkTheme()) R.drawable.bg_home_screen_dark
+            else R.drawable.bg_home_screen,
             contentDescription = "Background Image for Home Screen",
             modifier = Modifier
                 .fillMaxWidth()

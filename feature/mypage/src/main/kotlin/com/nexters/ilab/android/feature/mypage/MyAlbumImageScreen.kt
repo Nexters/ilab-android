@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.mypage
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -76,7 +77,8 @@ private fun MyAlbumImageScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_my_page_screen,
+            resId = if (isSystemInDarkTheme()) R.drawable.bg_my_page_screen_dark
+            else R.drawable.bg_my_page_screen,
             contentDescription = "Background Image for My Album Screen",
             modifier = Modifier
                 .fillMaxWidth()
