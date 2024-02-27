@@ -34,7 +34,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
-import com.nexters.ilab.android.feature.mypage.viewmodel.MyAlbum
+import com.nexters.ilab.android.core.domain.entity.UserThumbnail
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -67,8 +67,8 @@ internal fun MyAlbumImageRoute(
     MyAlbumImageScreen(
         uiState = myPageState,
         onCloseClick = onCloseClick,
-        onShareBtnClick = {},
-        onSaveBtnClick = {},
+        onShareBtnClick = viewModel::shareMyAlbumImage,
+        onSaveBtnClick = viewModel::saveMyAlbumImage,
     )
 }
 
@@ -91,7 +91,7 @@ private fun MyAlbumImageScreen(
         Column {
             MyAlbumImageTopAppBar(onBackClick = onCloseClick)
             MyAlbumImageContent(
-                myAlbumImage = uiState.myAlbumImageList[uiState.selectedMyAlbum],
+                myAlbumImage = uiState.myAlbumFullImageList[uiState.selectedMyAlbum],
                 onShareBtnClick = onShareBtnClick,
                 onSaveBtnClick = onSaveBtnClick,
             )
@@ -118,11 +118,11 @@ private fun MyAlbumImageTopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MyAlbumImageContent(
-    myAlbumImage: MyAlbum,
+    myAlbumImage: UserThumbnail,
     onShareBtnClick: () -> Unit,
     onSaveBtnClick: () -> Unit,
 ) {
-    val pageCount = myAlbumImage.myAlbumImage.size
+    val pageCount = myAlbumImage.images.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Column(
@@ -131,7 +131,7 @@ private fun MyAlbumImageContent(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "#" + myAlbumImage.myAlbumKeyword,
+            text = "#" + myAlbumImage.images.first().imageStyle.name,
             style = Title1,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -146,8 +146,8 @@ private fun MyAlbumImageContent(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             ) {
                 NetworkImage(
-                    imageUrl = myAlbumImage.myAlbumImage[page].first,
-                    contentDescription = myAlbumImage.myAlbumImage[page].second,
+                    imageUrl = myAlbumImage.images[page].imageUrl,
+                    contentDescription = "My Album Image",
                     modifier = Modifier.fillMaxSize(),
                 )
             }
