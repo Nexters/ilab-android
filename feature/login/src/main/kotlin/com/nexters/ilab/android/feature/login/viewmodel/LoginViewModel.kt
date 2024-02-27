@@ -33,13 +33,14 @@ class LoginViewModel @Inject constructor(
                 state.copy(isLoading = true)
             }
             tokenRepository.setAccessToken(accessToken)
-            tokenRepository.setUUID(uuid)
             loginRepository.signIn()
                 .onSuccess {
+                    tokenRepository.setUUID(uuid)
                     postSideEffect(LoginSideEffect.LoginSuccess)
                 }
                 .onFailure { exception ->
                     Timber.e(exception)
+                    tokenRepository.clear()
                     postSideEffect(LoginSideEffect.LoginFail(exception))
                 }
             reduce {
