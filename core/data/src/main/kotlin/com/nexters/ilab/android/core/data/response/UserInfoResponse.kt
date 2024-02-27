@@ -16,7 +16,7 @@ data class UserInfoResponse(
     @SerialName("profileImageUrl")
     val profileImageUrl: String,
     @SerialName("thumbnails")
-    val thumbnails: List<UserThumbnailResponse>?,
+    val thumbnails: List<UserThumbnailResponse>,
 )
 
 @Serializable
