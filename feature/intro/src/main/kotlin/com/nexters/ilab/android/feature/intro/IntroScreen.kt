@@ -17,20 +17,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.feature.intro.viewmodel.IntroSideEffect
+import com.nexters.ilab.android.feature.intro.viewmodel.IntroViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
-import kotlinx.coroutines.delay
 
-@Suppress("unused")
 @Composable
 internal fun IntroRoute(
     navigateToLogin: () -> Unit,
     navigateToMain: () -> Unit,
     viewModel: IntroViewModel = hiltViewModel(),
 ) {
-    LaunchedEffect(key1 = Unit) {
-        delay(1000)
-        navigateToLogin()
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is IntroSideEffect.AutoLoginSuccess -> navigateToMain()
+                is IntroSideEffect.AutoLoginFail -> navigateToLogin()
+            }
+        }
     }
 
     IntroScreen()
