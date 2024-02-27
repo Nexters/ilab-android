@@ -17,6 +17,7 @@ dependencies {
         projects.core.datastore,
         projects.core.domain,
 
+        libs.timber,
         libs.bundles.coil,
     )
 }
