@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
+import com.nexters.ilab.android.feature.intro.viewmodel.IntroViewModel
 import com.nexters.ilab.android.feature.navigator.LoginNavigator
 import com.nexters.ilab.android.feature.navigator.MainNavigator
 import dagger.hilt.android.AndroidEntryPoint
