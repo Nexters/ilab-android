@@ -1,5 +1,11 @@
 package com.nexters.ilab.android.feature.mypage
 
+import android.content.ClipData
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -23,10 +29,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,7 +42,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
-import com.nexters.ilab.android.core.domain.entity.UserThumbnail
+import com.nexters.ilab.android.core.domain.entity.UserThumbnailEntity
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageSideEffect
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -62,6 +71,39 @@ internal fun MyAlbumImageRoute(
             isNavigationBarContrastEnforced = false,
         )
         onDispose {}
+    }
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+        viewModel.deleteCacheDir()
+    }
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is MyPageSideEffect.ShareMyAlbumImage -> {
+                    val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
+                    val shareIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND_MULTIPLE
+                        type = "image/*"
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                        val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
+                            for (i in 1 until uriList.size) {
+                                addItem(ClipData.Item(uriList[i]))
+                            }
+                        }
+                        setClipData(clipData)
+                    }
+                    launcher.launch(Intent.createChooser(shareIntent, null))
+                }
+
+                is MyPageSideEffect.SaveMyAlbumImageSuccess -> {
+                    Toast.makeText(context, context.getString(R.string.create_image_save_complete), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     MyAlbumImageScreen(
@@ -118,7 +160,7 @@ private fun MyAlbumImageTopAppBar(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MyAlbumImageContent(
-    myAlbumImage: UserThumbnail,
+    myAlbumImage: UserThumbnailEntity,
     onShareBtnClick: () -> Unit,
     onSaveBtnClick: () -> Unit,
 ) {

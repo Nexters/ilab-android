@@ -1,5 +1,10 @@
 package com.nexters.ilab.android.feature.mypage
 
+import android.content.ClipData
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,9 +37,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,7 +61,8 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.UserInfoEntity
-import com.nexters.ilab.android.core.domain.entity.UserThumbnail
+import com.nexters.ilab.android.core.domain.entity.UserThumbnailEntity
+import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageSideEffect
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -79,11 +87,36 @@ internal fun MyPageRoute(
         onNavigateToMyAlbumImage()
     }
 
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
+        viewModel.deleteCacheDir()
+    }
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            if (sideEffect is MyPageSideEffect.ShareMyAlbumImage) {
+                val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
+                val shareIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND_MULTIPLE
+                    type = "image/*"
+                    putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                    val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
+                        for (i in 1 until uriList.size) {
+                            addItem(ClipData.Item(uriList[i]))
+                        }
+                    }
+                    setClipData(clipData)
+                }
+                launcher.launch(Intent.createChooser(shareIntent, null))
+            }
+        }
+    }
+
     MyPageScreen(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onMoreBtnClick = {},
         onShareBtnClick = viewModel::shareMyAlbumImage,
         onDeleteBtnClick = {},
         onNavigateToMyAlbumImage = navigateToMyAlbum,
@@ -98,7 +131,6 @@ internal fun MyPageScreen(
     uiState: MyPageState,
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onMoreBtnClick: () -> Unit,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
@@ -135,7 +167,6 @@ internal fun MyPageScreen(
         MyPageContent(
             userInfo = uiState.userInfo,
             myAlbumImageList = uiState.myAlbumFullImageList,
-            onMoreBtnClick = onMoreBtnClick,
             onShareBtnClick = onShareBtnClick,
             onDeleteBtnClick = onDeleteBtnClick,
             onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
@@ -160,8 +191,7 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
 @Composable
 internal fun MyPageContent(
     userInfo: UserInfoEntity,
-    myAlbumImageList: List<UserThumbnail>,
-    onMoreBtnClick: () -> Unit,
+    myAlbumImageList: List<UserThumbnailEntity>,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
@@ -173,7 +203,7 @@ internal fun MyPageContent(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 20.dp),
     ) {
         item(
             span = {
@@ -199,7 +229,6 @@ internal fun MyPageContent(
             items(myAlbumCount) { iter ->
                 MyAlbumImage(
                     myAlbum = myAlbumImageList[iter],
-                    onMoreBtnClick = onMoreBtnClick,
                     onShareBtnClick = onShareBtnClick,
                     onDeleteBtnClick = onDeleteBtnClick,
                     onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
@@ -286,15 +315,15 @@ internal fun MyPageContentEmpty() {
 
 @Composable
 internal fun MyAlbumImage(
-    myAlbum: UserThumbnail,
-    onMoreBtnClick: () -> Unit,
+    myAlbum: UserThumbnailEntity,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
     index: Int,
 
 ) {
-    val isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
@@ -318,8 +347,7 @@ internal fun MyAlbumImage(
         )
         Box {
             IconButton(
-                onClick = { !isExpanded },
-//                onClick = onMoreBtnClick,
+                onClick = { isExpanded = !isExpanded },
                 modifier = Modifier
                     .size(48.dp)
                     .align(Alignment.TopEnd),
@@ -383,8 +411,7 @@ fun onDropDownMenu(
                 )
             },
             onClick = onShareClick,
-
-            )
+        )
     }
 }
 
@@ -395,7 +422,6 @@ fun MyPageScreenPreview() {
         uiState = MyPageState(),
         padding = PaddingValues(0.dp),
         onSettingClick = {},
-        onMoreBtnClick = {},
         onShareBtnClick = {},
         onDeleteBtnClick = {},
         onNavigateToMyAlbumImage = {},
