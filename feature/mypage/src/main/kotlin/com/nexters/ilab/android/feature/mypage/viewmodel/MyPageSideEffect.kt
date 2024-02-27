@@ -1,3 +1,6 @@
 package com.nexters.ilab.android.feature.mypage.viewmodel
 
-interface MyPageSideEffect
+sealed interface MyPageSideEffect {
+    data class ShareMyAlbumImage(val imageUriList: List<String>) : MyPageSideEffect
+    data object SaveMyAlbumImageSuccess : MyPageSideEffect
+}
