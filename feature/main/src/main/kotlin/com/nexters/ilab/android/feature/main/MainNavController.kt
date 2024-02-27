@@ -64,8 +64,8 @@ internal class MainNavController(
         navController.navigateToInputStyle()
     }
 
-    fun navigateToCreateImage() {
-        navController.navigateToCreateImage()
+    fun navigateToCreateImage(imageUrl: String, styleId: Int) {
+        navController.navigateToCreateImage(imageUrl, styleId)
     }
 
     fun navigateToCreateImageComplete() {

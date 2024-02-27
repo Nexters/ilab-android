@@ -3,19 +3,26 @@ package com.nexters.ilab.feature.createimage.navigation
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.nexters.ilab.android.core.common.extension.sharedViewModel
 import com.nexters.ilab.feature.createimage.CreateImageCompleteRoute
 import com.nexters.ilab.feature.createimage.CreateImageRoute
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
-const val CREATE_IMAGE_ROUTE = "create_image_route"
+const val IMAGE_URL = "image_url"
+const val STYLE_ID = "style_id"
+const val CREATE_IMAGE_ROUTE = "create_image_route/{$IMAGE_URL}/{$STYLE_ID}"
 const val CREATE_ROUTE = "create_route"
 const val CREATE_IMAGE_COMPLETE_ROUTE = "create_image_complete_route"
 
-fun NavController.navigateToCreateImage() {
-    navigate(CREATE_IMAGE_ROUTE)
+fun NavController.navigateToCreateImage(
+    imageUrl: String,
+    styleId: Int,
+) {
+    navigate("create_image_route/$imageUrl/$styleId")
 }
 
 fun NavController.navigateToCreateImageComplete() {
@@ -30,6 +37,14 @@ fun NavGraphBuilder.createImageNavGraph(
     navigation(
         startDestination = CREATE_ROUTE,
         route = CREATE_IMAGE_ROUTE,
+        arguments = listOf(
+            navArgument(IMAGE_URL) {
+                type = NavType.StringType
+            },
+            navArgument(STYLE_ID) {
+                type = NavType.IntType
+            },
+        ),
     ) {
         composable(route = CREATE_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<CreateImageViewModel>(navController)

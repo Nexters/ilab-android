@@ -45,7 +45,7 @@ fun NavGraphBuilder.uploadPhotoNavGraph(
     onNavigateToPrivacyPolicy: () -> Unit,
     onNavigateToUploadCheck: () -> Unit,
     onNavigateToInputStyle: () -> Unit,
-    onNavigateToCreateImage: () -> Unit,
+    onNavigateToCreateImage: (String, Int) -> Unit,
 ) {
     navigation(
         startDestination = UPLOAD_ROUTE,

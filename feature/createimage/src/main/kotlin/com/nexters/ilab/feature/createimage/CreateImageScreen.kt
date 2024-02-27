@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +37,10 @@ import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
+import com.nexters.ilab.core.ui.component.NetworkErrorDialog
+import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
@@ -48,12 +52,26 @@ internal fun CreateImageRoute(
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
 
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is CreateImageSideEffect.CreateProfileImageSuccess -> {
+                    onNavigateToCreateImageComplete()
+                }
+                else -> {}
+            }
+        }
+    }
+
     CreateImageScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
         onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
-        openCreateImageStopDialog = viewModel::openCreateImageStopDialog,
-        dismissCreateImageStopDialog = viewModel::dismissCreateImageStopDialog,
+        openCreateImageStopDialog = viewModel::openCreateProfileImageStopDialog,
+        dismissCreateImageStopDialog = viewModel::dismissCreateProfileImageStopDialog,
+        createProfileImage = viewModel::createProfileImage,
+        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
+        dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
     )
 }
 
@@ -64,6 +82,9 @@ private fun CreateImageScreen(
     onNavigateToCreateImageComplete: () -> Unit,
     openCreateImageStopDialog: () -> Unit,
     dismissCreateImageStopDialog: () -> Unit,
+    createProfileImage: () -> Unit,
+    dismissServerErrorDialog: () -> Unit,
+    dismissNetworkErrorDialog: () -> Unit,
 ) {
     BackHandler {
         openCreateImageStopDialog()
@@ -77,6 +98,22 @@ private fun CreateImageScreen(
                     onCloseClick()
                 },
                 onConfirmClick = dismissCreateImageStopDialog,
+            )
+        }
+        if (uiState.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    dismissServerErrorDialog()
+                    createProfileImage()
+                },
+            )
+        }
+        if (uiState.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    dismissNetworkErrorDialog()
+                    createProfileImage()
+                },
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
@@ -197,5 +234,8 @@ fun CreateImageScreenPreview() {
         onNavigateToCreateImageComplete = {},
         openCreateImageStopDialog = {},
         dismissCreateImageStopDialog = {},
+        createProfileImage = {},
+        dismissServerErrorDialog = {},
+        dismissNetworkErrorDialog = {},
     )
 }
