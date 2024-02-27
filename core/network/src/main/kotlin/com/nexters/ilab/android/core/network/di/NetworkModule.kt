@@ -25,7 +25,8 @@ private val jsonRule = Json {
     isLenient = true
 }
 
-private val converterFactory = jsonRule.asConverterFactory("application/json".toMediaType())
+private val jsonConverterFactory = jsonRule.asConverterFactory("application/json".toMediaType())
+private val fileConverterFactory = jsonRule.asConverterFactory("multipart/form-data".toMediaType())
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -77,7 +78,7 @@ internal object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(jsonConverterFactory)
             .build()
     }
 
@@ -90,7 +91,20 @@ internal object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(jsonConverterFactory)
+            .build()
+    }
+
+    @FileApi
+    @Singleton
+    @Provides
+    internal fun provideFileApiRetrofit(
+        okHttpClient: OkHttpClient,
+    ): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.SERVER_BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(fileConverterFactory)
             .build()
     }
 }

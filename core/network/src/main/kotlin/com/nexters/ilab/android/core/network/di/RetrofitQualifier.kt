@@ -9,3 +9,7 @@ annotation class ILabApi
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class LoginApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class FileApi
