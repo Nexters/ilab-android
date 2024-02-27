@@ -6,6 +6,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -374,9 +375,17 @@ fun PrivacyPolicyCheckBox(
 ) {
     Icon(
         imageVector = if (checked) {
-            ImageVector.vectorResource(id = R.drawable.ic_checkbox_true)
+            if (isSystemInDarkTheme()) {
+                ImageVector.vectorResource(id = R.drawable.ic_checkbox_true_dark)
+            } else {
+                ImageVector.vectorResource(id = R.drawable.ic_checkbox_true)
+            }
         } else {
-            ImageVector.vectorResource(id = R.drawable.ic_checkbox_false)
+            if (isSystemInDarkTheme()) {
+                ImageVector.vectorResource(id = R.drawable.ic_checkbox_false_dark)
+            } else {
+                ImageVector.vectorResource(id = R.drawable.ic_checkbox_false)
+            }
         },
         contentDescription = "Privacy Policy Checkbox",
         tint = Color.Unspecified,
