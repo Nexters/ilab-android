@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,9 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.common.extension.noRippleClickable
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
@@ -158,7 +157,7 @@ internal fun InputStyleContent(
                 .padding(start = 20.dp, end = 20.dp, bottom = 18.dp)
                 .height(60.dp),
             enabled = isStyleSelected,
-            containerColor = Blue600,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = Color.White,
             text = {
                 Text(
@@ -199,13 +198,13 @@ fun CheckableStyleImageList(
                 Text(
                     text = stringResource(id = R.string.what_style_prefer),
                     style = Title1,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(id = R.string.creates_image_based_on_selected_style),
                     style = Contents1,
-                    color = Gray500,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
                 )
                 Spacer(modifier = Modifier.height(26.dp))
             }
@@ -215,7 +214,7 @@ fun CheckableStyleImageList(
             key = { index -> styleList[index].id },
         ) { index ->
             val backgroundColor = if (selectedItemIndex == index) {
-                Blue600.copy(alpha = 0.6f)
+                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
             } else {
                 Color.Transparent
             }

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -32,9 +33,6 @@ import androidx.navigation.compose.NavHost
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Gray100
-import com.nexters.ilab.android.core.designsystem.theme.Gray400
-import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.privacypolicy.navigation.privacyPolicyNavGraph
@@ -135,7 +133,7 @@ internal fun MainScreen(
             )
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
     )
 }
 
@@ -147,11 +145,9 @@ private fun MainBottomBar(
     onTabSelected: (MainTab) -> Unit,
 ) {
     if (visible) {
-        Box(
-            modifier = Modifier.background(Color.White),
-        ) {
+        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
             Column {
-                HorizontalDivider(color = Gray100)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
                 Row(
                     modifier = Modifier
                         .navigationBarsPadding()
@@ -211,7 +207,8 @@ private fun RowScope.MainBottomBarItem(
             Icon(
                 imageVector = ImageVector.vectorResource(tab.iconResId),
                 contentDescription = tab.contentDescription,
-                tint = if (selected) Gray900 else Gray400,
+                tint = if (selected) MaterialTheme.colorScheme.onBackground
+                else MaterialTheme.colorScheme.onTertiary,
             )
         }
     }

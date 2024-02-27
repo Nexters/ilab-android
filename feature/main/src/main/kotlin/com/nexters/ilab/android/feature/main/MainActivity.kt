@@ -5,9 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
+import com.nexters.ilab.android.core.designsystem.theme.LightGray900
 import com.nexters.ilab.android.feature.navigator.LoginNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
@@ -25,22 +27,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             // TODO isDarkTheme 를 dataStore 에서 가져와서 구독하는 방식으로 수정
-            val isDarkTheme = false
+            // val isDarkTheme = false
             val navigator: MainNavController = rememberMainNavController()
-
             val systemUiController = rememberExSystemUiController()
+            val isDarkTheme = isSystemInDarkTheme()
 
             DisposableEffect(systemUiController) {
-                systemUiController.setSystemBarsColor(
-                    color = Color.White,
-                    darkIcons = true,
-                    isNavigationBarContrastEnforced = false,
-                )
-
+                if (isDarkTheme) {
+                    systemUiController.setSystemBarsColor(
+                        color = LightGray900,
+                        darkIcons = false,
+                        isNavigationBarContrastEnforced = false,
+                    )
+                } else {
+                    systemUiController.setSystemBarsColor(
+                        color = Color.White,
+                        darkIcons = true,
+                        isNavigationBarContrastEnforced = false,
+                    )
+                }
                 onDispose {}
             }
 
-            ILabTheme(darkTheme = isDarkTheme) {
+            ILabTheme {
                 MainScreen(
                     onChangeDarkTheme = { isDarkTheme -> viewModel.toggleDarkTheme(isDarkTheme) },
                     onNavigateToLogin = {

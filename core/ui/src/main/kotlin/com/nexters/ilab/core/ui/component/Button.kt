@@ -11,13 +11,12 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.nexters.ilab.android.core.designsystem.theme.Gray300
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue600
 import com.nexters.ilab.core.ui.ComponentPreview
 
 // leadingIcon for login button
@@ -26,10 +25,10 @@ fun ILabButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = PurpleBlue600,
-    contentColor: Color = Color.White,
-    disabledContainerColor: Color = Gray300,
-    disabledContentColor: Color = Color.White,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
     text: @Composable () -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
@@ -59,10 +58,10 @@ fun ILabButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    containerColor: Color = PurpleBlue600,
-    contentColor: Color = Color.White,
-    disabledContainerColor: Color = Gray300,
-    disabledContentColor: Color = Color.White,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    disabledContainerColor: Color = MaterialTheme.colorScheme.tertiaryContainer,
+    disabledContentColor: Color = MaterialTheme.colorScheme.onTertiaryContainer,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     content: @Composable RowScope.() -> Unit,
 ) {

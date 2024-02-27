@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.mypage
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,6 +19,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -30,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue200
-import com.nexters.ilab.android.core.designsystem.theme.PurpleBlue900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyAlbum
@@ -53,11 +53,12 @@ internal fun MyAlbumImageRoute(
 ) {
     val myPageState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val systemUiController = rememberExSystemUiController()
+    val isDarkTheme = isSystemInDarkTheme()
 
     DisposableEffect(systemUiController) {
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
-            darkIcons = true,
+            darkIcons = !isDarkTheme,
             isNavigationBarContrastEnforced = false,
         )
         onDispose {}
@@ -80,7 +81,8 @@ private fun MyAlbumImageScreen(
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
-            resId = R.drawable.bg_my_page_screen,
+            resId = if (isSystemInDarkTheme()) R.drawable.bg_my_page_screen_dark
+            else R.drawable.bg_my_page_screen,
             contentDescription = "Background Image for My Album Screen",
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,7 +133,7 @@ private fun MyAlbumImageContent(
         Text(
             text = "#" + myAlbumImage.myAlbumKeyword,
             style = Title1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(40.dp))
         HorizontalPager(state = pagerState) { page ->
@@ -170,8 +172,8 @@ private fun MyAlbumImageContent(
                     .weight(1f)
                     .height(60.dp)
                     .padding(end = 4.dp),
-                containerColor = PurpleBlue200,
-                contentColor = PurpleBlue900,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                 text = {
                     Text(
                         text = stringResource(id = R.string.create_image_share),

@@ -14,13 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,11 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
-import com.nexters.ilab.android.core.designsystem.theme.Gray100
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
-import com.nexters.ilab.android.core.designsystem.theme.SystemRed
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabDialog
@@ -117,18 +113,18 @@ private fun CreateImageContent(
         Text(
             text = stringResource(id = R.string.creating_image_title),
             style = Title1,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Gray500)) {
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
                     append(stringResource(R.string.creating_image_wait_part1_description1_prefix))
                 }
-                withStyle(style = SpanStyle(color = Blue600, fontWeight = FontWeight.Bold)) {
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primaryContainer, fontWeight = FontWeight.Bold)) {
                     append(stringResource(R.string.creating_image_wait_part1_description1_time_value))
                 }
-                withStyle(style = SpanStyle(color = Gray500)) {
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
                     append(stringResource(id = R.string.creating_image_wait_part1_description1_suffix))
                 }
             },
@@ -138,7 +134,7 @@ private fun CreateImageContent(
         Text(
             text = stringResource(id = R.string.creating_image_wait_part1_description2),
             style = Contents1,
-            color = Gray500,
+            color = MaterialTheme.colorScheme.inverseOnSurface,
         )
         LoadingImage(
             resId = R.drawable.anim_loading,
@@ -147,7 +143,7 @@ private fun CreateImageContent(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .background(Gray100)
+                .background(MaterialTheme.colorScheme.inverseSurface)
                 .clickable { onNavigateToCreateImageComplete() },
         ) {
             Row(
@@ -159,10 +155,10 @@ private fun CreateImageContent(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = Gray500)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
                             append(stringResource(R.string.creating_image_exit_warning_prefix))
                         }
-                        withStyle(style = SpanStyle(color = SystemRed)) {
+                        withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.error)) {
                             append(stringResource(id = R.string.creating_image_exit_warning_suffix))
                         }
                     },

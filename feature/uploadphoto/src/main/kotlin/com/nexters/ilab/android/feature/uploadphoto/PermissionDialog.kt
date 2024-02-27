@@ -10,11 +10,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -54,7 +54,7 @@ internal fun PermissionDialog(
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
                 )
-                HorizontalDivider()
+                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
                 Text(
                     text = if (isPermanentlyDeclined) {
                         stringResource(id = R.string.go_to_app_setting)
@@ -73,12 +73,13 @@ internal fun PermissionDialog(
                         },
                     textAlign = TextAlign.Center,
                     style = Subtitle2,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
             }
         },
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(color = Color.White),
+            .background(color = MaterialTheme.colorScheme.background),
     )
 }
 

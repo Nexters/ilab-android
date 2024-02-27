@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,10 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
-import com.nexters.ilab.android.core.designsystem.theme.Blue600
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
-import com.nexters.ilab.android.core.designsystem.theme.Gray500
-import com.nexters.ilab.android.core.designsystem.theme.Gray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.UserInfoEntity
@@ -225,20 +223,20 @@ internal fun MyPageContentUser(
     Text(
         text = userInfo.nickname,
         style = Title2,
-        color = Gray900,
+        color = MaterialTheme.colorScheme.onBackground,
     )
     Spacer(modifier = Modifier.height(40.dp))
     Row(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.mypage_my_album),
             style = Title2,
-            color = Gray900,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = albumImgCount.toString(),
             style = Title2,
-            color = Blue600,
+            color = MaterialTheme.colorScheme.primaryContainer,
         )
     }
 }
@@ -263,7 +261,7 @@ internal fun MyPageContentEmpty() {
             text = stringResource(id = R.string.mypage_there_is_no_img),
             textAlign = TextAlign.Center,
             style = Contents1,
-            color = Gray500,
+            color = MaterialTheme.colorScheme.inverseOnSurface,
         )
     }
 }
