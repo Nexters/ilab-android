@@ -203,7 +203,7 @@ internal fun MyPageContent(
         columns = GridCells.Fixed(2),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.padding(top = 16.dp, start = 20.dp),
+        modifier = Modifier.padding(top = 16.dp, start = 20.dp, end = 20.dp),
     ) {
         item(
             span = {
