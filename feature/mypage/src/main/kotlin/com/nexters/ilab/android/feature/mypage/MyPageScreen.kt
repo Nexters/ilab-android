@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.feature.mypage
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,18 +17,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,10 +50,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.Contents2
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.UserInfoEntity
-import com.nexters.ilab.android.feature.mypage.viewmodel.MyAlbum
+import com.nexters.ilab.android.core.domain.entity.UserThumbnail
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
 import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -76,6 +84,8 @@ internal fun MyPageRoute(
         padding = padding,
         onSettingClick = onSettingClick,
         onMoreBtnClick = {},
+        onShareBtnClick = viewModel::shareMyAlbumImage,
+        onDeleteBtnClick = {},
         onNavigateToMyAlbumImage = navigateToMyAlbum,
         getUserInfo = viewModel::getUserInfo,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
@@ -89,6 +99,8 @@ internal fun MyPageScreen(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onMoreBtnClick: () -> Unit,
+    onShareBtnClick: () -> Unit,
+    onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
     getUserInfo: () -> Unit,
     dismissServerErrorDialog: () -> Unit,
@@ -122,8 +134,10 @@ internal fun MyPageScreen(
         MyPageTopAppBar(onSettingClick)
         MyPageContent(
             userInfo = uiState.userInfo,
-            myAlbumImageList = uiState.myAlbumImageList,
+            myAlbumImageList = uiState.myAlbumFullImageList,
             onMoreBtnClick = onMoreBtnClick,
+            onShareBtnClick = onShareBtnClick,
+            onDeleteBtnClick = onDeleteBtnClick,
             onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
         )
     }
@@ -146,8 +160,10 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
 @Composable
 internal fun MyPageContent(
     userInfo: UserInfoEntity,
-    myAlbumImageList: List<MyAlbum>,
+    myAlbumImageList: List<UserThumbnail>,
     onMoreBtnClick: () -> Unit,
+    onShareBtnClick: () -> Unit,
+    onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
 ) {
     val span: (LazyGridItemSpanScope) -> GridItemSpan = { GridItemSpan(2) }
@@ -184,6 +200,8 @@ internal fun MyPageContent(
                 MyAlbumImage(
                     myAlbum = myAlbumImageList[iter],
                     onMoreBtnClick = onMoreBtnClick,
+                    onShareBtnClick = onShareBtnClick,
+                    onDeleteBtnClick = onDeleteBtnClick,
                     onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
                     index = iter,
                 )
@@ -268,19 +286,23 @@ internal fun MyPageContentEmpty() {
 
 @Composable
 internal fun MyAlbumImage(
-    myAlbum: MyAlbum,
+    myAlbum: UserThumbnail,
     onMoreBtnClick: () -> Unit,
+    onShareBtnClick: () -> Unit,
+    onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
     index: Int,
+
 ) {
+    val isExpanded by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(12.dp))
             .aspectRatio(1f),
     ) {
         NetworkImage(
-            imageUrl = myAlbum.myAlbumImage[0].first,
-            contentDescription = myAlbum.myAlbumImage[0].second,
+            imageUrl = myAlbum.images.first().imageUrl,
+            contentDescription = "My Album Image",
             modifier = Modifier
                 .fillMaxSize()
                 .aspectRatio(1f)
@@ -294,26 +316,75 @@ internal fun MyAlbumImage(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
-        IconButton(
-            onClick = onMoreBtnClick,
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.TopEnd),
-        ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_more),
-                contentDescription = "more",
-                tint = Color.Unspecified,
+        Box {
+            IconButton(
+                onClick = { !isExpanded },
+//                onClick = onMoreBtnClick,
+                modifier = Modifier
+                    .size(48.dp)
+                    .align(Alignment.TopEnd),
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_more),
+                    contentDescription = "more",
+                    tint = Color.Unspecified,
+                )
+            }
+            onDropDownMenu(
+                isDropDownShow = isExpanded,
+                onDismiss = {},
+                onShareClick = onShareBtnClick,
+                onDeleteClick = onDeleteBtnClick,
             )
         }
         Text(
-            text = "#" + myAlbum.myAlbumKeyword,
+            text = "#" + myAlbum.images.first().imageStyle.name,
             style = Subtitle1,
             color = Color.White,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(start = 16.dp, bottom = 16.dp),
         )
+    }
+}
+
+@Composable
+fun onDropDownMenu(
+    isDropDownShow: Boolean,
+    onDismiss: () -> Unit,
+    onShareClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+) {
+    DropdownMenu(
+        expanded = isDropDownShow,
+        onDismissRequest = onDismiss,
+        modifier = Modifier
+            .background(Color.White)
+            .wrapContentSize()
+            .clip(RoundedCornerShape(12.dp)),
+    ) {
+        DropdownMenuItem(
+            text = {
+                Text(
+                    text = stringResource(id = R.string.mypage_dropdown_delete),
+                    style = Contents2,
+                    color = Color.Black,
+                )
+            },
+            onClick = onDeleteClick,
+        )
+        HorizontalDivider(modifier = Modifier.height(1.dp))
+        DropdownMenuItem(
+            text = {
+                Text(
+                    text = stringResource(id = R.string.mypage_dropdown_share),
+                    style = Contents2,
+                    color = Color.Black,
+                )
+            },
+            onClick = onShareClick,
+
+            )
     }
 }
 
@@ -325,6 +396,8 @@ fun MyPageScreenPreview() {
         padding = PaddingValues(0.dp),
         onSettingClick = {},
         onMoreBtnClick = {},
+        onShareBtnClick = {},
+        onDeleteBtnClick = {},
         onNavigateToMyAlbumImage = {},
         getUserInfo = {},
         dismissNetworkErrorDialog = {},
