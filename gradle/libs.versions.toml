@@ -30,7 +30,7 @@ androidx-compose-material3 = "1.2.0"
 androidx-hilt-navigation-compose = "1.2.0"
 
 desugar-jdk-libs = "2.0.4"
-hilt = "2.50"
+hilt = "2.51"
 javax-inject = "1"
 retrofit = "2.9.0"
 okhttp = "5.0.0-alpha.12"
