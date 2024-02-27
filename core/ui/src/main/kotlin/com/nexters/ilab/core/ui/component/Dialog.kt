@@ -73,7 +73,7 @@ fun ILabDialog(
                 text = stringResource(id = firstDescriptionResId),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = Contents2,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             )
             Spacer(modifier = Modifier.height(4.dp))
             if (secondDescriptionResId != null) {
@@ -81,7 +81,7 @@ fun ILabDialog(
                     text = stringResource(id = secondDescriptionResId),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = Contents2,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))
