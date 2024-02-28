@@ -1,5 +1,7 @@
 @file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
 
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.ilab.android.application)
     alias(libs.plugins.ilab.android.application.compose)
@@ -10,6 +12,18 @@ plugins {
 
 android {
     namespace = "com.nexters.ilab.android"
+
+    signingConfigs {
+        create("release") {
+            val propertiesFile = rootProject.file("keystore.properties")
+            val properties = Properties()
+            properties.load(propertiesFile.inputStream())
+            storeFile = file(properties["STORE_FILE"] as String)
+            storePassword = properties["STORE_PASSWORD"] as String
+            keyAlias = properties["KEY_ALIAS"] as String
+            keyPassword = properties["KEY_PASSWORD"] as String
+        }
+    }
 
     buildFeatures {
         buildConfig = true
