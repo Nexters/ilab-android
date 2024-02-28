@@ -138,11 +138,11 @@ internal fun LoginScreen(
     uiState: LoginState,
     onLoginClick: () -> Unit,
 ) {
-    if (uiState.isLoading) {
-        LoadingIndicator(modifier = Modifier.fillMaxSize())
-    }
-
     Box(modifier = Modifier.fillMaxSize()) {
+        if (uiState.isLoading) {
+            LoadingIndicator(modifier = Modifier.fillMaxSize())
+        }
+
         BackgroundImage(
             resId = R.drawable.bg_login_screen,
             contentDescription = "Background Image for Login Screen",

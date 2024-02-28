@@ -13,3 +13,11 @@ annotation class LoginApi
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class FileApi
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class TokenClient
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class ILabClient

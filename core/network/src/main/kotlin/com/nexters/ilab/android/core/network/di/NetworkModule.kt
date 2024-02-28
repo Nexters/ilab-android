@@ -54,9 +54,24 @@ internal object NetworkModule {
         return TokenInterceptor(dataStore)
     }
 
+    @ILabClient
     @Singleton
     @Provides
-    internal fun provideOkHttpClient(
+    internal fun provideILabOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
+            .readTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
+            .writeTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
+            .addInterceptor(httpLoggingInterceptor)
+            .build()
+    }
+
+    @TokenClient
+    @Singleton
+    @Provides
+    internal fun provideTokenOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
         tokenInterceptor: TokenInterceptor,
     ): OkHttpClient {
@@ -73,7 +88,7 @@ internal object NetworkModule {
     @Singleton
     @Provides
     internal fun provideILabApiRetrofit(
-        okHttpClient: OkHttpClient,
+        @ILabClient okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_BASE_URL)
@@ -85,8 +100,8 @@ internal object NetworkModule {
     @LoginApi
     @Singleton
     @Provides
-    internal fun provideLoginApiRetrofit(
-        okHttpClient: OkHttpClient,
+    internal fun provideAuthApiRetrofit(
+        @TokenClient okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_BASE_URL)
@@ -99,7 +114,7 @@ internal object NetworkModule {
     @Singleton
     @Provides
     internal fun provideFileApiRetrofit(
-        okHttpClient: OkHttpClient,
+        @ILabClient okHttpClient: OkHttpClient,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_BASE_URL)
