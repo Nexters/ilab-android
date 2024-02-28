@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.ilab.android.application)
     alias(libs.plugins.ilab.android.application.compose)
+    alias(libs.plugins.ilab.android.application.firebase)
     alias(libs.plugins.ilab.android.hilt)
     alias(libs.plugins.google.secrets)
 }

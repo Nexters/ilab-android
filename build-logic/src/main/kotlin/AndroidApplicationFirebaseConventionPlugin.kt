@@ -9,7 +9,7 @@ internal class AndroidApplicationFirebaseConventionPlugin : BuildLogicConvention
         applyPlugins(Plugins.GoogleServices, Plugins.FirebaseCrashlytics)
 
         dependencies {
-            implementation(libs.firebase.bom)
+            implementation(platform(libs.firebase.bom))
             implementation(libs.firebase.analytics)
             implementation(libs.firebase.crashlytics)
         }
