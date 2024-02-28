@@ -14,7 +14,6 @@ annotation class LoginApi
 @Retention(AnnotationRetention.BINARY)
 annotation class FileApi
 
-
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class TokenClient
