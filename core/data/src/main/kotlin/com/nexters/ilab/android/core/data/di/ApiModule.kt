@@ -25,7 +25,7 @@ internal object ApiModule {
 
     @Singleton
     @Provides
-    internal fun provideLoginService(
+    internal fun provideAuthService(
         @LoginApi retrofit: Retrofit,
     ): AuthService {
         return retrofit.create(AuthService::class.java)
