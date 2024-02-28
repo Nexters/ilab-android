@@ -19,12 +19,15 @@ fun handleException(exception: Throwable, actions: ErrorHandlerActions) {
                 Timber.e(exception)
             }
         }
+
         is UnknownHostException -> {
             actions.openNetworkErrorDialog()
         }
+
         is SocketTimeoutException -> {
             actions.openServerErrorDialog()
         }
+
         else -> {
             Timber.e(exception)
         }

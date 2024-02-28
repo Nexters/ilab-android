@@ -171,7 +171,7 @@ internal fun InputStyleContent(
                 onStyleSelect = onStyleSelect,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 112.dp),
+                    .padding(bottom = 88.dp),
             )
         }
         ILabButton(
@@ -259,6 +259,13 @@ fun CheckableStyleImageList(
                         onStyleSelect(styleList[index].name)
                     },
             )
+        }
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            },
+        ) {
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
