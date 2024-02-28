@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.common.ErrorHandlerActions
 import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
+import com.nexters.ilab.android.core.domain.repository.FileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
@@ -16,24 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val fileRepository: FileRepository,
 ) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect>, ErrorHandlerActions {
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
-
-    // for test
-    val DummyMyAlbumList: List<MyAlbum> = listOf(
-        MyAlbum(setDummyImageList(1), "몽환적인"),
-        MyAlbum(setDummyImageList(2), "자연적인"),
-        MyAlbum(setDummyImageList(3), "스케치"),
-        MyAlbum(setDummyImageList(4), "고독한"),
-        MyAlbum(setDummyImageList(1), "몽환적인"),
-        MyAlbum(setDummyImageList(2), "자연적인"),
-        MyAlbum(setDummyImageList(3), "스케치"),
-        MyAlbum(setDummyImageList(4), "고독한"),
-        MyAlbum(setDummyImageList(1), "몽환적인"),
-        MyAlbum(setDummyImageList(2), "자연적인"),
-        MyAlbum(setDummyImageList(3), "스케치"),
-        MyAlbum(setDummyImageList(4), "고독한"),
-    )
 
     init {
         getUserInfo()
@@ -47,7 +34,10 @@ class MyPageViewModel @Inject constructor(
             authRepository.getUserInfo()
                 .onSuccess { userInfo ->
                     reduce {
-                        state.copy(userInfo = userInfo)
+                        state.copy(
+                            userInfo = userInfo,
+                            myAlbumFullImageList = userInfo.thumbnails,
+                        )
                     }
                 }.onFailure { exception ->
                     handleException(exception, this@MyPageViewModel)
@@ -55,7 +45,6 @@ class MyPageViewModel @Inject constructor(
             reduce {
                 state.copy(
                     isLoading = false,
-                    myAlbumImageList = DummyMyAlbumList,
                 )
             }
         }
@@ -65,6 +54,44 @@ class MyPageViewModel @Inject constructor(
         reduce {
             state.copy(selectedMyAlbum = index)
         }
+    }
+
+    fun shareMyAlbumImage() = intent {
+        viewModelScope.launch {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            val imageList: MutableList<String> = mutableListOf()
+            state.myAlbumFullImageList[state.selectedMyAlbum].images.forEach { userAlbumImage ->
+                imageList.add(userAlbumImage.imageUrl)
+            }
+            val imageUriList = fileRepository.getImageUriList(imageList)
+            reduce {
+                state.copy(isLoading = false)
+            }
+            postSideEffect(MyPageSideEffect.ShareMyAlbumImage(imageUriList))
+        }
+    }
+
+    fun saveMyAlbumImage() = intent {
+        viewModelScope.launch {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            val imageList: MutableList<String> = mutableListOf()
+            state.myAlbumFullImageList[state.selectedMyAlbum].images.forEach { userAlbumImage ->
+                imageList.add(userAlbumImage.imageUrl)
+            }
+            fileRepository.saveImageFile(imageList.toList())
+            reduce {
+                state.copy(isLoading = false)
+            }
+            postSideEffect(MyPageSideEffect.SaveMyAlbumImageSuccess)
+        }
+    }
+
+    fun deleteCacheDir() = intent {
+        fileRepository.deleteCacheDir()
     }
 
     override fun openServerErrorDialog() = intent {
@@ -89,44 +116,5 @@ class MyPageViewModel @Inject constructor(
         reduce {
             state.copy(isNetworkErrorDialogVisible = false)
         }
-    }
-}
-
-internal fun setDummyImageList(index: Int): List<Pair<String, String>> {
-    return when (index) {
-        1 -> listOf(
-            "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
-            "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
-            "https://picsum.photos/id/54/3264/2176" to "Created Image Example 3",
-            "https://picsum.photos/id/58/1280/853" to "Created Image Example 4",
-        )
-
-        2 -> listOf(
-            "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
-            "https://picsum.photos/id/54/3264/2176" to "Created Image Example 3",
-            "https://picsum.photos/id/58/1280/853" to "Created Image Example 4",
-            "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
-        )
-
-        3 -> listOf(
-            "https://picsum.photos/id/54/3264/2176" to "Created Image Example 3",
-            "https://picsum.photos/id/58/1280/853" to "Created Image Example 4",
-            "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
-            "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
-        )
-
-        4 -> listOf(
-            "https://picsum.photos/id/58/1280/853" to "Created Image Example 4",
-            "https://picsum.photos/id/54/3264/2176" to "Created Image Example 3",
-            "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
-            "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
-        )
-
-        else -> listOf(
-            "https://picsum.photos/id/54/3264/2176" to "Created Image Example 3",
-            "https://picsum.photos/id/58/1280/853" to "Created Image Example 4",
-            "https://picsum.photos/id/49/1280/792" to "Created Image Example 1",
-            "https://picsum.photos/id/53/1280/1280" to "Created Image Example 2",
-        )
     }
 }

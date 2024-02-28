@@ -22,6 +22,8 @@
     <string name="mypage_my_album">내 앨범</string>
     <string name="mypage_there_is_no_img">생성된 이미지가 없습니다.\n지금 바로 프로필 이미지를 생성해보세요!</string>
     <string name="mypage_name_postfix">님</string>
+    <string name="mypage_dropdown_delete">삭제하기</string>
+    <string name="mypage_dropdown_share">공유하기</string>
 
     <!--    Setting -->
     <string name="setting_title">설정</string>
