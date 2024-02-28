@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
@@ -50,7 +51,7 @@ fun ILabDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(12.dp))
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = MaterialTheme.colorScheme.surfaceVariant),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -70,15 +71,17 @@ fun ILabDialog(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(id = firstDescriptionResId),
-                color = MaterialTheme.colorScheme.inverseOnSurface,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = Contents2,
+                fontWeight = FontWeight.Medium,
             )
             Spacer(modifier = Modifier.height(4.dp))
             if (secondDescriptionResId != null) {
                 Text(
                     text = stringResource(id = secondDescriptionResId),
-                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = Contents2,
+                    fontWeight = FontWeight.Medium,
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))

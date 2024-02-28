@@ -86,6 +86,7 @@
     <string name="creating_image_stop_warning_description2">정말로 종료하실건가요?</string>
     <string name="creating_image_stop_confirm">네</string>
     <string name="creating_image_continue">계속 할게요</string>
+    <string name="create_image_complete_title">이미지 생성 완료</string>
     <string name="create_image_complete">이미지 생성 완료</string>
     <string name="create_image_share">공유하기</string>
     <string name="create_image_save">저장하기</string>

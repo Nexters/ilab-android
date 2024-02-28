@@ -88,6 +88,10 @@ internal fun CreateImageCompleteRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
+                is CreateImageSideEffect.ShowToast -> {
+                    Toast.makeText(context, context.getString(R.string.create_image_complete), Toast.LENGTH_SHORT).show()
+                }
+
                 is CreateImageSideEffect.ShareCreatedImage -> {
                     val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
                     val shareIntent: Intent = Intent().apply {
@@ -109,15 +113,21 @@ internal fun CreateImageCompleteRoute(
                 is CreateImageSideEffect.SaveCreatedImageSuccess -> {
                     Toast.makeText(context, context.getString(R.string.create_image_save_complete), Toast.LENGTH_SHORT).show()
                 }
+
+                else -> {}
             }
         }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.showToast()
     }
 
     CreateImageCompleteScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
-        shareCreatedImage = viewModel::shareCreatedImage,
-        saveCreatedImage = viewModel::saveCreatedImage,
+        shareCreatedImage = viewModel::shareCreatedProfileImage,
+        saveCreatedImage = viewModel::saveCreatedProfileImage,
     )
 }
 
@@ -143,7 +153,7 @@ private fun CreateImageCompleteScreen(
         Column {
             CreateImageCompleteTopAppBar(onBackClick = onCloseClick)
             CreateImageCompleteContent(
-                createdImageList = uiState.createdImageList,
+                createdImageList = uiState.createdProfileImageList,
                 shareCreatedImage = shareCreatedImage,
                 saveCreatedImage = saveCreatedImage,
             )

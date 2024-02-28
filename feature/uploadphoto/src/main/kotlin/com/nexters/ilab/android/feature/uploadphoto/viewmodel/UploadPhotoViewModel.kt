@@ -94,6 +94,16 @@ class UploadPhotoViewModel @Inject constructor(
         }
     }
 
+    fun createProfileImage() = intent {
+        val styleId = state.styleList.indexOfFirst { it.name == selectedStyle }
+        postSideEffect(
+            UploadPhotoSideEffect.CreateProfileImage(
+                imageUrl = state.selectedPhotoUri,
+                styleId = styleId,
+            ),
+        )
+    }
+
     fun dismissPermissionDialog() = intent {
         reduce {
             state.copy(isPermissionDialogVisible = false)

@@ -1,6 +1,7 @@
 package com.nexters.ilab.android.core.data.repository
 
 import com.nexters.ilab.android.core.data.datasource.FileDataSource
+import com.nexters.ilab.android.core.data.mapper.toEntity
 import com.nexters.ilab.android.core.domain.repository.FileRepository
 import javax.inject.Inject
 
@@ -17,5 +18,9 @@ class FileRepositoryImpl @Inject constructor(
 
     override fun deleteCacheDir() {
         fileDataSource.deleteCacheDir()
+    }
+
+    override suspend fun createProfileImage(url: String, styleId: Int) = runCatching {
+        fileDataSource.createProfileImage(url, styleId).map { it.toEntity() }
     }
 }

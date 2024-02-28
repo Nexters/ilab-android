@@ -3,17 +3,26 @@ package com.nexters.ilab.android.core.data.datasource
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.nexters.ilab.android.core.data.response.CreatedProfileResponse
+import com.nexters.ilab.android.core.data.service.ILabService
 import com.nexters.ilab.android.core.data.util.FileUtil
+import com.nexters.ilab.android.core.datastore.TokenDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class FileDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val fileUtil: FileUtil,
+    private val service: ILabService,
+    private val tokenDataSource: TokenDataSource,
 ) : FileDataSource {
     override suspend fun getImageUriList(createdImageUrls: List<String>): ArrayList<String> {
         val imageByteArrayList = createByteArrayListFromUrls(createdImageUrls)
@@ -37,6 +46,22 @@ class FileDataSourceImpl @Inject constructor(
 
     override fun deleteCacheDir() {
         fileUtil.deleteCacheDir()
+    }
+
+    override suspend fun createProfileImage(url: String, styleId: Int): List<CreatedProfileResponse> {
+        val imageFile = fileUtil.getFileForUploadImageFormat(context, Uri.parse(url))!!
+        val imageRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+        val uuid = tokenDataSource.getUUID()
+
+        return service.createProfileImage(
+            file = MultipartBody.Part.createFormData(
+                name = "file",
+                filename = imageFile.name,
+                body = imageRequestBody,
+            ),
+            styleId = styleId,
+            uuid = uuid,
+        )
     }
 
     private suspend fun createImageInfoListFromUrls(createdImageUrls: List<String>): List<Pair<String, ByteArray>> {

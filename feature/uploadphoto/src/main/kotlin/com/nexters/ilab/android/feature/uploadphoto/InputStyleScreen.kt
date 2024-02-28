@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
+import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoState
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoViewModel
 import com.nexters.ilab.core.ui.ComponentPreview
@@ -49,20 +51,44 @@ import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 internal fun InputStyleRoute(
     onBackClick: () -> Unit,
-    onNavigateToCreateImage: () -> Unit,
+    onNavigateToCreateImage: (String, Int) -> Unit,
     viewModel: UploadPhotoViewModel,
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { sideEffect ->
+            when (sideEffect) {
+                is UploadPhotoSideEffect.CreateProfileImage -> {
+                    onNavigateToCreateImage(
+                        withContext(Dispatchers.IO) {
+                            URLEncoder.encode(
+                                sideEffect.imageUrl,
+                                StandardCharsets.UTF_8.toString(),
+                            )
+                        },
+                        sideEffect.styleId,
+                    )
+                }
+
+                else -> {}
+            }
+        }
+    }
 
     InputStyleScreen(
         uiState = uiState,
         onBackClick = onBackClick,
         onStyleSelect = viewModel::setSelectedStyle,
-        createProfileImage = onNavigateToCreateImage,
+        createProfileImage = viewModel::createProfileImage,
         getStyleList = viewModel::getStyleList,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,

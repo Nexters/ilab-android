@@ -44,6 +44,7 @@ internal fun PermissionDialog(
                 Text(
                     text = stringResource(id = R.string.permission_required),
                     style = Subtitle2,
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -53,6 +54,7 @@ internal fun PermissionDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.outline)
                 Text(
@@ -79,7 +81,7 @@ internal fun PermissionDialog(
         },
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = MaterialTheme.colorScheme.surfaceVariant),
     )
 }
 

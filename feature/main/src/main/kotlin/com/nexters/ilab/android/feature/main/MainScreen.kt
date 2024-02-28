@@ -94,7 +94,9 @@ internal fun MainScreen(
                     onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
                     onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                     onNavigateToInputStyle = navigator::navigateToInputStyle,
-                    onNavigateToCreateImage = navigator::navigateToCreateImage,
+                    onNavigateToCreateImage = { imageUrl, styleId ->
+                        navigator.navigateToCreateImage(imageUrl, styleId)
+                    },
                 )
 
                 createImageNavGraph(
@@ -107,8 +109,8 @@ internal fun MainScreen(
                     navController = navigator.navController,
                     padding = padding,
                     onCloseClick = navigator::popBackStackIfNotHome,
-                    onSettingClick = { navigator.navigateToSetting() },
-                    onNavigateToMyAlbumImage = { navigator.navigateToMyAlbumImage() },
+                    onSettingClick = navigator::navigateToSetting,
+                    onNavigateToMyAlbumImage = navigator::navigateToMyAlbumImage,
                 )
 
                 settingNavGraph(
