@@ -52,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -320,7 +321,6 @@ internal fun MyAlbumImage(
     onDeleteBtnClick: () -> Unit,
     onNavigateToMyAlbumImage: (Int) -> Unit,
     index: Int,
-
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -345,7 +345,7 @@ internal fun MyAlbumImage(
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
-        Box {
+        Box(modifier = Modifier.fillMaxSize()) {
             IconButton(
                 onClick = { isExpanded = !isExpanded },
                 modifier = Modifier
@@ -357,13 +357,13 @@ internal fun MyAlbumImage(
                     contentDescription = "more",
                     tint = Color.Unspecified,
                 )
+                ILabDropdownMenu(
+                    isDropDownShow = isExpanded,
+                    onDismiss = { isExpanded = !isExpanded },
+                    onShareClick = onShareBtnClick,
+                    onDeleteClick = onDeleteBtnClick,
+                )
             }
-            onDropDownMenu(
-                isDropDownShow = isExpanded,
-                onDismiss = {},
-                onShareClick = onShareBtnClick,
-                onDeleteClick = onDeleteBtnClick,
-            )
         }
         Text(
             text = "#" + myAlbum.images.first().imageStyle.name,
@@ -377,7 +377,7 @@ internal fun MyAlbumImage(
 }
 
 @Composable
-fun onDropDownMenu(
+fun ILabDropdownMenu(
     isDropDownShow: Boolean,
     onDismiss: () -> Unit,
     onShareClick: () -> Unit,
@@ -386,6 +386,7 @@ fun onDropDownMenu(
     DropdownMenu(
         expanded = isDropDownShow,
         onDismissRequest = onDismiss,
+        offset = DpOffset(-100.dp, 0.dp),
         modifier = Modifier
             .background(Color.White)
             .wrapContentSize()
@@ -399,7 +400,10 @@ fun onDropDownMenu(
                     color = Color.Black,
                 )
             },
-            onClick = onDeleteClick,
+            onClick = {
+                onDeleteClick()
+                onDismiss()
+            },
         )
         HorizontalDivider(modifier = Modifier.height(1.dp))
         DropdownMenuItem(
@@ -410,7 +414,10 @@ fun onDropDownMenu(
                     color = Color.Black,
                 )
             },
-            onClick = onShareClick,
+            onClick = {
+                onShareClick()
+                onDismiss()
+            },
         )
     }
 }
