@@ -17,16 +17,11 @@ fun LoadingIndicator(modifier: Modifier = Modifier) {
         modifier = modifier.noRippleClickable {},
         contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            LoadingImage(
-                resId = R.drawable.anim_loading,
-                contentDescription = "Loading image",
-                modifier = Modifier.size(70.dp),
-            )
-        }
+        LoadingImage(
+            resId = R.drawable.anim_loading,
+            contentDescription = "Loading image",
+            modifier = Modifier.size(70.dp),
+        )
     }
 }
 
