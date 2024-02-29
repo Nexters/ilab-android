@@ -1,4 +1,4 @@
-package com.nexters.ilab.android.feature.mypage
+package com.nexters.ilab.android.feature.myalbum
 
 import android.content.ClipData
 import android.content.Intent
@@ -39,13 +39,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.feature.myalbum.viewmodel.MyAlbumState
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
-import com.nexters.ilab.android.core.domain.entity.UserThumbnailEntity
-import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageSideEffect
-import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageState
-import com.nexters.ilab.android.feature.mypage.viewmodel.MyPageViewModel
+import com.nexters.ilab.android.feature.myalbum.viewmodel.MyAlbumSideEffect
+import com.nexters.ilab.android.feature.myalbum.viewmodel.MyAlbumViewModel
+import com.nexters.ilab.android.core.common.MyAlbumModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -53,12 +53,14 @@ import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import kotlinx.collections.immutable.ImmutableList
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 
 @Composable
-internal fun MyAlbumImageRoute(
+internal fun MyAlbumRoute(
     onCloseClick: () -> Unit,
-    viewModel: MyPageViewModel = hiltViewModel(),
+    myAlbum: MyAlbumModel,
+    viewModel: MyAlbumViewModel = hiltViewModel(),
 ) {
     val myPageState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
     val systemUiController = rememberExSystemUiController()
@@ -81,7 +83,7 @@ internal fun MyAlbumImageRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is MyPageSideEffect.ShareMyAlbumImage -> {
+                is MyAlbumSideEffect.ShareMyAlbum -> {
                     val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
                     val shareIntent: Intent = Intent().apply {
                         action = Intent.ACTION_SEND_MULTIPLE
@@ -99,28 +101,36 @@ internal fun MyAlbumImageRoute(
                     launcher.launch(Intent.createChooser(shareIntent, null))
                 }
 
-                is MyPageSideEffect.SaveMyAlbumImageSuccess -> {
+                is MyAlbumSideEffect.SaveMyAlbumSuccess -> {
                     Toast.makeText(context, context.getString(R.string.create_image_save_complete), Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
-    MyAlbumImageScreen(
+    MyAlbumScreen(
         uiState = myPageState,
+        myAlbum = myAlbum,
+        initMyAlbum = viewModel::initMyAlbum,
         onCloseClick = onCloseClick,
-        onShareBtnClick = viewModel::shareMyAlbumImage,
+        onShareBtnClick = viewModel::shareMyAlbum,
         onSaveBtnClick = viewModel::saveMyAlbumImage,
     )
 }
 
 @Composable
-private fun MyAlbumImageScreen(
-    uiState: MyPageState,
+private fun MyAlbumScreen(
+    uiState: MyAlbumState,
+    myAlbum: MyAlbumModel,
+    initMyAlbum: (MyAlbumModel) -> Unit,
     onCloseClick: () -> Unit,
     onShareBtnClick: () -> Unit,
     onSaveBtnClick: () -> Unit,
 ) {
+    LaunchedEffect(key1 = Unit) {
+        initMyAlbum(myAlbum)
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(
             resId = if (isSystemInDarkTheme()) R.drawable.bg_my_page_screen_dark
@@ -131,9 +141,10 @@ private fun MyAlbumImageScreen(
                 .wrapContentHeight(),
         )
         Column {
-            MyAlbumImageTopAppBar(onBackClick = onCloseClick)
-            MyAlbumImageContent(
-                myAlbumImage = uiState.myAlbumFullImageList[uiState.selectedMyAlbum],
+            MyAlbumTopAppBar(onBackClick = onCloseClick)
+            MyAlbumContent(
+                imageStyle = uiState.styleName,
+                myAlbumImageList = uiState.myAlbumImageUrlList,
                 onShareBtnClick = onShareBtnClick,
                 onSaveBtnClick = onSaveBtnClick,
             )
@@ -142,7 +153,7 @@ private fun MyAlbumImageScreen(
 }
 
 @Composable
-private fun MyAlbumImageTopAppBar(
+private fun MyAlbumTopAppBar(
     onBackClick: () -> Unit,
 ) {
     ILabTopAppBar(
@@ -159,12 +170,13 @@ private fun MyAlbumImageTopAppBar(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun MyAlbumImageContent(
-    myAlbumImage: UserThumbnailEntity,
+private fun MyAlbumContent(
+    imageStyle: String,
+    myAlbumImageList: ImmutableList<String>,
     onShareBtnClick: () -> Unit,
     onSaveBtnClick: () -> Unit,
 ) {
-    val pageCount = myAlbumImage.images.size
+    val pageCount = myAlbumImageList.size
     val pagerState = rememberPagerState(pageCount = { pageCount })
 
     Column(
@@ -173,7 +185,7 @@ private fun MyAlbumImageContent(
     ) {
         Spacer(modifier = Modifier.weight(1f))
         Text(
-            text = "#" + myAlbumImage.images.first().imageStyle.name,
+            text = "#$imageStyle",
             style = Title1,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -188,7 +200,7 @@ private fun MyAlbumImageContent(
                 elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             ) {
                 NetworkImage(
-                    imageUrl = myAlbumImage.images[page].imageUrl,
+                    imageUrl = myAlbumImageList[page],
                     contentDescription = "My Album Image",
                     modifier = Modifier.fillMaxSize(),
                 )
@@ -242,9 +254,11 @@ private fun MyAlbumImageContent(
 
 @DevicePreview
 @Composable
-fun MyAlbumImageScreenPreview() {
-    MyAlbumImageScreen(
-        uiState = MyPageState(),
+fun MyAlbumScreenPreview() {
+    MyAlbumScreen(
+        uiState = MyAlbumState(),
+        myAlbum = MyAlbumModel(),
+        initMyAlbum = {},
         onCloseClick = {},
         onShareBtnClick = {},
         onSaveBtnClick = {},

@@ -16,11 +16,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.kakao.sdk.auth.AuthApiClient
+import com.kakao.sdk.common.model.KakaoSdkError
+import com.kakao.sdk.user.UserApiClient
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.feature.intro.viewmodel.IntroSideEffect
 import com.nexters.ilab.android.feature.intro.viewmodel.IntroViewModel
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
+import timber.log.Timber
 
 @Composable
 internal fun IntroRoute(
@@ -31,6 +35,29 @@ internal fun IntroRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
+                is IntroSideEffect.ValidateToken -> {
+                    if (AuthApiClient.instance.hasToken()) {
+                        Timber.d("accessToken 이 존재함")
+                        UserApiClient.instance.accessTokenInfo { tokeninfo, error ->
+                            if (error != null) {
+                                if (error is KakaoSdkError && error.isInvalidTokenError()) {
+                                    Timber.d("accessToken 이 유효하지 않음")
+                                    viewModel.autoLoginFail()
+                                } else {
+                                    Timber.d("accessToken 이 유효하지 않음")
+                                    Timber.e(error)
+                                    viewModel.autoLoginFail()
+                                }
+                            } else {
+                                Timber.d("accessToken 이 유효함")
+                                viewModel.autoLoginSuccess()
+                            }
+                        }
+                    } else {
+                        Timber.d("accessToken 이 존재하지 않음")
+                        viewModel.autoLoginFail()
+                    }
+                }
                 is IntroSideEffect.AutoLoginSuccess -> navigateToMain()
                 is IntroSideEffect.AutoLoginFail -> navigateToLogin()
             }

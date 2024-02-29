@@ -37,6 +37,7 @@ include(
     ":feature:intro",
     ":feature:login",
     ":feature:main",
+    ":feature:myalbum",
     ":feature:mypage",
     ":feature:navigator",
     ":feature:setting",

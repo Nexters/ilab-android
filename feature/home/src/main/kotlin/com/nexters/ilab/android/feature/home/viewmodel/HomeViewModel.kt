@@ -65,9 +65,17 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onGenerateImgBtnClick() = intent {
+    private fun setSelectedProfileImage(index: Int) = intent {
+        if (index in 0..<state.profileImageList.size) {
+            reduce {
+                state.copy(selectedProfileImage = state.profileImageList[index])
+            }
+        }
+    }
+
+    fun onCreateImageButtonClickFromStyle() = intent {
         postSideEffect(
-            HomeSideEffect.NavigateToUploadPhoto(
+            HomeSideEffect.OnCreateImageButtonClickFromStyle(
                 if (state.selectedStyle.name.isEmpty()) {
                     state.styleImageList[0].name
                 } else {
@@ -77,15 +85,17 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    fun onCreateImageButtonClickFromProfile() = intent {
+        postSideEffect(
+            HomeSideEffect.OnCreateImageButtonClickFromProfile(state.selectedProfileImage.name),
+        )
+    }
+
     fun openProfileImageDialog(index: Int) = intent {
         reduce {
             state.copy(isProfileImageDialogVisible = true)
         }
-        if (index in 0..<state.profileImageList.size) {
-            reduce {
-                state.copy(selectedProfileEntity = state.profileImageList[index])
-            }
-        }
+        setSelectedProfileImage(index)
     }
 
     fun dismissProfileImageDialog() = intent {

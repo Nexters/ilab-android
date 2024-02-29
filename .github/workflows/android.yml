@@ -37,6 +37,13 @@ jobs:
                     echo "SERVER_BASE_URL=${{ secrets.SERVER_BASE_URL }}" >> secrets.properties
                     echo "KAKAO_NATIVE_APP_KEY=${{ secrets.KAKAO_NATIVE_APP_KEY }}" >> secrets.properties
 
+            -   name: Generate keystore.properties
+                run: |
+                    echo "STORE_FILE=${{ secrets.STORE_FILE }}" >> keystore.properties
+                    echo "STORE_PASSWORD=${{ secrets.STORE_PASSWORD }}" >> keystore.properties
+                    echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> keystore.properties
+                    echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> keystore.properties
+
             -   name: test Detekt
                 run: ./gradlew detekt
             -   name: test Ktlint

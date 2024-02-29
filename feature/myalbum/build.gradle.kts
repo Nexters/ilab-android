@@ -5,16 +5,14 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.feature.intro"
+    namespace = "com.nexters.ilab.android.feature.myalbum"
 }
 
 dependencies {
     implementations(
+        libs.kotlinx.collections.immutable,
         libs.androidx.core,
-        libs.androidx.activity.compose,
-        libs.androidx.splash,
         libs.timber,
         libs.system.ui.controller,
-        libs.kakao.auth,
     )
 }

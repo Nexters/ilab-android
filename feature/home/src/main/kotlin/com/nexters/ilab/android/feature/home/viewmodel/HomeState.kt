@@ -10,6 +10,6 @@ data class HomeState(
     val isProfileImageDialogVisible: Boolean = false,
     val isServerErrorDialogVisible: Boolean = false,
     val isNetworkErrorDialogVisible: Boolean = false,
-    val selectedProfileEntity: ProfileEntity = ProfileEntity("", "", ""),
+    val selectedProfileImage: ProfileEntity = ProfileEntity("", "", ""),
     val selectedStyle: StyleEntity = StyleEntity(0, "", ""),
 )

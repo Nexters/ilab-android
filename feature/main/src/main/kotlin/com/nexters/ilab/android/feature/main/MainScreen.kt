@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
+import com.nexters.ilab.android.feature.myalbum.navigation.myAlbumNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
 import com.nexters.ilab.android.feature.privacypolicy.navigation.privacyPolicyNavGraph
 import com.nexters.ilab.android.feature.setting.navigation.settingNavGraph
@@ -67,6 +68,7 @@ internal fun MainScreen(
                             resource.getString(R.string.unknown_error_message)
                         }
                     }
+
                     else -> resource.getString(R.string.unknown_error_message)
                 },
             )
@@ -83,9 +85,7 @@ internal fun MainScreen(
                 homeNavGraph(
                     padding = padding,
                     onSettingClick = navigator::navigateToSetting,
-                    onGenerateImgBtnClick = { selectedStyle ->
-                        navigator.navigateToUploadPhoto(selectedStyle)
-                    },
+                    onNavigateToUploadPhoto = navigator::navigateToUploadPhoto,
                 )
 
                 uploadPhotoNavGraph(
@@ -94,9 +94,7 @@ internal fun MainScreen(
                     onNavigateToPrivacyPolicy = navigator::navigateToPrivacyPolicy,
                     onNavigateToUploadCheck = navigator::navigateToUploadCheck,
                     onNavigateToInputStyle = navigator::navigateToInputStyle,
-                    onNavigateToCreateImage = { imageUrl, styleId ->
-                        navigator.navigateToCreateImage(imageUrl, styleId)
-                    },
+                    onNavigateToCreateImage = navigator::navigateToCreateImage,
                 )
 
                 createImageNavGraph(
@@ -106,11 +104,14 @@ internal fun MainScreen(
                 )
 
                 myPageNavGraph(
-                    navController = navigator.navController,
                     padding = padding,
-                    onCloseClick = navigator::popBackStackIfNotHome,
                     onSettingClick = navigator::navigateToSetting,
-                    onNavigateToMyAlbumImage = navigator::navigateToMyAlbumImage,
+                    onNavigateToMyAlbum = navigator::navigateToMyAlbum,
+                )
+
+                myAlbumNavGraph(
+                    navController = navigator.navController,
+                    onCloseClick = navigator::popBackStackIfNotHome,
                 )
 
                 settingNavGraph(

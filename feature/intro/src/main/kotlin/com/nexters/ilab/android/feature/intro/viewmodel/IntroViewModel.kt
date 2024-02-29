@@ -20,7 +20,19 @@ class IntroViewModel @Inject constructor(
     override val container = container<IntroState, IntroSideEffect>(IntroState())
 
     init {
-        getAccessToken()
+        validateToken()
+    }
+
+    private fun validateToken() = intent {
+        postSideEffect(IntroSideEffect.ValidateToken)
+    }
+
+    fun autoLoginFail() = intent {
+        postSideEffect(IntroSideEffect.AutoLoginFail)
+    }
+
+    fun autoLoginSuccess() = intent {
+        postSideEffect(IntroSideEffect.AutoLoginSuccess)
     }
 
     private fun getAccessToken() = intent {

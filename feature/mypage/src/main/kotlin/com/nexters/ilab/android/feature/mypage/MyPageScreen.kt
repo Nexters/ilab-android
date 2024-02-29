@@ -73,20 +73,17 @@ import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
+import kotlinx.collections.immutable.ImmutableList
+import timber.log.Timber
 
 @Composable
 internal fun MyPageRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onNavigateToMyAlbumImage: () -> Unit,
+    onNavigateToMyAlbum: (String, List<String>) -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
-
-    val navigateToMyAlbum: (Int) -> Unit = {
-        viewModel.setSelectedMyAlbum(it)
-        onNavigateToMyAlbumImage()
-    }
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
         viewModel.deleteCacheDir()
@@ -94,22 +91,34 @@ internal fun MyPageRoute(
 
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
-            if (sideEffect is MyPageSideEffect.ShareMyAlbumImage) {
-                val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
-                val shareIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND_MULTIPLE
-                    type = "image/*"
-                    putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
-                    val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
-                        for (i in 1 until uriList.size) {
-                            addItem(ClipData.Item(uriList[i]))
+            when (sideEffect) {
+                is MyPageSideEffect.ShareMyAlbum -> {
+                    val uriList = ArrayList(sideEffect.imageUriList.map { Uri.parse(it) })
+                    val shareIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND_MULTIPLE
+                        type = "image/*"
+                        putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
+                        val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
+                            for (i in 1 until uriList.size) {
+                                addItem(ClipData.Item(uriList[i]))
+                            }
                         }
+                        setClipData(clipData)
                     }
-                    setClipData(clipData)
+                    launcher.launch(Intent.createChooser(shareIntent, null))
                 }
-                launcher.launch(Intent.createChooser(shareIntent, null))
+
+                is MyPageSideEffect.NavigateToMyAlbum -> {
+                    Timber.d("imageUrlList: ${sideEffect.imageUrlList}")
+                    Timber.d("imageUrlList.toTypedArray(): ${sideEffect.imageUrlList.toTypedArray()}")
+                    Timber.d("imageUrlList.toTypedArray().toList(): ${sideEffect.imageUrlList.toTypedArray().toList()}")
+                    onNavigateToMyAlbum(
+                        sideEffect.imageStyle,
+                        sideEffect.imageUrlList,
+                    )
+                }
             }
         }
     }
@@ -118,10 +127,10 @@ internal fun MyPageRoute(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onShareBtnClick = viewModel::shareMyAlbumImage,
-        onDeleteBtnClick = {},
-        onNavigateToMyAlbumImage = navigateToMyAlbum,
         getUserInfo = viewModel::getUserInfo,
+        onShareBtnClick = viewModel::shareMyAlbum,
+        onDeleteBtnClick = {},
+        onAlbumClick = viewModel::onAlbumClick,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
     )
@@ -132,10 +141,10 @@ internal fun MyPageScreen(
     uiState: MyPageState,
     padding: PaddingValues,
     onSettingClick: () -> Unit,
+    getUserInfo: () -> Unit,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
-    onNavigateToMyAlbumImage: (Int) -> Unit,
-    getUserInfo: () -> Unit,
+    onAlbumClick: (Int) -> Unit,
     dismissServerErrorDialog: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
 ) {
@@ -170,7 +179,7 @@ internal fun MyPageScreen(
             myAlbumImageList = uiState.myAlbumFullImageList,
             onShareBtnClick = onShareBtnClick,
             onDeleteBtnClick = onDeleteBtnClick,
-            onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+            onAlbumClick = onAlbumClick,
         )
     }
 }
@@ -192,10 +201,10 @@ internal fun MyPageTopAppBar(onSettingClick: () -> Unit) {
 @Composable
 internal fun MyPageContent(
     userInfo: UserInfoEntity,
-    myAlbumImageList: List<UserThumbnailEntity>,
+    myAlbumImageList: ImmutableList<UserThumbnailEntity>,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
-    onNavigateToMyAlbumImage: (Int) -> Unit,
+    onAlbumClick: (Int) -> Unit,
 ) {
     val span: (LazyGridItemSpanScope) -> GridItemSpan = { GridItemSpan(2) }
     val myAlbumCount = myAlbumImageList.size
@@ -232,7 +241,7 @@ internal fun MyPageContent(
                     myAlbum = myAlbumImageList[iter],
                     onShareBtnClick = onShareBtnClick,
                     onDeleteBtnClick = onDeleteBtnClick,
-                    onNavigateToMyAlbumImage = onNavigateToMyAlbumImage,
+                    onAlbumClick = onAlbumClick,
                     index = iter,
                 )
             }
@@ -319,7 +328,7 @@ internal fun MyAlbumImage(
     myAlbum: UserThumbnailEntity,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
-    onNavigateToMyAlbumImage: (Int) -> Unit,
+    onAlbumClick: (Int) -> Unit,
     index: Int,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
@@ -336,7 +345,7 @@ internal fun MyAlbumImage(
                 .fillMaxSize()
                 .aspectRatio(1f)
                 .clickable {
-                    onNavigateToMyAlbumImage(index)
+                    onAlbumClick(index)
                 },
         )
         Image(
@@ -431,7 +440,7 @@ fun MyPageScreenPreview() {
         onSettingClick = {},
         onShareBtnClick = {},
         onDeleteBtnClick = {},
-        onNavigateToMyAlbumImage = {},
+        onAlbumClick = {},
         getUserInfo = {},
         dismissNetworkErrorDialog = {},
         dismissServerErrorDialog = {},

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.ilab.android.library.compose)
     alias(libs.plugins.ilab.android.hilt)
     alias(libs.plugins.ilab.android.retrofit)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -13,7 +14,6 @@ android {
 
 dependencies {
     implementations(
-        libs.kotlinx.datetime,
         libs.androidx.core,
         libs.androidx.hilt.navigation.compose,
 
