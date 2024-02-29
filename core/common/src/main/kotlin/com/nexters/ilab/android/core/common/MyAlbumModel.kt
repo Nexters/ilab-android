@@ -7,4 +7,4 @@ import kotlinx.parcelize.Parcelize
 data class MyAlbumModel(
     val styleName: String = "",
     val myAlbumImageUrlList: List<String> = emptyList(),
-): Parcelable
+) : Parcelable

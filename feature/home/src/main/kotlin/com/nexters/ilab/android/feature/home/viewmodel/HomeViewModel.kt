@@ -87,7 +87,7 @@ class HomeViewModel @Inject constructor(
 
     fun onCreateImageButtonClickFromProfile() = intent {
         postSideEffect(
-            HomeSideEffect.OnCreateImageButtonClickFromProfile(state.selectedProfileImage.name)
+            HomeSideEffect.OnCreateImageButtonClickFromProfile(state.selectedProfileImage.name),
         )
     }
 
