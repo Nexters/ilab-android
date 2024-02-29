@@ -2,6 +2,7 @@ package com.nexters.ilab.android.core.data.repository
 
 import com.nexters.ilab.android.core.data.datasource.AuthDataSource
 import com.nexters.ilab.android.core.data.mapper.toEntity
+import com.nexters.ilab.android.core.data.request.AuthRequest
 import com.nexters.ilab.android.core.data.util.runSuspendCatching
 import com.nexters.ilab.android.core.datastore.TokenDataSource
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
@@ -17,16 +18,16 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo() = runSuspendCatching {
         val uuid = tokenDataSource.getUUID()
-        authDataSource.getUserInfo(uuid).toEntity()
+        authDataSource.getUserInfo(AuthRequest(uuid)).toEntity()
     }
 
     override suspend fun signOut() = runSuspendCatching {
         val uuid = tokenDataSource.getUUID()
-        authDataSource.signOut(uuid)
+        authDataSource.signOut(AuthRequest(uuid))
     }
 
     override suspend fun deleteAccount() = runSuspendCatching {
         val uuid = tokenDataSource.getUUID()
-        authDataSource.deleteAccount(uuid)
+        authDataSource.deleteAccount(AuthRequest(uuid))
     }
 }

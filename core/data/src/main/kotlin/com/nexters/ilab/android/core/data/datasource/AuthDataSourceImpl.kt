@@ -1,5 +1,6 @@
 package com.nexters.ilab.android.core.data.datasource
 
+import com.nexters.ilab.android.core.data.request.AuthRequest
 import com.nexters.ilab.android.core.data.request.SignInRequest
 import com.nexters.ilab.android.core.data.response.UserInfoResponse
 import com.nexters.ilab.android.core.data.service.AuthService
@@ -12,15 +13,15 @@ class AuthDataSourceImpl @Inject constructor(
         service.signIn(SignInRequest())
     }
 
-    override suspend fun getUserInfo(uuid: Long): UserInfoResponse {
-        return service.getUserInfo(uuid)
+    override suspend fun getUserInfo(authRequest: AuthRequest): UserInfoResponse {
+        return service.getUserInfo(authRequest)
     }
 
-    override suspend fun signOut(uuid: Long) {
-        service.signOut(uuid)
+    override suspend fun signOut(authRequest: AuthRequest) {
+        service.signOut(authRequest)
     }
 
-    override suspend fun deleteAccount(uuid: Long) {
-        service.deleteAccount(uuid)
+    override suspend fun deleteAccount(authRequest: AuthRequest) {
+        service.deleteAccount(authRequest)
     }
 }
