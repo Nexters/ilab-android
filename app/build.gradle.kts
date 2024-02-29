@@ -70,6 +70,7 @@ dependencies {
         projects.feature.login,
         projects.feature.main,
         projects.feature.navigator,
+        projects.feature.myalbum,
         projects.feature.mypage,
         projects.feature.setting,
         projects.feature.uploadphoto,

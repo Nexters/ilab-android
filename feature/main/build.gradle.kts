@@ -13,6 +13,7 @@ dependencies {
     implementations(
         projects.feature.createimage,
         projects.feature.home,
+        projects.feature.myalbum,
         projects.feature.mypage,
         projects.feature.setting,
         projects.feature.uploadphoto,

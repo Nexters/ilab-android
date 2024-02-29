@@ -3,9 +3,19 @@ package com.nexters.ilab.android.core.domain.entity
 import androidx.compose.runtime.Stable
 
 @Stable
-data class UserAlbumImageStyleEntity(
+data class UserInfoEntity(
+    val id: Long = 0L,
+    val uuid: Long = 0L,
+    val email: String = "",
+    val nickname: String = "",
+    val profileImageUrl: String = "",
+    val thumbnails: List<UserThumbnailEntity> = emptyList(),
+)
+
+@Stable
+data class UserThumbnailEntity(
     val id: Int = 0,
-    val name: String = "",
+    val images: List<UserAlbumImageEntity> = emptyList(),
 )
 
 @Stable
@@ -16,17 +26,8 @@ data class UserAlbumImageEntity(
 )
 
 @Stable
-data class UserThumbnailEntity(
+data class UserAlbumImageStyleEntity(
     val id: Int = 0,
-    val images: List<UserAlbumImageEntity> = emptyList(),
+    val name: String = "",
 )
 
-@Stable
-data class UserInfoEntity(
-    val id: Long = 0L,
-    val uuid: Long = 0L,
-    val email: String = "",
-    val nickname: String = "",
-    val profileImageUrl: String = "",
-    val thumbnails: List<UserThumbnailEntity> = emptyList(),
-)

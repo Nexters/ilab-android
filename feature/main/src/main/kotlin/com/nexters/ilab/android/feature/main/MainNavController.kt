@@ -9,18 +9,19 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadPhoto
-import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadCheck
+import com.nexters.ilab.android.feature.myalbum.navigation.navigateToMyAlbum
 import com.nexters.ilab.android.feature.home.navigation.HOME_ROUTE
 import com.nexters.ilab.android.feature.home.navigation.navigateToHome
-import com.nexters.ilab.android.feature.mypage.navigation.MY_PROFILE_ROUTE
+import com.nexters.ilab.android.core.common.MyAlbumModel
 import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyPage
+import com.nexters.ilab.android.feature.privacypolicy.navigation.navigateToPrivacyPolicy
 import com.nexters.ilab.android.feature.setting.navigation.navigateToSetting
 import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToInputStyle
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadCheck
+import com.nexters.ilab.android.feature.uploadphoto.navigation.navigateToUploadPhoto
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImage
 import com.nexters.ilab.feature.createimage.navigation.navigateToCreateImageComplete
-import com.nexters.ilab.android.feature.mypage.navigation.navigateToMyAlbumImage
-import com.nexters.ilab.android.feature.privacypolicy.navigation.navigateToPrivacyPolicy
+import kotlinx.collections.immutable.toImmutableList
 
 internal class MainNavController(
     val navController: NavHostController,
@@ -72,8 +73,14 @@ internal class MainNavController(
         navController.navigateToCreateImageComplete()
     }
 
-    fun navigateToMyAlbumImage() {
-        navController.navigateToMyAlbumImage()
+    fun navigateToMyAlbum(imageStyle: String, myAlbumImageUrlList: List<String>) {
+//        navController.navigateToMyAlbum(imageStyle, myAlbumImageUrlList)
+        val myAlbum = MyAlbumModel(imageStyle, myAlbumImageUrlList.toImmutableList())
+        navController.currentBackStackEntry?.savedStateHandle?.set(
+            key = "my_album",
+            value = myAlbum,
+        )
+        navController.navigateToMyAlbum()
     }
 
     fun navigateToSetting() {
@@ -108,7 +115,7 @@ internal class MainNavController(
     @Composable
     fun shouldShowBottomBar(): Boolean {
         val currentRoute = currentDestination?.route ?: return false
-        return currentRoute in MainTab || currentRoute == MY_PROFILE_ROUTE
+        return currentRoute in MainTab
     }
 }
 

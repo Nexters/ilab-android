@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nexters.ilab.android.feature.mypage"
+    namespace = "com.nexters.ilab.android.feature.myalbum"
 }
 
 dependencies {

@@ -44,6 +44,7 @@ import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
+// TODO 시간이 지나면 주기적으로 텍스트 갱신
 @Composable
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,

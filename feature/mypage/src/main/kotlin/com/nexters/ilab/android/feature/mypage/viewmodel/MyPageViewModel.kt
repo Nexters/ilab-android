@@ -7,6 +7,7 @@ import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
 import com.nexters.ilab.android.core.domain.repository.FileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -36,7 +37,7 @@ class MyPageViewModel @Inject constructor(
                     reduce {
                         state.copy(
                             userInfo = userInfo,
-                            myAlbumFullImageList = userInfo.thumbnails,
+                            myAlbumFullImageList = userInfo.thumbnails.toImmutableList(),
                         )
                     }
                 }.onFailure { exception ->
@@ -50,13 +51,13 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    fun setSelectedMyAlbum(index: Int) = intent {
+    private fun setSelectedMyAlbum(index: Int) = intent {
         reduce {
             state.copy(selectedMyAlbum = index)
         }
     }
 
-    fun shareMyAlbumImage() = intent {
+    fun shareMyAlbum() = intent {
         viewModelScope.launch {
             reduce {
                 state.copy(isLoading = true)
@@ -69,29 +70,22 @@ class MyPageViewModel @Inject constructor(
             reduce {
                 state.copy(isLoading = false)
             }
-            postSideEffect(MyPageSideEffect.ShareMyAlbumImage(imageUriList))
-        }
-    }
-
-    fun saveMyAlbumImage() = intent {
-        viewModelScope.launch {
-            reduce {
-                state.copy(isLoading = true)
-            }
-            val imageList: MutableList<String> = mutableListOf()
-            state.myAlbumFullImageList[state.selectedMyAlbum].images.forEach { userAlbumImage ->
-                imageList.add(userAlbumImage.imageUrl)
-            }
-            fileRepository.saveImageFile(imageList.toList())
-            reduce {
-                state.copy(isLoading = false)
-            }
-            postSideEffect(MyPageSideEffect.SaveMyAlbumImageSuccess)
+            postSideEffect(MyPageSideEffect.ShareMyAlbum(imageUriList))
         }
     }
 
     fun deleteCacheDir() = intent {
         fileRepository.deleteCacheDir()
+    }
+
+    fun onAlbumClick(index: Int) = intent {
+        setSelectedMyAlbum(index)
+        postSideEffect(
+            MyPageSideEffect.NavigateToMyAlbum(
+                state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageUrl },
+                state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageStyle.name }.first(),
+            ),
+        )
     }
 
     override fun openServerErrorDialog() = intent {
