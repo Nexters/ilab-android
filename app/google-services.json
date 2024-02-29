@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "398737028254",
+    "project_id": "ilab-30193",
+    "storage_bucket": "ilab-30193.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398737028254:android:6ba3775e6739a58cdff78f",
+        "android_client_info": {
+          "package_name": "com.nexters.ilab.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM_j9pb7lTw_vF2-_q9T2GiFxJL6Mo8Vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398737028254:android:7c8d06598157705fdff78f",
+        "android_client_info": {
+          "package_name": "com.nexters.ilab.android.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDM_j9pb7lTw_vF2-_q9T2GiFxJL6Mo8Vg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
