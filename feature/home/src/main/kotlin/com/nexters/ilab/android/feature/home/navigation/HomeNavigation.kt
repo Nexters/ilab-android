@@ -16,13 +16,13 @@ fun NavController.navigateToHome(navOptions: NavOptions) {
 fun NavGraphBuilder.homeNavGraph(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onGenerateImgBtnClick: (String) -> Unit,
+    onNavigateToUploadPhoto: (String) -> Unit,
 ) {
     composable(route = HOME_ROUTE) {
         HomeRoute(
             padding = padding,
             onSettingClick = onSettingClick,
-            onGenerateImgBtnClick = onGenerateImgBtnClick,
+            onNavigateToUploadPhoto = onNavigateToUploadPhoto,
         )
     }
 }
