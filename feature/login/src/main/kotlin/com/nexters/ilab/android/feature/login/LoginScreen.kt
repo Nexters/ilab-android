@@ -129,7 +129,7 @@ internal fun LoginRoute(
 
     LoginScreen(
         uiState = uiState,
-        onLoginClick = viewModel::onLoginButtonClick,
+        onLoginClick = viewModel::onLoginBtnClick,
     )
 }
 
