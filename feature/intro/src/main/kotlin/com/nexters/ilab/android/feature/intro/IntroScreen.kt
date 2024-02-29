@@ -37,18 +37,25 @@ internal fun IntroRoute(
             when (sideEffect) {
                 is IntroSideEffect.ValidateToken -> {
                     if (AuthApiClient.instance.hasToken()) {
-                        UserApiClient.instance.accessTokenInfo { _, error ->
+                        Timber.d("accessToken 이 존재함")
+                        UserApiClient.instance.accessTokenInfo { tokeninfo, error ->
                             if (error != null) {
                                 if (error is KakaoSdkError && error.isInvalidTokenError()) {
+                                    Timber.d("accessToken 이 유효하지 않음")
                                     viewModel.autoLoginFail()
                                 } else {
+                                    Timber.d("accessToken 이 유효하지 않음")
                                     Timber.e(error)
                                     viewModel.autoLoginFail()
                                 }
                             } else {
+                                Timber.d("accessToken 이 유효함")
                                 viewModel.autoLoginSuccess()
                             }
                         }
+                    } else {
+                        Timber.d("accessToken 이 존재하지 않음")
+                        viewModel.autoLoginFail()
                     }
                 }
                 is IntroSideEffect.AutoLoginSuccess -> navigateToMain()
