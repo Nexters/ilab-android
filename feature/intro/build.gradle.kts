@@ -15,5 +15,6 @@ dependencies {
         libs.androidx.splash,
         libs.timber,
         libs.system.ui.controller,
+        libs.kakao.auth,
     )
 }
