@@ -129,7 +129,7 @@ internal fun MyPageRoute(
         onSettingClick = onSettingClick,
         getUserInfo = viewModel::getUserInfo,
         onShareBtnClick = viewModel::shareMyAlbum,
-        onDeleteBtnClick = {},
+        onDeleteBtnClick = viewModel::deleteMyAlbum,
         onAlbumClick = viewModel::onAlbumClick,
         dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
@@ -143,7 +143,7 @@ internal fun MyPageScreen(
     onSettingClick: () -> Unit,
     getUserInfo: () -> Unit,
     onShareBtnClick: () -> Unit,
-    onDeleteBtnClick: () -> Unit,
+    onDeleteBtnClick: (Int) -> Unit,
     onAlbumClick: (Int) -> Unit,
     dismissServerErrorDialog: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
@@ -203,7 +203,7 @@ internal fun MyPageContent(
     userInfo: UserInfoEntity,
     myAlbumImageList: ImmutableList<UserThumbnailEntity>,
     onShareBtnClick: () -> Unit,
-    onDeleteBtnClick: () -> Unit,
+    onDeleteBtnClick: (Int) -> Unit,
     onAlbumClick: (Int) -> Unit,
 ) {
     val span: (LazyGridItemSpanScope) -> GridItemSpan = { GridItemSpan(2) }
@@ -240,7 +240,7 @@ internal fun MyPageContent(
                 MyAlbumImage(
                     myAlbum = myAlbumImageList[iter],
                     onShareBtnClick = onShareBtnClick,
-                    onDeleteBtnClick = onDeleteBtnClick,
+                    onDeleteBtnClick = { onDeleteBtnClick(iter) },
                     onAlbumClick = onAlbumClick,
                     index = iter,
                 )

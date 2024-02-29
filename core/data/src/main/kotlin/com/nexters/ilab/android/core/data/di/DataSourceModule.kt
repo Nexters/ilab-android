@@ -4,6 +4,8 @@ import com.nexters.ilab.android.core.data.datasource.FileDataSource
 import com.nexters.ilab.android.core.data.datasource.FileDataSourceImpl
 import com.nexters.ilab.android.core.data.datasource.AuthDataSource
 import com.nexters.ilab.android.core.data.datasource.AuthDataSourceImpl
+import com.nexters.ilab.android.core.data.datasource.DeleteMyAlbumDataSource
+import com.nexters.ilab.android.core.data.datasource.DeleteMyAlbumDataSourceImpl
 import com.nexters.ilab.android.core.data.datasource.ProfileDataSource
 import com.nexters.ilab.android.core.data.datasource.ProfileDataSourceImpl
 import com.nexters.ilab.android.core.data.datasource.StyleDataSource
@@ -45,4 +47,8 @@ abstract class DataSourceModule {
     @Singleton
     @Binds
     abstract fun bindProfileDataSource(profileDataSourceImpl: ProfileDataSourceImpl): ProfileDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindDeleteMyAlbumDataSource(deleteMyAlbumDataSourceImpl: DeleteMyAlbumDataSourceImpl): DeleteMyAlbumDataSource
 }

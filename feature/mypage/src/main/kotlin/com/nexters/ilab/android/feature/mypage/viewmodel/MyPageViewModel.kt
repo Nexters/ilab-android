@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.common.ErrorHandlerActions
 import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
+import com.nexters.ilab.android.core.domain.repository.DeleteMyAlbumRepository
 import com.nexters.ilab.android.core.domain.repository.FileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val fileRepository: FileRepository,
+    private val deleteMyAlbumRepository: DeleteMyAlbumRepository,
 ) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect>, ErrorHandlerActions {
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
 
@@ -37,6 +39,29 @@ class MyPageViewModel @Inject constructor(
                     reduce {
                         state.copy(
                             userInfo = userInfo,
+                            myAlbumFullImageList = userInfo.thumbnails.toImmutableList(),
+                        )
+                    }
+                }.onFailure { exception ->
+                    handleException(exception, this@MyPageViewModel)
+                }
+            reduce {
+                state.copy(
+                    isLoading = false,
+                )
+            }
+        }
+    }
+
+    fun deleteMyAlbum(index: Int) = intent {
+        viewModelScope.launch {
+            reduce {
+                state.copy(isLoading = true)
+            }
+            deleteMyAlbumRepository.deleteMyAlbum(index)
+                .onSuccess { userInfo ->
+                    reduce {
+                        state.copy(
                             myAlbumFullImageList = userInfo.thumbnails.toImmutableList(),
                         )
                     }
