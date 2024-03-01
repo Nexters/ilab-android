@@ -240,7 +240,7 @@ internal fun MyPageContent(
                 MyAlbumImage(
                     myAlbum = myAlbumImageList[iter],
                     onShareBtnClick = onShareBtnClick,
-                    onDeleteBtnClick = { onDeleteBtnClick(iter) },
+                    onDeleteBtnClick = { onDeleteBtnClick(myAlbumImageList[iter].id) },
                     onAlbumClick = onAlbumClick,
                     index = iter,
                 )
