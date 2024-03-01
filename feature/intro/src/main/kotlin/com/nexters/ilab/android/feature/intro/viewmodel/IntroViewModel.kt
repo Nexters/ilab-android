@@ -28,7 +28,10 @@ class IntroViewModel @Inject constructor(
     }
 
     fun autoLoginFail() = intent {
-        postSideEffect(IntroSideEffect.AutoLoginFail)
+        viewModelScope.launch {
+            repository.clear()
+            postSideEffect(IntroSideEffect.AutoLoginFail)
+        }
     }
 
     fun autoLoginSuccess() = intent {
