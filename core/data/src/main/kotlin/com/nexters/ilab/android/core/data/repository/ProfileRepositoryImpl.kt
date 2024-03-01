@@ -7,7 +7,7 @@ import com.nexters.ilab.android.core.domain.repository.ProfileRepository
 import javax.inject.Inject
 
 class ProfileRepositoryImpl @Inject constructor(
-    val dataSource: ProfileDataSource,
+    private val dataSource: ProfileDataSource,
 ) : ProfileRepository {
     override suspend fun getProfileList() = runSuspendCatching {
         dataSource.getProfileList().map { it.toEntity() }

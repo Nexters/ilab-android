@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.core.ui.ComponentPreview
 
-// leadingIcon for login button
 @Composable
 fun ILabButton(
     onClick: () -> Unit,
