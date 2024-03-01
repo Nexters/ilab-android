@@ -7,7 +7,7 @@ import com.nexters.ilab.android.core.data.util.runSuspendCatching
 import javax.inject.Inject
 
 class StyleRepositoryImpl @Inject constructor(
-    val dataSource: StyleDataSource,
+    private val dataSource: StyleDataSource,
 ) : StyleRepository {
     override suspend fun getStyleList() = runSuspendCatching {
         dataSource.getStyleList().map { it.toEntity() }
