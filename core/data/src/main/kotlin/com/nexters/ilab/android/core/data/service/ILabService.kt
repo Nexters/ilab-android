@@ -29,6 +29,6 @@ interface ILabService {
     @POST("thumbnails/delete/{uuid}/{thumbnailId}")
     suspend fun deleteMyAlbumImage(
         @Path("uuid") uuid: Long,
-        @Path("uuid") thumbnailId: Int,
+        @Path("thumbnailId") thumbnailId: Int,
     ): UserInfoResponse
 }
