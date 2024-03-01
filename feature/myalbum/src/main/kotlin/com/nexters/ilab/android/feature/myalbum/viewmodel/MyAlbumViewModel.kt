@@ -28,7 +28,8 @@ class MyAlbumViewModel @Inject constructor(
 
 //    init {
 //        Timber.d("imageUrlList: $myAlbumImageUrlList")
-//        Timber.d("imageUrlList.toList(): ${listOf(*myAlbumImageUrlList)}")
+//        Timber.d("listOf(*myAlbumImageUrlList): ${listOf(*myAlbumImageUrlList)}")
+//        Timber.d("imageUrlList.toList(): ${myAlbumImageUrlList.toList()}")
 //        intent {
 //            reduce {
 //                state.copy(

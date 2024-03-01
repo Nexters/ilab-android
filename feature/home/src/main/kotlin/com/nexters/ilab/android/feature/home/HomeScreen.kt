@@ -84,11 +84,11 @@ internal fun HomeRoute(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { sideEffect ->
             when (sideEffect) {
-                is HomeSideEffect.OnCreateImageButtonClickFromStyle -> {
+                is HomeSideEffect.OnCreateImageBtnClickFromStyle -> {
                     onNavigateToUploadPhoto(sideEffect.selectedStyle)
                 }
 
-                is HomeSideEffect.OnCreateImageButtonClickFromProfile -> {
+                is HomeSideEffect.OnCreateImageBtnClickFromProfile -> {
                     onNavigateToUploadPhoto(sideEffect.selectedProfile)
                 }
             }
@@ -99,8 +99,8 @@ internal fun HomeRoute(
         uiState = uiState,
         padding = padding,
         onSettingClick = onSettingClick,
-        onCreateImageButtonClickFromStyle = viewModel::onCreateImageButtonClickFromStyle,
-        onCreateImageButtonClickFromProfile = viewModel::onCreateImageButtonClickFromProfile,
+        onCreateImageBtnClickFromStyle = viewModel::onCreateImageBtnClickFromStyle,
+        onCreateImageBtnClickFromProfile = viewModel::onCreateImageBtnClickFromProfile,
         openProfileImageDialog = viewModel::openProfileImageDialog,
         dismissProfileImageDialog = viewModel::dismissProfileImageDialog,
         getStyleProfileList = viewModel::getStyleProfileList,
@@ -115,8 +115,8 @@ internal fun HomeScreen(
     uiState: HomeState,
     padding: PaddingValues,
     onSettingClick: () -> Unit,
-    onCreateImageButtonClickFromStyle: () -> Unit,
-    onCreateImageButtonClickFromProfile: () -> Unit,
+    onCreateImageBtnClickFromStyle: () -> Unit,
+    onCreateImageBtnClickFromProfile: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     dismissProfileImageDialog: () -> Unit,
     getStyleProfileList: () -> Unit,
@@ -153,9 +153,9 @@ internal fun HomeScreen(
             ProfileImageDialog(
                 profileImage = uiState.selectedProfileImage,
                 onCloseClick = dismissProfileImageDialog,
-                onCreateImageButtonClickFromProfile = {
+                onCreateImageBtnClickFromProfile = {
                     dismissProfileImageDialog()
-                    onCreateImageButtonClickFromProfile()
+                    onCreateImageBtnClickFromProfile()
                 },
             )
         }
@@ -163,7 +163,7 @@ internal fun HomeScreen(
         HomeContent(
             styleImageList = uiState.styleImageList,
             profileImageList = uiState.profileImageList,
-            onCreateImageButtonClickFromStyle = onCreateImageButtonClickFromStyle,
+            onCreateImageBtnClickFromStyle = onCreateImageBtnClickFromStyle,
             openProfileImageDialog = openProfileImageDialog,
             setSelectedStyleImage = setSelectedStyleImage,
         )
@@ -189,7 +189,7 @@ internal fun HomeTopAppBar(onSettingClick: () -> Unit) {
 internal fun HomeContent(
     styleImageList: List<StyleEntity>,
     profileImageList: List<ProfileEntity>,
-    onCreateImageButtonClickFromStyle: () -> Unit,
+    onCreateImageBtnClickFromStyle: () -> Unit,
     openProfileImageDialog: (Int) -> Unit,
     setSelectedStyleImage: (Int) -> Unit,
 ) {
@@ -205,7 +205,7 @@ internal fun HomeContent(
         item(span = StaggeredGridItemSpan.FullLine) {
             HomeKeywordView(
                 styleImageList = styleImageList,
-                onCreateImageButtonClickFromStyle = onCreateImageButtonClickFromStyle,
+                onCreateImageBtnClickFromStyle = onCreateImageBtnClickFromStyle,
                 setSelectedStyleImage = setSelectedStyleImage,
             )
         }
@@ -236,7 +236,7 @@ internal fun HomeContent(
 @Composable
 internal fun HomeKeywordView(
     styleImageList: List<StyleEntity>,
-    onCreateImageButtonClickFromStyle: () -> Unit,
+    onCreateImageBtnClickFromStyle: () -> Unit,
     setSelectedStyleImage: (Int) -> Unit,
 ) {
     val pageCount = styleImageList.size
@@ -296,7 +296,7 @@ internal fun HomeKeywordView(
             )
             Spacer(modifier = Modifier.height(32.dp))
             ILabButton(
-                onClick = onCreateImageButtonClickFromStyle,
+                onClick = onCreateImageBtnClickFromStyle,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp)
@@ -364,7 +364,7 @@ internal fun ProfileImageItem(
 internal fun ProfileImageDialog(
     profileImage: ProfileEntity,
     onCloseClick: () -> Unit,
-    onCreateImageButtonClickFromProfile: () -> Unit,
+    onCreateImageBtnClickFromProfile: () -> Unit,
 ) {
     BasicAlertDialog(
         onDismissRequest = onCloseClick,
@@ -409,7 +409,7 @@ internal fun ProfileImageDialog(
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 ILabButton(
-                    onClick = onCreateImageButtonClickFromProfile,
+                    onClick = onCreateImageBtnClickFromProfile,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 20.dp, end = 20.dp, bottom = 16.dp)
@@ -435,8 +435,8 @@ internal fun HomeScreenPreview() {
         uiState = HomeState(),
         padding = PaddingValues(0.dp),
         onSettingClick = {},
-        onCreateImageButtonClickFromStyle = {},
-        onCreateImageButtonClickFromProfile = {},
+        onCreateImageBtnClickFromStyle = {},
+        onCreateImageBtnClickFromProfile = {},
         openProfileImageDialog = {},
         dismissProfileImageDialog = {},
         getStyleProfileList = {},
@@ -452,6 +452,6 @@ fun ProfileImageDialogPreview() {
     ProfileImageDialog(
         profileImage = ProfileEntity("", "", ""),
         onCloseClick = {},
-        onCreateImageButtonClickFromProfile = {},
+        onCreateImageBtnClickFromProfile = {},
     )
 }

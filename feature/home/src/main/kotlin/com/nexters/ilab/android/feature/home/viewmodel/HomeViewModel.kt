@@ -73,9 +73,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onCreateImageButtonClickFromStyle() = intent {
+    fun onCreateImageBtnClickFromStyle() = intent {
         postSideEffect(
-            HomeSideEffect.OnCreateImageButtonClickFromStyle(
+            HomeSideEffect.OnCreateImageBtnClickFromStyle(
                 if (state.selectedStyle.name.isEmpty()) {
                     state.styleImageList[0].name
                 } else {
@@ -85,9 +85,9 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun onCreateImageButtonClickFromProfile() = intent {
+    fun onCreateImageBtnClickFromProfile() = intent {
         postSideEffect(
-            HomeSideEffect.OnCreateImageButtonClickFromProfile(state.selectedProfileImage.name),
+            HomeSideEffect.OnCreateImageBtnClickFromProfile(state.selectedProfileImage.name),
         )
     }
 

@@ -2,12 +2,14 @@ package com.nexters.ilab.android.core.data.di
 
 import com.nexters.ilab.android.core.data.repository.FileRepositoryImpl
 import com.nexters.ilab.android.core.data.repository.AuthRepositoryImpl
+import com.nexters.ilab.android.core.data.repository.DeleteMyAlbumRepositoryImpl
 import com.nexters.ilab.android.core.data.repository.PrivacyPolicyRepositoryImpl
 import com.nexters.ilab.android.core.data.repository.ProfileRepositoryImpl
 import com.nexters.ilab.android.core.data.repository.StyleRepositoryImpl
 import com.nexters.ilab.android.core.data.repository.TokenRepositoryImpl
 import com.nexters.ilab.android.core.domain.repository.FileRepository
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
+import com.nexters.ilab.android.core.domain.repository.DeleteMyAlbumRepository
 import com.nexters.ilab.android.core.domain.repository.PrivacyPolicyRepository
 import com.nexters.ilab.android.core.domain.repository.ProfileRepository
 import com.nexters.ilab.android.core.domain.repository.StyleRepository
@@ -45,4 +47,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDeleteMyAlbumRepository(deleteMyAlbumRepositoryImpl: DeleteMyAlbumRepositoryImpl): DeleteMyAlbumRepository
 }

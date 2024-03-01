@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
 
     override val container = container<LoginState, LoginSideEffect>(LoginState())
 
-    fun onLoginButtonClick() = intent {
+    fun onLoginBtnClick() = intent {
         postSideEffect(LoginSideEffect.KakaoLogin)
     }
 
