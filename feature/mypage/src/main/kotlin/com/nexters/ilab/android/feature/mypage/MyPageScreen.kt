@@ -245,7 +245,7 @@ internal fun MyPageContent(
                     onDeleteBtnClick = { onDeleteBtnClick(myAlbumImageList[iter].id) },
                     modifier = Modifier.clickable {
                         onAlbumClick(iter)
-                    }
+                    },
                 )
             }
         }
