@@ -74,7 +74,6 @@ import com.nexters.ilab.core.ui.component.NetworkImage
 import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
-import timber.log.Timber
 
 @Composable
 internal fun MyPageRoute(
@@ -111,9 +110,9 @@ internal fun MyPageRoute(
                 }
 
                 is MyPageSideEffect.NavigateToMyAlbum -> {
-                    Timber.d("imageUrlList: ${sideEffect.imageUrlList}")
-                    Timber.d("imageUrlList.toTypedArray(): ${sideEffect.imageUrlList.toTypedArray()}")
-                    Timber.d("imageUrlList.toTypedArray().toList(): ${sideEffect.imageUrlList.toTypedArray().toList()}")
+//                    Timber.d("imageUrlList: ${sideEffect.imageUrlList}")
+//                    Timber.d("imageUrlList.toTypedArray(): ${sideEffect.imageUrlList.toTypedArray()}")
+//                    Timber.d("imageUrlList.toTypedArray().toList(): ${sideEffect.imageUrlList.toTypedArray().toList()}")
                     onNavigateToMyAlbum(
                         sideEffect.imageStyle,
                         sideEffect.imageUrlList,
@@ -236,13 +235,17 @@ internal fun MyPageContent(
                 MyPageContentEmpty()
             }
         } else {
-            items(myAlbumCount) { iter ->
+            items(
+                count = myAlbumCount,
+                key = { index -> myAlbumImageList[index].id },
+            ) { iter ->
                 MyAlbumImage(
                     myAlbum = myAlbumImageList[iter],
                     onShareBtnClick = onShareBtnClick,
                     onDeleteBtnClick = { onDeleteBtnClick(myAlbumImageList[iter].id) },
-                    onAlbumClick = onAlbumClick,
-                    index = iter,
+                    modifier = Modifier.clickable {
+                        onAlbumClick(iter)
+                    }
                 )
             }
         }
@@ -328,25 +331,19 @@ internal fun MyAlbumImage(
     myAlbum: UserThumbnailEntity,
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: () -> Unit,
-    onAlbumClick: (Int) -> Unit,
-    index: Int,
+    modifier: Modifier = Modifier,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .aspectRatio(1f),
     ) {
         NetworkImage(
             imageUrl = myAlbum.images.first().imageUrl,
             contentDescription = "My Album Image",
-            modifier = Modifier
-                .fillMaxSize()
-                .aspectRatio(1f)
-                .clickable {
-                    onAlbumClick(index)
-                },
+            modifier = Modifier.fillMaxSize(),
         )
         Image(
             painter = painterResource(id = R.drawable.bg_img_dim_small),
