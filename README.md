@@ -102,8 +102,7 @@ Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Ar
 │   ├── navigator
 │   ├── privacypolicy
 │   ├── setting
-│   ├── uploadphoto
-│   └── 
+│   └── uploadphoto
 ├── gradle
 │   └── libs.versions.toml
 └── report
