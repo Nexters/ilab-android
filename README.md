@@ -1,6 +1,6 @@
 # I'Lab Android
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
-[![Gradle](https://img.shields.io/badge/gradle-8.0-green.svg)](https://gradle.org/)
+[![Gradle](https://img.shields.io/badge/gradle-8.6-green.svg)](https://gradle.org/)
 [![Android Studio](https://img.shields.io/badge/Android%20Studio-2023.1.1%20%28Hedgehog%29-green)](https://developer.android.com/studio)
 [![minSdkVersion](https://img.shields.io/badge/minSdkVersion-26-red)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
@@ -57,6 +57,9 @@ I'Lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진
 - Timber
 - [orbit-mvi](https://github.com/orbit-mvi/orbit-mvi)(compose, viewmodel)
 - [Compose Stable Marker](https://github.com/skydoves/compose-stable-marker)
+- coil-compose, gif
+- kakao-auth
+- [compose-extensions](https://github.com/taehwandev/ComposeExtensions)
 - Firebase(Analytics, Crashlytics)
 
 #### Test & Code analysis
@@ -107,9 +110,5 @@ Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Ar
     ├── compose-metrics
     └── compose-reports
 ```
-
-## Developer
-
-|이지훈|조수연|
 <br/>
 
