@@ -45,6 +45,7 @@ kakao-core = "2.20.0"
 compose-extensions = "1.6.2"
 accompanist-webview = "0.34.0"
 compose-stable-marker = "1.0.3"
+compose-investigator = "1.5.10-0.1.0"
 
 [libraries]
 
@@ -99,7 +100,7 @@ coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coi
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil-compose" }
 kakao-auth = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao-core" }
 accompanist-webview = { group = "com.google.accompanist", name = "accompanist-webview", version.ref = "accompanist-webview" }
-compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-marker", version.ref = "compose-stable-marker"}
+compose-stable-marker = { group = "com.github.skydoves", name = "compose-stable-marker", version.ref = "compose-stable-marker" }
 
 kotest-runner = { group = "io.kotest", name = "kotest-runner-junit5-jvm", version.ref = "kotest" }
 kotest-assertion = { group = "io.kotest", name = "kotest-assertions-core-jvm", version.ref = "kotest" }
@@ -124,6 +125,7 @@ android-library = { id = "com.android.library", version.ref = "android-gradle-pl
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-investigator = { id = "land.sungbin.composeinvestigator", version.ref = "compose-investigator" }
 
 # Plugins defined by this project
 ilab-android-application = { id = "ilab.android.application", version = "unspecified" }

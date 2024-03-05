@@ -2,6 +2,7 @@
 
 plugins {
     alias(libs.plugins.ilab.android.feature)
+    alias(libs.plugins.compose.investigator)
 }
 
 android {

@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.ilab.android.feature)
     alias(libs.plugins.ilab.android.retrofit)
+    alias(libs.plugins.compose.investigator)
 }
 
 android {
