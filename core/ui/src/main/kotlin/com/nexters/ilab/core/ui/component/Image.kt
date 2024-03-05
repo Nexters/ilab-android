@@ -97,7 +97,7 @@ fun BackgroundImage(
     resId: Int,
     contentDescription: String,
     modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Fit,
+    contentScale: ContentScale = ContentScale.Crop,
 ) {
     if (LocalInspectionMode.current) {
         Box(modifier = Modifier.fillMaxSize())

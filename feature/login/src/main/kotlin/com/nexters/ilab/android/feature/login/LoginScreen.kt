@@ -74,6 +74,7 @@ internal fun LoginRoute(
                             resource.getString(R.string.unknown_error_message)
                         }
                     }
+
                     is SocketTimeoutException -> resource.getString(R.string.server_error_message)
                     else -> resource.getString(R.string.unknown_error_message)
                 },
@@ -139,10 +140,6 @@ internal fun LoginScreen(
     onLoginClick: () -> Unit,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        if (uiState.isLoading) {
-            LoadingIndicator(modifier = Modifier.fillMaxSize())
-        }
-
         BackgroundImage(
             resId = R.drawable.bg_login_screen,
             contentDescription = "Background Image for Login Screen",
@@ -153,6 +150,9 @@ internal fun LoginScreen(
         LoginContent(
             onLoginClick = onLoginClick,
         )
+        if (uiState.isLoading) {
+            LoadingIndicator()
+        }
     }
 }
 
