@@ -15,7 +15,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -77,12 +76,6 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    private fun setSelectedMyAlbum(index: Int) = intent {
-        reduce {
-            state.copy(selectedMyAlbum = index)
-        }
-    }
-
     fun shareMyAlbum() = intent {
         viewModelScope.launch {
             reduce {
@@ -105,16 +98,13 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun onAlbumClick(index: Int) = intent {
-        Timber.d("before: state.selectedMyAlbum: ${state.selectedMyAlbum}")
-        setSelectedMyAlbum(index)
-        Timber.d("selectedIndex: $index")
-        Timber.d("state.selectedMyAlbum: ${state.selectedMyAlbum}")
-        Timber.d("MyAlbumImageUrlList: ${state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageUrl }}")
-        Timber.d("StyleName: ${state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageStyle.name }.first()}")
+        reduce {
+            state.copy(selectedMyAlbum = index)
+        }
         postSideEffect(
             MyPageSideEffect.NavigateToMyAlbum(
-                state.myAlbumFullImageList[index].images.map { it.imageUrl },
-                state.myAlbumFullImageList[index].images.map { it.imageStyle.name }.first(),
+                state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageUrl },
+                state.myAlbumFullImageList[state.selectedMyAlbum].images.map { it.imageStyle.name }.first(),
             ),
         )
     }

@@ -50,6 +50,7 @@ internal fun IntroRoute(
                                 }
                             } else {
                                 Timber.d("accessToken 이 유효함")
+                                Timber.d("id: ${tokeninfo?.id}, expiresIn: ${tokeninfo?.expiresIn}, appId: ${tokeninfo?.appId}")
                                 viewModel.autoLoginSuccess()
                             }
                         }
