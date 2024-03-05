@@ -71,7 +71,6 @@ import com.nexters.ilab.core.ui.component.PagerIndicator
 import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
-// TODO 하단 스타일과 스타일 입력 화면 연동
 @Composable
 internal fun HomeRoute(
     padding: PaddingValues,
