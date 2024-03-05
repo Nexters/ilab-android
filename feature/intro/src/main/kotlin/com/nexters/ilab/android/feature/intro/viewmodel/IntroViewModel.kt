@@ -10,6 +10,7 @@ import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +25,16 @@ class IntroViewModel @Inject constructor(
     }
 
     private fun validateToken() = intent {
-        postSideEffect(IntroSideEffect.ValidateToken)
+        delay(1000)
+        viewModelScope.launch {
+            val accessToken = repository.getAccessToken()
+            if (accessToken.isNotEmpty()) {
+                Timber.d("accessToken: $accessToken")
+                postSideEffect(IntroSideEffect.ValidateToken)
+            } else {
+                postSideEffect(IntroSideEffect.AutoLoginFail)
+            }
+        }
     }
 
     fun autoLoginFail() = intent {
@@ -36,17 +46,5 @@ class IntroViewModel @Inject constructor(
 
     fun autoLoginSuccess() = intent {
         postSideEffect(IntroSideEffect.AutoLoginSuccess)
-    }
-
-    private fun getAccessToken() = intent {
-        viewModelScope.launch {
-            delay(1000)
-            val accessToken = repository.getAccessToken()
-            if (accessToken.isNotEmpty()) {
-                postSideEffect(IntroSideEffect.AutoLoginSuccess)
-            } else {
-                postSideEffect(IntroSideEffect.AutoLoginFail)
-            }
-        }
     }
 }
