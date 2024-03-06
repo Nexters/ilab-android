@@ -56,10 +56,11 @@ I'Lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진
 - Retrofit
 - Timber
 - [orbit-mvi](https://github.com/orbit-mvi/orbit-mvi)(compose, viewmodel)
-- [Compose Stable Marker](https://github.com/skydoves/compose-stable-marker)
-- coil-compose, gif
+- [compose-stable-marker](https://github.com/skydoves/compose-stable-marker)
+- coil(compose, gif)
 - kakao-auth
-- [compose-extensions](https://github.com/taehwandev/ComposeExtensions)
+- [ComposeExtensions](https://github.com/taehwandev/ComposeExtensions)
+- [ComposeInvestigator](https://github.com/jisungbin/ComposeInvestigator)
 - Firebase(Analytics, Crashlytics)
 
 #### Test & Code analysis
