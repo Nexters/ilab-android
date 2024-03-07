@@ -6,7 +6,7 @@
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
-I'Lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 
+I'Lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.ilab.android)
 <br/>
 ![img-playstore-thumnail](https://github.com/Nexters/ilab-android/assets/51016231/4448ba0e-a2b0-47df-8f21-0d2b21c6e753)
 <br/>
