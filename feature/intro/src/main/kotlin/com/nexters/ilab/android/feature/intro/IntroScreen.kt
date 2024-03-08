@@ -20,6 +20,7 @@ import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.feature.intro.viewmodel.IntroSideEffect
 import com.nexters.ilab.android.feature.intro.viewmodel.IntroViewModel
 import com.nexters.ilab.core.ui.DevicePreview
@@ -59,6 +60,7 @@ internal fun IntroRoute(
                         viewModel.autoLoginFail()
                     }
                 }
+
                 is IntroSideEffect.AutoLoginSuccess -> navigateToMain()
                 is IntroSideEffect.AutoLoginFail -> navigateToLogin()
             }
@@ -106,5 +108,7 @@ fun IntroContent(modifier: Modifier = Modifier) {
 @DevicePreview
 @Composable
 fun IntroScreenPreview() {
-    IntroScreen()
+    ILabTheme {
+        IntroScreen()
+    }
 }

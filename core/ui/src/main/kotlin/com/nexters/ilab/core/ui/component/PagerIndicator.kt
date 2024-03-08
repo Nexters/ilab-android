@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.core.ui.ComponentPreview
 import kotlin.math.absoluteValue
 
@@ -78,11 +79,13 @@ fun PagerIndicator(
 @ComponentPreview
 @Composable
 internal fun PagerIndicatorPreview() {
-    val pagerState = rememberPagerState(pageCount = { 4 })
-    PagerIndicator(
-        pageCount = pagerState.pageCount,
-        currentPage = pagerState.currentPage,
-        targetPage = pagerState.currentPage,
-        currentPageOffsetFraction = pagerState.currentPageOffsetFraction,
-    )
+    ILabTheme {
+        val pagerState = rememberPagerState(pageCount = { 4 })
+        PagerIndicator(
+            pageCount = pagerState.pageCount,
+            currentPage = pagerState.currentPage,
+            targetPage = pagerState.currentPage,
+            currentPageOffsetFraction = pagerState.currentPageOffsetFraction,
+        )
+    }
 }

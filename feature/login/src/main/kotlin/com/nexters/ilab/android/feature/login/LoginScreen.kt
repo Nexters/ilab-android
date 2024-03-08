@@ -36,6 +36,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Kakao
 import com.nexters.ilab.android.core.designsystem.theme.LightGray900
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
@@ -211,8 +212,10 @@ fun LoginContent(
 @DevicePreview
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen(
-        uiState = LoginState(),
-        onLoginClick = {},
-    )
+    ILabTheme {
+        LoginScreen(
+            uiState = LoginState(),
+            onLoginClick = {},
+        )
+    }
 }

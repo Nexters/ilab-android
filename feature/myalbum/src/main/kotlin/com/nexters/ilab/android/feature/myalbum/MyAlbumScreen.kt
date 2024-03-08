@@ -46,6 +46,7 @@ import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.feature.myalbum.viewmodel.MyAlbumSideEffect
 import com.nexters.ilab.android.feature.myalbum.viewmodel.MyAlbumViewModel
 import com.nexters.ilab.android.core.common.MyAlbumModel
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.BackgroundImage
 import com.nexters.ilab.core.ui.component.ILabButton
@@ -255,12 +256,14 @@ private fun MyAlbumContent(
 @DevicePreview
 @Composable
 fun MyAlbumScreenPreview() {
-    MyAlbumScreen(
-        uiState = MyAlbumState(),
-        myAlbum = MyAlbumModel(),
-        initMyAlbum = {},
-        onCloseClick = {},
-        onShareBtnClick = {},
-        onSaveBtnClick = {},
-    )
+    ILabTheme {
+        MyAlbumScreen(
+            uiState = MyAlbumState(),
+            myAlbum = MyAlbumModel(),
+            initMyAlbum = {},
+            onCloseClick = {},
+            onShareBtnClick = {},
+            onSaveBtnClick = {},
+        )
+    }
 }

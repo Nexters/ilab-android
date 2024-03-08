@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabDialog
@@ -229,14 +230,16 @@ private fun CreateImageStopDialog(
 @DevicePreview
 @Composable
 fun CreateImageScreenPreview() {
-    CreateImageScreen(
-        uiState = CreateImageState(),
-        onCloseClick = {},
-        onNavigateToCreateImageComplete = {},
-        openCreateImageStopDialog = {},
-        dismissCreateImageStopDialog = {},
-        createProfileImage = {},
-        dismissServerErrorDialog = {},
-        dismissNetworkErrorDialog = {},
-    )
+    ILabTheme {
+        CreateImageScreen(
+            uiState = CreateImageState(),
+            onCloseClick = {},
+            onNavigateToCreateImageComplete = {},
+            openCreateImageStopDialog = {},
+            dismissCreateImageStopDialog = {},
+            createProfileImage = {},
+            dismissServerErrorDialog = {},
+            dismissNetworkErrorDialog = {},
+        )
+    }
 }

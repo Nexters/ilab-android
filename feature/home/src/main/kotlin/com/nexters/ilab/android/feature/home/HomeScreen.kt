@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
@@ -430,27 +431,31 @@ internal fun ProfileImageDialog(
 @DevicePreview
 @Composable
 internal fun HomeScreenPreview() {
-    HomeScreen(
-        uiState = HomeState(),
-        padding = PaddingValues(0.dp),
-        onSettingClick = {},
-        onCreateImageBtnClickFromStyle = {},
-        onCreateImageBtnClickFromProfile = {},
-        openProfileImageDialog = {},
-        dismissProfileImageDialog = {},
-        getStyleProfileList = {},
-        dismissNetworkErrorDialog = {},
-        dismissServerErrorDialog = {},
-        setSelectedStyleImage = {},
-    )
+    ILabTheme {
+        HomeScreen(
+            uiState = HomeState(),
+            padding = PaddingValues(0.dp),
+            onSettingClick = {},
+            onCreateImageBtnClickFromStyle = {},
+            onCreateImageBtnClickFromProfile = {},
+            openProfileImageDialog = {},
+            dismissProfileImageDialog = {},
+            getStyleProfileList = {},
+            dismissNetworkErrorDialog = {},
+            dismissServerErrorDialog = {},
+            setSelectedStyleImage = {},
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun ProfileImageDialogPreview() {
-    ProfileImageDialog(
-        profileImage = ProfileEntity("", "", ""),
-        onCloseClick = {},
-        onCreateImageBtnClickFromProfile = {},
-    )
+    ILabTheme {
+        ProfileImageDialog(
+            profileImage = ProfileEntity("", "", ""),
+            onCloseClick = {},
+            onCreateImageBtnClickFromProfile = {},
+        )
+    }
 }

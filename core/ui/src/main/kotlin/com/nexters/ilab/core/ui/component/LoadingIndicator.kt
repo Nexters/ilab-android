@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.common.extension.noRippleClickable
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -28,5 +29,8 @@ fun LoadingIndicator(modifier: Modifier = Modifier) {
 @ComponentPreview
 @Composable
 fun LoadingIndicatorPreview() {
-    LoadingIndicator(modifier = Modifier.fillMaxSize())
+    ILabTheme {
+        LoadingIndicator(modifier = Modifier.fillMaxSize())
+    }
 }
+

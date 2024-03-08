@@ -33,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.feature.home.navigation.homeNavGraph
 import com.nexters.ilab.android.feature.myalbum.navigation.myAlbumNavGraph
 import com.nexters.ilab.android.feature.mypage.navigation.myPageNavGraph
@@ -220,10 +221,12 @@ private fun RowScope.MainBottomBarItem(
 @ComponentPreview
 @Composable
 fun MainBottomBarPreview() {
-    MainBottomBar(
-        visible = true,
-        tabs = MainTab.entries.toPersistentList(),
-        currentTab = MainTab.HOME,
-        onTabSelected = {},
-    )
+    ILabTheme {
+        MainBottomBar(
+            visible = true,
+            tabs = MainTab.entries.toPersistentList(),
+            currentTab = MainTab.HOME,
+            onTabSelected = {},
+        )
+    }
 }

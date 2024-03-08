@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -117,17 +118,19 @@ fun ILabButtonPreview() {
 @ComponentPreview
 @Composable
 fun ILabButtonWithLeadingIconPreview() {
-    ILabButton(
-        onClick = {},
-        text = {
-            Text("Button")
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Filled.Check,
-                contentDescription = "Navigation icon",
-                tint = Color.White,
-            )
-        },
-    )
+    ILabTheme {
+        ILabButton(
+            onClick = {},
+            text = {
+                Text("Button")
+            },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = "Navigation icon",
+                    tint = Color.White,
+                )
+            },
+        )
+    }
 }

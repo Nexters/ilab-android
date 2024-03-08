@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.core.ui.ComponentPreview
 
@@ -102,30 +103,36 @@ enum class TopAppBarNavigationType { Back, Close, Setting }
 @ComponentPreview
 @Composable
 fun ILabTopAppBarBackPreview() {
-    ILabTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.Back,
-        navigationIconContentDescription = "Navigation back icon",
-    )
+    ILabTheme {
+        ILabTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.Back,
+            navigationIconContentDescription = "Navigation back icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun ILabTopAppBarClosePreview() {
-    ILabTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.Close,
-        navigationIconContentDescription = "Navigation close icon",
-    )
+    ILabTheme {
+        ILabTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.Close,
+            navigationIconContentDescription = "Navigation close icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun ILabTopAppBarSettingPreview() {
-    ILabTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationType = TopAppBarNavigationType.Setting,
-        navigationIconContentDescription = "Navigation Setting icon",
-        isTextLogo = true,
-    )
+    ILabTheme {
+        ILabTopAppBar(
+            titleRes = android.R.string.untitled,
+            navigationType = TopAppBarNavigationType.Setting,
+            navigationIconContentDescription = "Navigation Setting icon",
+            isTextLogo = true,
+        )
+    }
 }

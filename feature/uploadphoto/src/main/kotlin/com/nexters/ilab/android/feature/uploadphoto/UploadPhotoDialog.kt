@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
+import com.nexters.ilab.core.ui.ComponentPreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,4 +80,16 @@ fun UploadPhotoDialog(
             .clip(RoundedCornerShape(12.dp))
             .background(color = MaterialTheme.colorScheme.surfaceVariant),
     )
+}
+
+@ComponentPreview
+@Composable
+fun UploadPhotoDialogPreview() {
+    ILabTheme {
+        UploadPhotoDialog(
+            onDismiss = {},
+            openPhotoPicker = {},
+            requestCameraPermission = {},
+        )
+    }
 }
