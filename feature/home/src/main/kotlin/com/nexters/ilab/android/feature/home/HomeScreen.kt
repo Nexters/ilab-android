@@ -158,7 +158,7 @@ internal fun HomeScreen(
                 },
             )
         }
-        HomeTopAppBar(onSettingClick)
+        HomeTopAppBar(onSettingClick = onSettingClick)
         HomeContent(
             styleImageList = uiState.styleImageList,
             profileImageList = uiState.profileImageList,
