@@ -1,4 +1,4 @@
-# I'Lab Android
+# I'lab Android
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
 [![Gradle](https://img.shields.io/badge/gradle-8.6-green.svg)](https://gradle.org/)
 [![Android Studio](https://img.shields.io/badge/Android%20Studio-2023.1.1%20%28Hedgehog%29-green)](https://developer.android.com/studio)
@@ -6,14 +6,14 @@
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-34-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
-I'Lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.ilab.android)
+I'lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 [PlayStore](https://play.google.com/store/apps/details?id=com.nexters.ilab.android)
 <br/>
-![img-playstore-thumnail](https://github.com/Nexters/ilab-android/assets/51016231/4448ba0e-a2b0-47df-8f21-0d2b21c6e753)
+![img-playstore-thumnail (1)](https://github.com/Nexters/ilab-android/assets/51016231/167ab845-5a60-45ed-989d-ff7c34a8baae)
 <br/>
 
 <p align="center">
 <img src="https://github.com/Nexters/ilab-android/assets/51016231/3501b3e6-66fe-4328-a968-9a9a75656fe1" width="30%"/>
-<img src="https://github.com/Nexters/ilab-android/assets/51016231/233f12ec-6b0a-489f-8b72-0599348b5ce4" width="30%"/>
+<img src="https://github.com/Nexters/ilab-android/assets/51016231/30b1a7f8-aca5-4b72-8ed2-fc6b7c209c25" width="30%"/>
 </p>
 
 <p align="center">
