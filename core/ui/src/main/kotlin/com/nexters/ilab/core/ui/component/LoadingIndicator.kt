@@ -33,4 +33,3 @@ fun LoadingIndicatorPreview() {
         LoadingIndicator(modifier = Modifier.fillMaxSize())
     }
 }
-

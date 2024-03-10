@@ -25,14 +25,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
+import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabDialog
@@ -45,7 +47,6 @@ import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
-// TODO 시간이 지나면 주기적으로 텍스트 갱신
 @Composable
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,
@@ -60,6 +61,7 @@ internal fun CreateImageRoute(
                 is CreateImageSideEffect.CreateProfileImageSuccess -> {
                     onNavigateToCreateImageComplete()
                 }
+
                 else -> {}
             }
         }
@@ -119,7 +121,10 @@ private fun CreateImageScreen(
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
-        CreateImageContent(onNavigateToCreateImageComplete = onNavigateToCreateImageComplete)
+        CreateImageContent(
+            creatingImageWaitText = uiState.creatingImageWaitText.asString(),
+            onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
+        )
     }
 }
 
@@ -140,6 +145,7 @@ private fun CreateImageTopAppBar(
 
 @Composable
 private fun CreateImageContent(
+    creatingImageWaitText: String,
     onNavigateToCreateImageComplete: () -> Unit,
 ) {
     Column(
@@ -155,25 +161,28 @@ private fun CreateImageContent(
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = buildAnnotatedString {
+        val annotatedString = buildAnnotatedString {
+            val splitIndex = creatingImageWaitText.indexOf("30초")
+            if (splitIndex != -1) {
                 withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
-                    append(stringResource(R.string.creating_image_wait_part1_description1_prefix))
+                    append(creatingImageWaitText.substring(0, splitIndex))
                 }
-                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primaryContainer, fontWeight = FontWeight.Bold)) {
-                    append(stringResource(R.string.creating_image_wait_part1_description1_time_value))
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primaryContainer)) {
+                    append(creatingImageWaitText.substring(splitIndex, splitIndex + 3))
                 }
                 withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
-                    append(stringResource(id = R.string.creating_image_wait_part1_description1_suffix))
+                    append(creatingImageWaitText.substring(splitIndex + 3))
                 }
-            },
-            style = Contents1,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
+            } else {
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                    append(creatingImageWaitText)
+                }
+            }
+        }
         Text(
-            text = stringResource(id = R.string.creating_image_wait_part1_description2),
-            style = Contents1,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            text = annotatedString,
+            style = Subtitle2,
+            textAlign = TextAlign.Center,
         )
         LoadingImage(
             resId = R.drawable.anim_loading,
@@ -232,7 +241,9 @@ private fun CreateImageStopDialog(
 fun CreateImageScreenPreview() {
     ILabTheme {
         CreateImageScreen(
-            uiState = CreateImageState(),
+            uiState = CreateImageState(
+                creatingImageWaitText = UiText.StringResource(R.string.creating_image_wait_part1_description),
+            ),
             onCloseClick = {},
             onNavigateToCreateImageComplete = {},
             openCreateImageStopDialog = {},
