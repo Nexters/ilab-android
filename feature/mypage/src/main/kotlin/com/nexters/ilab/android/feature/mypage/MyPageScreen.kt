@@ -59,6 +59,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.domain.entity.UserInfoEntity
@@ -431,21 +432,25 @@ fun ILabDropdownMenu(
 @DevicePreview
 @Composable
 fun MyPageScreenPreview() {
-    MyPageScreen(
-        uiState = MyPageState(),
-        padding = PaddingValues(0.dp),
-        onSettingClick = {},
-        onShareBtnClick = {},
-        onDeleteBtnClick = {},
-        onAlbumClick = {},
-        getUserInfo = {},
-        dismissNetworkErrorDialog = {},
-        dismissServerErrorDialog = {},
-    )
+    ILabTheme {
+        MyPageScreen(
+            uiState = MyPageState(),
+            padding = PaddingValues(0.dp),
+            onSettingClick = {},
+            onShareBtnClick = {},
+            onDeleteBtnClick = {},
+            onAlbumClick = {},
+            getUserInfo = {},
+            dismissNetworkErrorDialog = {},
+            dismissServerErrorDialog = {},
+        )
+    }
 }
 
 @DevicePreview
 @Composable
 fun MyPageScreenTestPreview() {
-    MyPageContentEmpty()
+    ILabTheme {
+        MyPageContentEmpty()
+    }
 }

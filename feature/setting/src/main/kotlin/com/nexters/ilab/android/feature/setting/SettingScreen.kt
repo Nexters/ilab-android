@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingSideEffect
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingState
@@ -244,15 +245,17 @@ internal fun DeleteAccountDialog(
 @DevicePreview
 @Composable
 fun SettingScreenPreview() {
-    SettingScreen(
-        uiState = SettingState(),
-        onBackClick = {},
-        onChangeDarkTheme = {},
-        onNavigateToPrivacyPolicy = {},
-        onLogoutClick = {},
-        onDeleteAccountClick = {},
-        openDeleteAccountDialog = {},
-        dismissDeleteAccountDialog = {},
-        appVersionInfo = "",
-    )
+    ILabTheme {
+        SettingScreen(
+            uiState = SettingState(),
+            onBackClick = {},
+            onChangeDarkTheme = {},
+            onNavigateToPrivacyPolicy = {},
+            onLogoutClick = {},
+            onDeleteAccountClick = {},
+            openDeleteAccountDialog = {},
+            dismissDeleteAccountDialog = {},
+            appVersionInfo = "",
+        )
+    }
 }

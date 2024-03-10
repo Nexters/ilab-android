@@ -4,12 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.common.ErrorHandlerActions
+import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.common.handleException
 import com.nexters.ilab.android.core.domain.repository.FileRepository
+import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.feature.createimage.navigation.IMAGE_URL
 import com.nexters.ilab.feature.createimage.navigation.STYLE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -37,13 +40,24 @@ class CreateImageViewModel @Inject constructor(
 
     fun createProfileImage() = intent {
         viewModelScope.launch {
+            reduce {
+                state.copy(creatingImageWaitText = UiText.StringResource(R.string.creating_image_wait_part1_description))
+            }
+            val job = viewModelScope.launch {
+                delay(15000)
+                reduce {
+                    state.copy(creatingImageWaitText = UiText.StringResource(R.string.creating_image_wait_part2_description))
+                }
+            }
             repository.createProfileImage(imageUrl, styleId)
                 .onSuccess { createdProfileImageList ->
                     reduce {
                         state.copy(createdProfileImageList = createdProfileImageList.map { it.url }.toImmutableList())
                     }
+                    job.cancel()
                     postSideEffect(CreateImageSideEffect.CreateProfileImageSuccess)
                 }.onFailure { exception ->
+                    job.cancel()
                     handleException(exception, this@CreateImageViewModel)
                 }
         }

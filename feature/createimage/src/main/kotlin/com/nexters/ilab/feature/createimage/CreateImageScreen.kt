@@ -2,7 +2,6 @@ package com.nexters.ilab.feature.createimage
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,13 +24,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
+import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
 import com.nexters.ilab.core.ui.component.ILabDialog
@@ -44,7 +46,6 @@ import com.nexters.ilab.feature.createimage.viewmodel.CreateImageSideEffect
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageState
 import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
-// TODO 시간이 지나면 주기적으로 텍스트 갱신
 @Composable
 internal fun CreateImageRoute(
     onCloseClick: () -> Unit,
@@ -59,6 +60,7 @@ internal fun CreateImageRoute(
                 is CreateImageSideEffect.CreateProfileImageSuccess -> {
                     onNavigateToCreateImageComplete()
                 }
+
                 else -> {}
             }
         }
@@ -67,7 +69,6 @@ internal fun CreateImageRoute(
     CreateImageScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
-        onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
         openCreateImageStopDialog = viewModel::openCreateProfileImageStopDialog,
         dismissCreateImageStopDialog = viewModel::dismissCreateProfileImageStopDialog,
         createProfileImage = viewModel::createProfileImage,
@@ -80,7 +81,6 @@ internal fun CreateImageRoute(
 private fun CreateImageScreen(
     uiState: CreateImageState,
     onCloseClick: () -> Unit,
-    onNavigateToCreateImageComplete: () -> Unit,
     openCreateImageStopDialog: () -> Unit,
     dismissCreateImageStopDialog: () -> Unit,
     createProfileImage: () -> Unit,
@@ -118,7 +118,7 @@ private fun CreateImageScreen(
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
-        CreateImageContent(onNavigateToCreateImageComplete = onNavigateToCreateImageComplete)
+        CreateImageContent(creatingImageWaitText = uiState.creatingImageWaitText.asString())
     }
 }
 
@@ -138,9 +138,7 @@ private fun CreateImageTopAppBar(
 }
 
 @Composable
-private fun CreateImageContent(
-    onNavigateToCreateImageComplete: () -> Unit,
-) {
+private fun CreateImageContent(creatingImageWaitText: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -154,25 +152,28 @@ private fun CreateImageContent(
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Text(
-            text = buildAnnotatedString {
+        val annotatedString = buildAnnotatedString {
+            val splitIndex = creatingImageWaitText.indexOf("30초")
+            if (splitIndex != -1) {
                 withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
-                    append(stringResource(R.string.creating_image_wait_part1_description1_prefix))
+                    append(creatingImageWaitText.substring(0, splitIndex))
                 }
-                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primaryContainer, fontWeight = FontWeight.Bold)) {
-                    append(stringResource(R.string.creating_image_wait_part1_description1_time_value))
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primaryContainer)) {
+                    append(creatingImageWaitText.substring(splitIndex, splitIndex + 3))
                 }
                 withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
-                    append(stringResource(id = R.string.creating_image_wait_part1_description1_suffix))
+                    append(creatingImageWaitText.substring(splitIndex + 3))
                 }
-            },
-            style = Contents1,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
+            } else {
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.inverseOnSurface)) {
+                    append(creatingImageWaitText)
+                }
+            }
+        }
         Text(
-            text = stringResource(id = R.string.creating_image_wait_part1_description2),
-            style = Contents1,
-            color = MaterialTheme.colorScheme.inverseOnSurface,
+            text = annotatedString,
+            style = Subtitle2,
+            textAlign = TextAlign.Center,
         )
         LoadingImage(
             resId = R.drawable.anim_loading,
@@ -181,8 +182,7 @@ private fun CreateImageContent(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.inverseSurface)
-                .clickable { onNavigateToCreateImageComplete() },
+                .background(MaterialTheme.colorScheme.inverseSurface),
         ) {
             Row(
                 modifier = Modifier
@@ -229,14 +229,17 @@ private fun CreateImageStopDialog(
 @DevicePreview
 @Composable
 fun CreateImageScreenPreview() {
-    CreateImageScreen(
-        uiState = CreateImageState(),
-        onCloseClick = {},
-        onNavigateToCreateImageComplete = {},
-        openCreateImageStopDialog = {},
-        dismissCreateImageStopDialog = {},
-        createProfileImage = {},
-        dismissServerErrorDialog = {},
-        dismissNetworkErrorDialog = {},
-    )
+    ILabTheme {
+        CreateImageScreen(
+            uiState = CreateImageState(
+                creatingImageWaitText = UiText.StringResource(R.string.creating_image_wait_part1_description),
+            ),
+            onCloseClick = {},
+            openCreateImageStopDialog = {},
+            dismissCreateImageStopDialog = {},
+            createProfileImage = {},
+            dismissServerErrorDialog = {},
+            dismissNetworkErrorDialog = {},
+        )
+    }
 }

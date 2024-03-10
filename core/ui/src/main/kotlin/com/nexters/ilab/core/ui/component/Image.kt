@@ -36,6 +36,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.core.ui.ComponentPreview
 
 @Composable
@@ -209,57 +210,69 @@ fun LoadingImage(
 @ComponentPreview
 @Composable
 fun ExampleImagePreview() {
-    ExampleImage(
-        resId = 0,
-        contentDescription = "Example Image Icon",
-    )
+    ILabTheme {
+        ExampleImage(
+            resId = 0,
+            contentDescription = "Example Image Icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun NetworkImagePreview() {
-    NetworkImage(
-        imageUrl = "",
-        contentDescription = "Network Image Icon",
-    )
+    ILabTheme {
+        NetworkImage(
+            imageUrl = "",
+            contentDescription = "Network Image Icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun BackgroundImagePreview() {
-    BackgroundImage(
-        resId = 0,
-        contentDescription = "Loading Image Icon",
-    )
+    ILabTheme {
+        BackgroundImage(
+            resId = 0,
+            contentDescription = "Loading Image Icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun LoadingImagePreview() {
-    LoadingImage(
-        resId = 0,
-        contentDescription = "Background Image Icon",
-    )
+    ILabTheme {
+        LoadingImage(
+            resId = 0,
+            contentDescription = "Background Image Icon",
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun UnSelectedStyleImagePreview() {
-    StyleImage(
-        imageUrl = "",
-        styleName = "#스타일",
-        contentDescription = "Style Image",
-        isSelectedIndex = false,
-    )
+    ILabTheme {
+        StyleImage(
+            imageUrl = "",
+            styleName = "#스타일",
+            contentDescription = "Style Image",
+            isSelectedIndex = false,
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun SelectedStyleImagePreview() {
-    StyleImage(
-        imageUrl = "",
-        styleName = "#스타일",
-        contentDescription = "Style Image",
-        isSelectedIndex = true,
-    )
+    ILabTheme {
+        StyleImage(
+            imageUrl = "",
+            styleName = "#스타일",
+            contentDescription = "Style Image",
+            isSelectedIndex = true,
+        )
+    }
 }

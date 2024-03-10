@@ -52,6 +52,7 @@ import com.nexters.ilab.android.core.common.extension.openAppSettings
 import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title2
 import com.nexters.ilab.android.core.designsystem.theme.pretendardFamily
@@ -396,13 +397,15 @@ fun PrivacyPolicyCheckBox(
 @DevicePreview
 @Composable
 fun UploadPhotoScreenPreview() {
-    UploadPhotoScreen(
-        uiState = UploadPhotoState(),
-        onBackClick = {},
-        togglePrivacyPolicyAgreement = { _ -> },
-        onNavigateToPrivacyPolicy = {},
-        openPhotoPicker = {},
-        requestCameraPermission = {},
-        dismissPermissionDialog = {},
-    )
+    ILabTheme {
+        UploadPhotoScreen(
+            uiState = UploadPhotoState(),
+            onBackClick = {},
+            togglePrivacyPolicyAgreement = { _ -> },
+            onNavigateToPrivacyPolicy = {},
+            openPhotoPicker = {},
+            requestCameraPermission = {},
+            dismissPermissionDialog = {},
+        )
+    }
 }

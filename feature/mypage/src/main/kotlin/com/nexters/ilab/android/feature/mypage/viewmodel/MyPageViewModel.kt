@@ -15,6 +15,7 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +27,7 @@ class MyPageViewModel @Inject constructor(
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
 
     init {
+        Timber.d("MyPageViewModel is initialized")
         getUserInfo()
     }
 
@@ -131,5 +133,10 @@ class MyPageViewModel @Inject constructor(
         reduce {
             state.copy(isNetworkErrorDialogVisible = false)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Timber.d("MyPageViewModel is cleared")
     }
 }

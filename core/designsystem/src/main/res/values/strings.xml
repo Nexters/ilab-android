@@ -75,12 +75,8 @@
 
     <!--    create image-->
     <string name="creating_image_title">이미지 생성 중…</string>
-    <string name="creating_image_wait_part1_description1_prefix">최대</string>
-    <string name="creating_image_wait_part1_description1_time_value">&#160;30초</string>
-    <string name="creating_image_wait_part1_description1_suffix">&#160;정도 소요됩니다.</string>
-    <string name="creating_image_wait_part1_description2">잠시만 기다려주시면 작업이 완료됩니다.</string>
-    <string name="creating_image_wait_part2_description1">조금만 더 기다려주세요!</string>
-    <string name="creating_image_wait_part2_description2">열심히 작업 중입니다.</string>
+    <string name="creating_image_wait_part1_description">최대 30초 정도 소요됩니다.\n잠시만 기다려주시면 작업이 완료됩니다.</string>
+    <string name="creating_image_wait_part2_description">조금만 더 기다려주세요!\n열심히 작업 중입니다.</string>
     <string name="creating_image_exit_warning_prefix">화면 이탈시 이미지 생성이</string>
     <string name="creating_image_exit_warning_suffix">&#160;종료됩니다.</string>
     <string name="creating_image_stop_confirmation">정말 중단하시겠어요?</string>

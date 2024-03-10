@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nexters.ilab.android.core.common.extension.noRippleClickable
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.core.domain.entity.StyleEntity
@@ -273,29 +274,33 @@ fun CheckableStyleImageList(
 @DevicePreview
 @Composable
 fun InputStyleScreenPreview() {
-    InputStyleScreen(
-        uiState = UploadPhotoState(),
-        onBackClick = {},
-        onStyleSelect = {},
-        createProfileImage = {},
-        getStyleList = {},
-        dismissServerErrorDialog = {},
-        dismissNetworkErrorDialog = {},
-    )
+    ILabTheme {
+        InputStyleScreen(
+            uiState = UploadPhotoState(),
+            onBackClick = {},
+            onStyleSelect = {},
+            createProfileImage = {},
+            getStyleList = {},
+            dismissServerErrorDialog = {},
+            dismissNetworkErrorDialog = {},
+        )
+    }
 }
 
 @ComponentPreview
 @Composable
 fun CheckableStyleImageListPreview() {
-    CheckableStyleImageList(
-        styleList = persistentListOf(
-            StyleEntity(
-                id = 0,
-                name = "ㅇㅇ",
-                defaultImageUrl = "",
+    ILabTheme {
+        CheckableStyleImageList(
+            styleList = persistentListOf(
+                StyleEntity(
+                    id = 0,
+                    name = "ㅇㅇ",
+                    defaultImageUrl = "",
+                ),
             ),
-        ),
-        selectedStyle = "",
-        onStyleSelect = {},
-    )
+            selectedStyle = "",
+            onStyleSelect = {},
+        )
+    }
 }

@@ -37,6 +37,7 @@ import com.nexters.ilab.android.core.common.extension.toUri
 import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.designsystem.theme.Contents1
 import com.nexters.ilab.android.core.designsystem.theme.Contents2
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle1
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.android.feature.uploadphoto.viewmodel.UploadPhotoSideEffect
@@ -277,14 +278,16 @@ private fun GuideRow(
 @DevicePreview
 @Composable
 fun UploadCheckScreenPreview() {
-    UploadCheckScreen(
-        uiState = UploadPhotoState(
-            selectedPhotoUri = "",
-        ),
-        onBackClick = {},
-        toggleUploadPhotoDialog = {},
-        openPhotoPicker = {},
-        requestCameraPermission = {},
-        onNavigateToInputStyle = {},
-    )
+    ILabTheme {
+        UploadCheckScreen(
+            uiState = UploadPhotoState(
+                selectedPhotoUri = "",
+            ),
+            onBackClick = {},
+            toggleUploadPhotoDialog = {},
+            openPhotoPicker = {},
+            requestCameraPermission = {},
+            onNavigateToInputStyle = {},
+        )
+    }
 }

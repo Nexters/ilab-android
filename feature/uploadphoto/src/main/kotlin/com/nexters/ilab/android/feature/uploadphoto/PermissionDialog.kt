@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.nexters.ilab.android.core.common.extension.noRippleClickable
 import com.nexters.ilab.android.core.designsystem.R
+import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.core.ui.ComponentPreview
 
@@ -102,11 +103,13 @@ class CameraPermissionTextProvider : PermissionTextProvider {
 @ComponentPreview
 @Composable
 fun PermissionDialogPreview() {
-    PermissionDialog(
-        permissionTextProvider = CameraPermissionTextProvider(),
-        isPermanentlyDeclined = false,
-        onDismissClick = {},
-        onConfirmClick = {},
-        onGoToAppSettingsClick = {},
-    )
+    ILabTheme {
+        PermissionDialog(
+            permissionTextProvider = CameraPermissionTextProvider(),
+            isPermanentlyDeclined = false,
+            onDismissClick = {},
+            onConfirmClick = {},
+            onGoToAppSettingsClick = {},
+        )
+    }
 }
