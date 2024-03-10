@@ -70,7 +70,6 @@ internal fun CreateImageRoute(
     CreateImageScreen(
         uiState = uiState,
         onCloseClick = onCloseClick,
-        onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
         openCreateImageStopDialog = viewModel::openCreateProfileImageStopDialog,
         dismissCreateImageStopDialog = viewModel::dismissCreateProfileImageStopDialog,
         createProfileImage = viewModel::createProfileImage,
@@ -83,7 +82,6 @@ internal fun CreateImageRoute(
 private fun CreateImageScreen(
     uiState: CreateImageState,
     onCloseClick: () -> Unit,
-    onNavigateToCreateImageComplete: () -> Unit,
     openCreateImageStopDialog: () -> Unit,
     dismissCreateImageStopDialog: () -> Unit,
     createProfileImage: () -> Unit,
@@ -121,10 +119,7 @@ private fun CreateImageScreen(
             )
         }
         CreateImageTopAppBar(onCloseClick = openCreateImageStopDialog)
-        CreateImageContent(
-            creatingImageWaitText = uiState.creatingImageWaitText.asString(),
-            onNavigateToCreateImageComplete = onNavigateToCreateImageComplete,
-        )
+        CreateImageContent(creatingImageWaitText = uiState.creatingImageWaitText.asString())
     }
 }
 
@@ -144,10 +139,7 @@ private fun CreateImageTopAppBar(
 }
 
 @Composable
-private fun CreateImageContent(
-    creatingImageWaitText: String,
-    onNavigateToCreateImageComplete: () -> Unit,
-) {
+private fun CreateImageContent(creatingImageWaitText: String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -191,8 +183,7 @@ private fun CreateImageContent(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.inverseSurface)
-                .clickable { onNavigateToCreateImageComplete() },
+                .background(MaterialTheme.colorScheme.inverseSurface),
         ) {
             Row(
                 modifier = Modifier
@@ -245,7 +236,6 @@ fun CreateImageScreenPreview() {
                 creatingImageWaitText = UiText.StringResource(R.string.creating_image_wait_part1_description),
             ),
             onCloseClick = {},
-            onNavigateToCreateImageComplete = {},
             openCreateImageStopDialog = {},
             dismissCreateImageStopDialog = {},
             createProfileImage = {},
