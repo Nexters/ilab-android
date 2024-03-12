@@ -98,7 +98,7 @@ Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Ar
 │   ├── intro
 │   ├── login
 │   ├── main 
-│   ├── mayalbum
+│   ├── myalbum
 │   ├── mypage
 │   ├── navigator
 │   ├── privacypolicy
