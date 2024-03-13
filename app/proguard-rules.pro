@@ -39,12 +39,12 @@
 
 -keepattributes RuntimeVisibleAnnotations
 -keep,allowobfuscation,allowshrinking class * extends androidx.navigation.Navigator
-#-keep class *.** { *; }
-#
-#-dontwarn com.oracle.svm.core.annotate.Delete
-#-dontwarn com.oracle.svm.core.annotate.Substitute
-#-dontwarn com.oracle.svm.core.annotate.TargetClass
-#-dontwarn java.lang.Module
-#-dontwarn org.graalvm.nativeimage.hosted.Feature$BeforeAnalysisAccess
-#-dontwarn org.graalvm.nativeimage.hosted.Feature
-#-dontwarn org.graalvm.nativeimage.hosted.RuntimeResourceAccess
+-keep class *.** { *; }
+
+-dontwarn com.oracle.svm.core.annotate.Delete
+-dontwarn com.oracle.svm.core.annotate.Substitute
+-dontwarn com.oracle.svm.core.annotate.TargetClass
+-dontwarn java.lang.Module
+-dontwarn org.graalvm.nativeimage.hosted.Feature$BeforeAnalysisAccess
+-dontwarn org.graalvm.nativeimage.hosted.Feature
+-dontwarn org.graalvm.nativeimage.hosted.RuntimeResourceAccess
