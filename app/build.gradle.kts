@@ -46,7 +46,7 @@ android {
 
         getByName("release") {
             isDebuggable = false
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             manifestPlaceholders += mapOf(
                 "appName" to "@string/app_name",
             )
