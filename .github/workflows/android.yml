@@ -51,7 +51,7 @@ jobs:
                 run: ./gradlew ktlintCheck
 
             -   name: Build with Gradle
-                run: ./gradlew build
+                run: ./gradlew buildDebug --stacktrace
 
             -   name: send to Slack
                 uses: 8398a7/action-slack@v3
