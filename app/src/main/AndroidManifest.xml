@@ -37,6 +37,10 @@
                 android:name="com.nexters.ilab.android.initializer.KakaoSDKInitializer"
                 android:value="androidx.startup" />
 
+            <meta-data
+                android:name="com.nexters.ilab.android.initializer.FirebaseCrashlyticsInitializer"
+                android:value="androidx.startup" />
+
         </provider>
 
         <provider
