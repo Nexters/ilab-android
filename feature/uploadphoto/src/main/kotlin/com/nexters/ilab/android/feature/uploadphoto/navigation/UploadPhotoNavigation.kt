@@ -58,7 +58,6 @@ fun NavGraphBuilder.uploadPhotoNavGraph(
     ) {
         composable(route = UPLOAD_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<UploadPhotoViewModel>(navController)
-
             UploadPhotoRoute(
                 onBackClick = onBackClick,
                 onNavigateToPrivacyPolicy = onNavigateToPrivacyPolicy,
