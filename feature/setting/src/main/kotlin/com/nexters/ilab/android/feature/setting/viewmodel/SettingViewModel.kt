@@ -41,11 +41,7 @@ class SettingViewModel @Inject constructor(
 
     fun getVersionInfo(context: Context): String {
         val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-        if (packageInfo != null) {
-            return packageInfo.versionName
-        } else {
-            return "버전 정보가 없습니다."
-        }
+        return packageInfo.versionName
     }
 
     fun deleteAccount() = intent {
