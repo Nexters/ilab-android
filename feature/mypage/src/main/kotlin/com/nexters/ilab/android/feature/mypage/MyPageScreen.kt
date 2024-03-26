@@ -3,6 +3,7 @@ package com.nexters.ilab.android.feature.mypage
 import android.content.ClipData
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -48,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -72,7 +74,6 @@ import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingIndicator
 import com.nexters.ilab.core.ui.component.NetworkErrorDialog
 import com.nexters.ilab.core.ui.component.NetworkImage
-import com.nexters.ilab.core.ui.component.ServerErrorDialog
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 import kotlinx.collections.immutable.ImmutableList
 
@@ -81,9 +82,11 @@ internal fun MyPageRoute(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onNavigateToMyAlbum: (String, List<String>) -> Unit,
+    onNavigateToLogin: () -> Unit,
     viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.container.stateFlow.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ ->
         viewModel.deleteCacheDir()
@@ -100,7 +103,7 @@ internal fun MyPageRoute(
                         putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
                         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         // https://stackoverflow.com/questions/57689792/permission-denial-while-sharing-file-with-fileprovider
-                        val clipData = ClipData.newRawUri("", uriList.get(0)).apply {
+                        val clipData = ClipData.newRawUri("", uriList[0]).apply {
                             for (i in 1 until uriList.size) {
                                 addItem(ClipData.Item(uriList[i]))
                             }
@@ -119,6 +122,10 @@ internal fun MyPageRoute(
                         sideEffect.imageUrlList,
                     )
                 }
+
+                is MyPageSideEffect.ShowToast -> {
+                    Toast.makeText(context, sideEffect.message.asString(context), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -131,8 +138,10 @@ internal fun MyPageRoute(
         onShareBtnClick = viewModel::shareMyAlbum,
         onDeleteBtnClick = viewModel::deleteMyAlbum,
         onAlbumClick = viewModel::onAlbumClick,
-        dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
+        // dismissServerErrorDialog = viewModel::dismissServerErrorDialog,
         dismissNetworkErrorDialog = viewModel::dismissNetworkErrorDialog,
+        onNavigateToLogin = onNavigateToLogin,
+        clearAuthToken = viewModel::clearAuthToken,
     )
 }
 
@@ -145,8 +154,10 @@ internal fun MyPageScreen(
     onShareBtnClick: () -> Unit,
     onDeleteBtnClick: (Int) -> Unit,
     onAlbumClick: (Int) -> Unit,
-    dismissServerErrorDialog: () -> Unit,
+    // dismissServerErrorDialog: () -> Unit,
     dismissNetworkErrorDialog: () -> Unit,
+    onNavigateToLogin: () -> Unit,
+    clearAuthToken: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -158,12 +169,14 @@ internal fun MyPageScreen(
             LoadingIndicator(modifier = Modifier.fillMaxSize())
         }
         if (uiState.isServerErrorDialogVisible) {
-            ServerErrorDialog(
-                onRetryClick = {
-                    dismissServerErrorDialog()
-                    getUserInfo()
-                },
-            )
+//            ServerErrorDialog(
+//                onRetryClick = {
+//                    dismissServerErrorDialog()
+//                    getUserInfo()
+//                },
+//            )
+            clearAuthToken()
+            onNavigateToLogin()
         }
         if (uiState.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
@@ -442,14 +455,16 @@ fun MyPageScreenPreview() {
             onAlbumClick = {},
             getUserInfo = {},
             dismissNetworkErrorDialog = {},
-            dismissServerErrorDialog = {},
+            // dismissServerErrorDialog = {},
+            onNavigateToLogin = {},
+            clearAuthToken = {},
         )
     }
 }
 
 @DevicePreview
 @Composable
-fun MyPageScreenTestPreview() {
+fun MyPageScreenEmptyPreview() {
     ILabTheme {
         MyPageContentEmpty()
     }

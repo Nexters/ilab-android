@@ -29,7 +29,7 @@ class SettingViewModel @Inject constructor(
             reduce { state.copy(isLoading = true) }
             authRepository.signOut()
                 .onSuccess {
-                    tokenRepository.clear()
+                    tokenRepository.clearAuthToken()
                     postSideEffect(SettingSideEffect.LogoutSuccess)
                 }.onFailure { exception ->
                     Timber.d("$exception")
@@ -54,7 +54,7 @@ class SettingViewModel @Inject constructor(
                 reduce { state.copy(isLoading = true) }
                 authRepository.deleteAccount()
                     .onSuccess {
-                        tokenRepository.clear()
+                        tokenRepository.clearAuthToken()
                         postSideEffect(SettingSideEffect.LogoutSuccess)
                     }.onFailure { exception ->
                         Timber.d("$exception")

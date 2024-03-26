@@ -51,7 +51,7 @@ class TokenDataSourceImpl @Inject constructor(
             else throw exception
         }.first()[KEY_REFRESH_TOKEN] ?: ""
 
-    override suspend fun clear() {
+    override suspend fun clearAuthToken() {
         dataStore.edit { it.clear() }
     }
 }
