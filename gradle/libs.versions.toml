@@ -1,7 +1,7 @@
 [versions]
 
 android-gradle-plugin = "8.2.2"
-kotlin-core = "1.9.22"
+kotlin-core = "1.9.23"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
@@ -38,7 +38,7 @@ coil-compose = "2.6.0"
 timber = "5.0.1"
 firebase-bom = "32.8.0"
 firebase-crashlytics = "2.9.9"
-ksp = "1.9.22-1.0.18"
+ksp = "1.9.23-1.0.19"
 orbit-core = "4.6.1"
 kotest = "5.8.1"
 kakao-core = "2.20.1"
