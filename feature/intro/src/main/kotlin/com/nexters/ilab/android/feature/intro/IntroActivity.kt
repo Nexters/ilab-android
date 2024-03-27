@@ -3,13 +3,11 @@ package com.nexters.ilab.android.feature.intro
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
-import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
-import com.nexters.ilab.android.feature.intro.viewmodel.IntroViewModel
 import com.nexters.ilab.android.feature.navigator.LoginNavigator
 import com.nexters.ilab.android.feature.navigator.MainNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +16,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class IntroActivity : ComponentActivity() {
-    private val viewModel: IntroViewModel by viewModels()
-
     @Inject
     lateinit var loginNavigator: LoginNavigator
 
@@ -58,7 +54,6 @@ class IntroActivity : ComponentActivity() {
                             withFinish = true,
                         )
                     },
-                    viewModel = viewModel,
                 )
             }
         }

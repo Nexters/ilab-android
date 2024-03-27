@@ -7,5 +7,5 @@ interface TokenRepository {
     suspend fun getAccessToken(): String
     suspend fun getRefreshToken(): String
     suspend fun getUUID(): Long
-    suspend fun clear()
+    suspend fun clearAuthToken()
 }

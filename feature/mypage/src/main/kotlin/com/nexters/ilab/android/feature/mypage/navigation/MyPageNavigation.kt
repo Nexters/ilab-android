@@ -17,12 +17,14 @@ fun NavGraphBuilder.myPageNavGraph(
     padding: PaddingValues,
     onSettingClick: () -> Unit,
     onNavigateToMyAlbum: (String, List<String>) -> Unit,
+    onNavigateToLogin: () -> Unit,
 ) {
     composable(route = MY_PAGE_ROUTE) {
         MyPageRoute(
             padding = padding,
             onSettingClick = onSettingClick,
             onNavigateToMyAlbum = onNavigateToMyAlbum,
+            onNavigateToLogin = onNavigateToLogin,
         )
     }
 }

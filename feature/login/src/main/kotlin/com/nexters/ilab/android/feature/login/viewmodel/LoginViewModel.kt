@@ -40,7 +40,7 @@ class LoginViewModel @Inject constructor(
                 }
                 .onFailure { exception ->
                     Timber.e(exception)
-                    tokenRepository.clear()
+                    tokenRepository.clearAuthToken()
                     postSideEffect(LoginSideEffect.LoginFail(exception))
                 }
             reduce {

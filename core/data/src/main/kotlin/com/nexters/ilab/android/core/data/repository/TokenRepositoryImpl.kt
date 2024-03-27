@@ -31,7 +31,7 @@ class TokenRepositoryImpl @Inject constructor(
         return dataSource.getUUID()
     }
 
-    override suspend fun clear() {
-        dataSource.clear()
+    override suspend fun clearAuthToken() {
+        dataSource.clearAuthToken()
     }
 }

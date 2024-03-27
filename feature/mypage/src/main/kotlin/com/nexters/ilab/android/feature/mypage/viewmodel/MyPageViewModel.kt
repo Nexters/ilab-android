@@ -3,10 +3,13 @@ package com.nexters.ilab.android.feature.mypage.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nexters.ilab.android.core.common.ErrorHandlerActions
+import com.nexters.ilab.android.core.common.UiText
 import com.nexters.ilab.android.core.common.handleException
+import com.nexters.ilab.android.core.designsystem.R
 import com.nexters.ilab.android.core.domain.repository.AuthRepository
 import com.nexters.ilab.android.core.domain.repository.DeleteMyAlbumRepository
 import com.nexters.ilab.android.core.domain.repository.FileRepository
+import com.nexters.ilab.android.core.domain.repository.TokenRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
@@ -23,6 +26,7 @@ class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val fileRepository: FileRepository,
     private val deleteMyAlbumRepository: DeleteMyAlbumRepository,
+    private val tokenRepository: TokenRepository,
 ) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect>, ErrorHandlerActions {
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
 
@@ -135,8 +139,12 @@ class MyPageViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Timber.d("MyPageViewModel is cleared")
+    fun clearAuthToken() = intent {
+        viewModelScope.launch {
+            tokenRepository.clearAuthToken()
+            postSideEffect(
+                MyPageSideEffect.ShowToast(UiText.StringResource(R.string.mypage_logout)),
+            )
+        }
     }
 }

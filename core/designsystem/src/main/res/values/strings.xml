@@ -24,6 +24,7 @@
     <string name="mypage_name_postfix">님</string>
     <string name="mypage_dropdown_delete">삭제하기</string>
     <string name="mypage_dropdown_share">공유하기</string>
+    <string name="mypage_logout">로그인 세션이 종료되어 다시 로그인이 필요합니다.</string>
 
     <!--    Setting -->
     <string name="setting_title">설정</string>

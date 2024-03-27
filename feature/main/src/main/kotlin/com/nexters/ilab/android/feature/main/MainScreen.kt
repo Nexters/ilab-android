@@ -108,6 +108,7 @@ internal fun MainScreen(
                     padding = padding,
                     onSettingClick = navigator::navigateToSetting,
                     onNavigateToMyAlbum = navigator::navigateToMyAlbum,
+                    onNavigateToLogin = onNavigateToLogin,
                 )
 
                 myAlbumNavGraph(
