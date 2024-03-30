@@ -18,7 +18,6 @@ import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +28,6 @@ class MyPageViewModel @Inject constructor(
     private val tokenRepository: TokenRepository,
 ) : ViewModel(), ContainerHost<MyPageState, MyPageSideEffect>, ErrorHandlerActions {
     override val container = container<MyPageState, MyPageSideEffect>(MyPageState())
-
-    init {
-        Timber.d("MyPageViewModel is initialized")
-        getUserInfo()
-    }
 
     fun getUserInfo() = intent {
         viewModelScope.launch {
