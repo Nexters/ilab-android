@@ -159,6 +159,10 @@ internal fun MyPageScreen(
     onNavigateToLogin: () -> Unit,
     clearAuthToken: () -> Unit,
 ) {
+    LaunchedEffect(key1 = Unit) {
+        getUserInfo()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
