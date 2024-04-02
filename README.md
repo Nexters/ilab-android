@@ -24,6 +24,18 @@ I'lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 [PlayStore](ht
 
 ## Features
 
+|홈 화면 1|홈 화면 2|사진 가이드 화면|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/48bd1084-afcd-4274-aba0-5881d8262902">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/f7a3b3e1-7ad1-4c75-8f1d-da3495a0b241">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/1a2deddd-52b8-4ef5-a270-ddb7fc9a34ff">
+
+|스타일 입력 화면|이미지 생성 화면|이미지 생성 완료 화면|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/cdbbb877-65c0-4214-9943-84b13439e33e">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/d81ac303-a42d-40a1-a278-7c8b6626e44b">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/b992170f-4db0-4ff7-8f58-cac1df54c43e">
+
+|마이 페이지 화면|마이 앨범 화면|설정 화면|
+|:-----:|:-----:|:-----:|
+|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/693d55c3-4895-4eec-ae5f-7101721fd4b7">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/693d55c3-4895-4eec-ae5f-7101721fd4b7">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/eb4054ec-7fcf-4e3b-a6b0-5f4a5ec92d6a">
+
 ## Development
 
 ### Required
@@ -111,4 +123,7 @@ Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Ar
     └── compose-reports
 ```
 <br/>
+
+## Issue
+- [ ] proguard 활성화시 compose-navigation 관련 함수들을 인식할 수 없는 문제 
 
