@@ -34,7 +34,7 @@ I'lab(아이랩) - 내 취향대로 만드는 AI 프로필 사진 [PlayStore](ht
 
 |마이 페이지 화면|마이 앨범 화면|설정 화면|
 |:-----:|:-----:|:-----:|
-|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/693d55c3-4895-4eec-ae5f-7101721fd4b7">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/693d55c3-4895-4eec-ae5f-7101721fd4b7">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/eb4054ec-7fcf-4e3b-a6b0-5f4a5ec92d6a">
+|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/bd10a483-8a95-4641-a5cb-b08118404076">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/69f90c35-194a-405d-b910-c57353b347b4">|<img width="240" src="https://github.com/Nexters/ilab-android/assets/51016231/eb4054ec-7fcf-4e3b-a6b0-5f4a5ec92d6a">
 
 ## Development
 
