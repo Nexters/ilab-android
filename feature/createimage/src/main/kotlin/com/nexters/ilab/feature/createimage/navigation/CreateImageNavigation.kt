@@ -14,15 +14,15 @@ import com.nexters.ilab.feature.createimage.viewmodel.CreateImageViewModel
 
 const val IMAGE_URL = "image_url"
 const val STYLE_ID = "style_id"
-const val CREATE_IMAGE_ROUTE = "create_image_route/{$IMAGE_URL}/{$STYLE_ID}"
-const val CREATE_ROUTE = "create_route"
+const val CREATE_ROUTE = "create_route/{$IMAGE_URL}/{$STYLE_ID}"
+const val CREATE_IMAGE_ROUTE = "create_image_route"
 const val CREATE_IMAGE_COMPLETE_ROUTE = "create_image_complete_route"
 
 fun NavController.navigateToCreateImage(
     imageUrl: String,
     styleId: Int,
 ) {
-    navigate("create_image_route/$imageUrl/$styleId")
+    navigate("create_route/$imageUrl/$styleId")
 }
 
 fun NavController.navigateToCreateImageComplete() {
@@ -35,8 +35,8 @@ fun NavGraphBuilder.createImageNavGraph(
     onNavigateToCreateImageComplete: () -> Unit,
 ) {
     navigation(
-        startDestination = CREATE_ROUTE,
-        route = CREATE_IMAGE_ROUTE,
+        startDestination = CREATE_IMAGE_ROUTE,
+        route = CREATE_ROUTE,
         arguments = listOf(
             navArgument(IMAGE_URL) {
                 type = NavType.StringType
@@ -46,7 +46,7 @@ fun NavGraphBuilder.createImageNavGraph(
             },
         ),
     ) {
-        composable(route = CREATE_ROUTE) { entry ->
+        composable(route = CREATE_IMAGE_ROUTE) { entry ->
             val viewModel = entry.sharedViewModel<CreateImageViewModel>(navController)
             CreateImageRoute(
                 onCloseClick = onCloseClick,
