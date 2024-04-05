@@ -152,7 +152,7 @@ internal fun LoginScreen(
             onLoginClick = onLoginClick,
         )
         if (uiState.isLoading) {
-            LoadingIndicator()
+            LoadingIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
 }
