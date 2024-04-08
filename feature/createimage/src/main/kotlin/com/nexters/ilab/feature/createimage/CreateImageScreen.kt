@@ -36,7 +36,7 @@ import com.nexters.ilab.android.core.designsystem.theme.ILabTheme
 import com.nexters.ilab.android.core.designsystem.theme.Subtitle2
 import com.nexters.ilab.android.core.designsystem.theme.Title1
 import com.nexters.ilab.core.ui.DevicePreview
-import com.nexters.ilab.core.ui.component.ILabDialog
+import com.nexters.ilab.core.ui.component.CreateImageStopDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.LoadingImage
 import com.nexters.ilab.core.ui.component.NetworkErrorDialog
@@ -206,24 +206,6 @@ private fun CreateImageContent(creatingImageWaitText: String) {
         }
         Spacer(modifier = Modifier.weight(1f))
     }
-}
-
-@Composable
-private fun CreateImageStopDialog(
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit,
-) {
-    ILabDialog(
-        titleResId = R.string.creating_image_stop_confirmation,
-        iconResId = null,
-        iconDescription = null,
-        firstDescriptionResId = R.string.creating_image_stop_warning_description1,
-        secondDescriptionResId = R.string.creating_image_stop_warning_description2,
-        cancelTextResId = R.string.creating_image_stop_confirm,
-        confirmTextResId = R.string.creating_image_continue,
-        onCancelClick = onCancelClick,
-        onConfirmClick = onConfirmClick,
-    )
 }
 
 @DevicePreview

@@ -36,7 +36,7 @@ import com.nexters.ilab.android.feature.setting.viewmodel.SettingSideEffect
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingState
 import com.nexters.ilab.android.feature.setting.viewmodel.SettingViewModel
 import com.nexters.ilab.core.ui.DevicePreview
-import com.nexters.ilab.core.ui.component.ILabDialog
+import com.nexters.ilab.core.ui.component.DeleteAccountDialog
 import com.nexters.ilab.core.ui.component.ILabTopAppBar
 import com.nexters.ilab.core.ui.component.TopAppBarNavigationType
 
@@ -221,24 +221,6 @@ internal fun SettingTopAppBar(onBackClick: () -> Unit) {
         modifier = Modifier
             .statusBarsPadding()
             .height(56.dp),
-    )
-}
-
-@Composable
-internal fun DeleteAccountDialog(
-    onCancelClick: () -> Unit,
-    onConfirmClick: () -> Unit,
-) {
-    ILabDialog(
-        titleResId = R.string.setting_delete_account,
-        iconResId = R.drawable.ic_warning,
-        iconDescription = "Warning Icon",
-        firstDescriptionResId = R.string.setting_delete_account_description,
-        secondDescriptionResId = null,
-        cancelTextResId = R.string.setting_delete_account_cancel,
-        confirmTextResId = R.string.setting_delete_account_confirm,
-        onCancelClick = onCancelClick,
-        onConfirmClick = onConfirmClick,
     )
 }
 
