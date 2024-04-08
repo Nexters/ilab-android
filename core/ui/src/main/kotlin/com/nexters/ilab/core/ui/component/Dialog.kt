@@ -1,5 +1,7 @@
 package com.nexters.ilab.core.ui.component
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,13 +35,13 @@ import com.nexters.ilab.core.ui.ComponentPreview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ILabDialog(
-    titleResId: Int,
-    iconResId: Int?,
+    @StringRes titleResId: Int,
+    @DrawableRes iconResId: Int?,
     iconDescription: String?,
-    firstDescriptionResId: Int,
-    secondDescriptionResId: Int?,
-    cancelTextResId: Int?,
-    confirmTextResId: Int,
+    @StringRes firstDescriptionResId: Int,
+    @StringRes secondDescriptionResId: Int?,
+    @StringRes cancelTextResId: Int?,
+    @StringRes confirmTextResId: Int,
     onCancelClick: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -113,7 +115,13 @@ fun ILabDialog(
                     modifier = Modifier
                         .weight(1f)
                         .height(48.dp)
-                        .padding(start = 4.dp),
+                        .then(
+                            if (cancelTextResId != null) {
+                                Modifier.padding(start = 4.dp)
+                            } else {
+                                Modifier
+                            },
+                        ),
                     text = {
                         Text(
                             text = stringResource(id = confirmTextResId),
@@ -161,9 +169,11 @@ fun NetworkErrorDialog(
     )
 }
 
-@ComponentPreview
 @Composable
-fun CreateImageStopDialogPreview() {
+fun CreateImageStopDialog(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
     ILabDialog(
         titleResId = R.string.creating_image_stop_confirmation,
         iconResId = null,
@@ -172,44 +182,34 @@ fun CreateImageStopDialogPreview() {
         secondDescriptionResId = R.string.creating_image_stop_warning_description2,
         cancelTextResId = R.string.creating_image_stop_confirm,
         confirmTextResId = R.string.creating_image_continue,
-        onCancelClick = {},
-        onConfirmClick = {},
+        onCancelClick = onCancelClick,
+        onConfirmClick = onConfirmClick,
     )
 }
 
-@ComponentPreview
 @Composable
-fun DeleteAccountDialogPreview() {
-    ILabTheme {
-        ILabDialog(
-            titleResId = R.string.setting_delete_account,
-            iconResId = R.drawable.ic_warning,
-            iconDescription = "Warning Icon",
-            firstDescriptionResId = R.string.setting_delete_account_description,
-            secondDescriptionResId = null,
-            cancelTextResId = R.string.setting_delete_account_cancel,
-            confirmTextResId = R.string.setting_delete_account_confirm,
-            onCancelClick = {},
-            onConfirmClick = {},
-        )
-    }
+fun DeleteAccountDialog(
+    onCancelClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+) {
+    ILabDialog(
+        titleResId = R.string.setting_delete_account,
+        iconResId = R.drawable.ic_warning,
+        iconDescription = "Warning Icon",
+        firstDescriptionResId = R.string.setting_delete_account_description,
+        secondDescriptionResId = null,
+        cancelTextResId = R.string.setting_delete_account_cancel,
+        confirmTextResId = R.string.setting_delete_account_confirm,
+        onCancelClick = onCancelClick,
+        onConfirmClick = onConfirmClick,
+    )
 }
 
 @ComponentPreview
 @Composable
 fun ServerErrorDialogPreview() {
     ILabTheme {
-        ILabDialog(
-            titleResId = R.string.server_error_title,
-            iconResId = R.drawable.ic_server_error,
-            iconDescription = "Network Error Icon",
-            firstDescriptionResId = R.string.server_error_description1,
-            secondDescriptionResId = R.string.server_error_description2,
-            confirmTextResId = R.string.retry,
-            cancelTextResId = null,
-            onCancelClick = {},
-            onConfirmClick = {},
-        )
+        ServerErrorDialog(onRetryClick = {})
     }
 }
 
@@ -217,14 +217,26 @@ fun ServerErrorDialogPreview() {
 @Composable
 fun NetworkErrorDialogPreview() {
     ILabTheme {
-        ILabDialog(
-            titleResId = R.string.network_error_title,
-            iconResId = R.drawable.ic_network_error,
-            iconDescription = "Network Error Icon",
-            firstDescriptionResId = R.string.network_error_description1,
-            secondDescriptionResId = R.string.network_error_description2,
-            confirmTextResId = R.string.retry,
-            cancelTextResId = null,
+        NetworkErrorDialog(onRetryClick = {})
+    }
+}
+
+@ComponentPreview
+@Composable
+fun CreateImageStopDialogPreview() {
+    ILabTheme {
+        CreateImageStopDialog(
+            onCancelClick = {},
+            onConfirmClick = {},
+        )
+    }
+}
+
+@ComponentPreview
+@Composable
+fun DeleteAccountDialogPreview() {
+    ILabTheme {
+        DeleteAccountDialog(
             onCancelClick = {},
             onConfirmClick = {},
         )
