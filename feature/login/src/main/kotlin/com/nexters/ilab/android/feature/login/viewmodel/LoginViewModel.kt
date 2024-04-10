@@ -27,12 +27,13 @@ class LoginViewModel @Inject constructor(
         postSideEffect(LoginSideEffect.KakaoLogin)
     }
 
-    fun kakaoLogin(accessToken: String, uuid: Long) = intent {
+    fun kakaoLogin(accessToken: String, refreshToken: String, uuid: Long) = intent {
         viewModelScope.launch {
             reduce {
                 state.copy(isLoading = true)
             }
             tokenRepository.setAccessToken(accessToken)
+            tokenRepository.setRefreshToken(refreshToken)
             loginRepository.signIn()
                 .onSuccess {
                     tokenRepository.setUUID(uuid)
