@@ -125,5 +125,6 @@ Based on [Now in Android](https://github.com/android/nowinandroid) with Clean Ar
 <br/>
 
 ## Issue
-- [ ] proguard 활성화시 compose-navigation 관련 함수들을 인식할 수 없는 문제 
+- [x] proguard 활성화시 compose-navigation 관련 함수들을 인식할 수 없는 문제
+  -> [release 빌드시 ComposeInvestigator 를 비활성화하여 해결](https://github.com/jisungbin/ComposeInvestigator/issues/155)
 
