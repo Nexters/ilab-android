@@ -1,7 +1,7 @@
 [versions]
 
 android-gradle-plugin = "8.2.2"
-kotlin-core = "1.9.22"
+kotlin-core = "1.9.25"
 gradle-dependency-handler-extensions = "1.1.0"
 
 google-secrets = "2.0.1"
@@ -11,11 +11,11 @@ kotlin-detekt = "1.23.6"
 kotlin-ktlint-gradle = "11.6.1"
 kotlin-ktlint-source = "0.50.0"
 
-kotlinx-coroutines = "1.8.0"
+kotlinx-coroutines = "1.9.0"
 kotlinx-datetime = "0.5.0"
-kotlinx-serialization = "1.6.3"
+kotlinx-serialization = "1.7.3"
 kotlinx-serialization-converter = "1.0.0"
-kotlinx-collections-immutable = "0.3.7"
+kotlinx-collections-immutable = "0.3.8"
 
 androidx-core = "1.13.1"
 androidx-lifecycle = "2.7.0"
@@ -38,7 +38,7 @@ coil-compose = "2.6.0"
 timber = "5.0.1"
 firebase-bom = "32.8.1"
 firebase-crashlytics = "2.9.9"
-ksp = "1.9.22-1.0.18"
+ksp = "1.9.25-1.0.20"
 orbit-core = "4.6.1"
 kotest = "5.8.1"
 kakao-core = "2.20.1"
